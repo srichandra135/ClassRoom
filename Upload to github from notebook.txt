@@ -1,0 +1,176 @@
+                     GITHUB UPLOAD (From Laptop to Githu.com) Through GITBASH
+ ---------------------------------------------------------------------------------------------------------------------------
+
+
+sony@Chandu MINGW64 ~
+$ pwd
+/c/Users/sony
+
+sony@Chandu MINGW64 ~
+$ $dir
+
+sony@Chandu MINGW64 ~
+$ dir
+AppData
+Application\ Data
+AWS\ &\ DevOpsTraining
+sony@Chandu MINGW64 ~ (#Upload directory Location is desktop)
+$ cd desktop
+sony@Chandu MINGW64 ~/desktop
+$ ls -al
+total 2203
+drwxr-xr-x 1 sony 197121      0 Jan  7 07:54  ./
+drwxr-xr-x 1 sony 197121      0 Jan  7 08:07  ../
+-rw-r--r-- 1 sony 197121    446 Jan  7 07:54  desktop.ini
+drwxr-xr-x 1 sony 197121      0 Jan  7 08:01 'DevOps- Pragathi'/
+-rwxr-xr-x 1 sony 197121    867 Jul 15  2016  Downloads.lnk*
+sony@Chandu MINGW64 ~/desktop
+$ cd DevOps-\ Pragathi/
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git status
+On branch master
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        PUPPET Class-2.A.txt
+        PUPPET Class-3.txt
+        PUPPET Class-5.txt
+        PUPPET-4- Install TOMCAT SERVER.txt
+        Puppet Class-1.txt
+        Puppet Class2.B.txt
+        Puppet-Class6A-TOMCAT Module Full Install.txt
+        Puppet6.0 Server-PDK- New Module
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi
+$ git init
+Initialized empty Git repository in C:/Users/sony/Desktop/DevOps- Pragathi/.git/
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ ls -al
+total 264
+drwxr-xr-x 1 sony 197121     0 Jan  7 09:25  ./
+drwxr-xr-x 1 sony 197121     0 Jan  7 07:54  ../
+drwxr-xr-x 1 sony 197121     0 Jan  7 09:25  .git/
+-rw-r--r-- 1 sony 197121 52916 Dec 19 08:13 'Puppet Class-1.txt'
+-rw-r--r-- 1 sony 197121 11619 Dec 19 10:13 'PUPPET Class-2.A.txt'
+-rw-r--r-- 1 sony 197121 38739 Dec 20 10:35 'Puppet Class2.B.txt'
+-rw-r--r-- 1 sony 197121 78871 Dec 20 10:45 'PUPPET Class-3.txt'
+-rw-r--r-- 1 sony 197121  1780 Jan  3 10:53 'PUPPET Class-5.txt'
+-rw-r--r-- 1 sony 197121  3243 Dec 21 11:04 'PUPPET-4- Install TOMCAT SERVER.txt
+-rw-r--r-- 1 sony 197121 30480 Jan  5 11:48 'Puppet6.0 Server-PDK- New Module'
+-rw-r--r-- 1 sony 197121 16658 Jan  4 19:09 'Puppet-Class6A-TOMCAT Module Full I
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git remote add origin https://github.com/srichandra135/classroom.git (#repository=classroom in github.com)
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git remote -v
+origin  https://github.com/srichandra135/classroom.git (fetch)
+origin  https://github.com/srichandra135/classroom.git (push)
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git pull
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/srichandra135/classroom
+ * [new branch]      master     -> origin/master
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details.
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> master
+
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git pull origin master
+From https://github.com/srichandra135/classroom
+ * branch            master     -> FETCH_HEAD
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ ls -al
+total 265
+drwxr-xr-x 1 sony 197121     0 Jan  7 09:25  ./
+drwxr-xr-x 1 sony 197121     0 Jan  7 07:54  ../
+drwxr-xr-x 1 sony 197121     0 Jan  7 09:25  .git/
+-rw-r--r-- 1 sony 197121 52916 Dec 19 08:13 'Puppet Class-1.txt'
+-rw-r--r-- 1 sony 197121 11619 Dec 19 10:13 'PUPPET Class-2.A.txt'
+-rw-r--r-- 1 sony 197121 38739 Dec 20 10:35 'Puppet Class2.B.txt'
+-rw-r--r-- 1 sony 197121 78871 Dec 20 10:45 'PUPPET Class-3.txt'
+-rw-r--r-- 1 sony 197121  1780 Jan  3 10:53 'PUPPET Class-5.txt'
+-rw-r--r-- 1 sony 197121  3243 Dec 21 11:04 'PUPPET-4- Install TOMCAT SERVER.txt
+-rw-r--r-- 1 sony 197121 30480 Jan  5 11:48 'Puppet6.0 Server-PDK- New Module'
+-rw-r--r-- 1 sony 197121 16658 Jan  4 19:09 'Puppet-Class6A-TOMCAT Module Full I
+-rw-r--r-- 1 sony 197121    11 Jan  7 09:25  README.md
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ date
+Mon, Jan 07, 2019  9:25:41 AM
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ cat README.md
+# classroom
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git add .
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        new file:   PUPPET Class-2.A.txt
+        new file:   PUPPET Class-3.txt
+        new file:   PUPPET Class-5.txt
+        new file:   PUPPET-4- Install TOMCAT SERVER.txt
+        new file:   Puppet Class-1.txt
+        new file:   Puppet Class2.B.txt
+        new file:   Puppet-Class6A-TOMCAT Module Full Install.txt
+        new file:   Puppet6.0 Server-PDK- New Module
+
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git commit -m "added class room"
+
+[master 73e91db] added class room
+ 8 files changed, 5045 insertions(+)
+ create mode 100644 PUPPET Class-2.A.txt
+ create mode 100644 PUPPET Class-3.txt
+ create mode 100644 PUPPET Class-5.txt
+ create mode 100644 PUPPET-4- Install TOMCAT SERVER.txt
+ create mode 100644 Puppet Class-1.txt
+ create mode 100644 Puppet Class2.B.txt
+ create mode 100644 Puppet-Class6A-TOMCAT Module Full Install.txt
+ create mode 100644 Puppet6.0 Server-PDK- New Module
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$ git push -u origin master
+
+fatal: TaskCanceledException encountered.
+   A task was canceled.
+Username for 'https://github.com': srichandra135 and enter password in prompted window.
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (10/10), done.
+Writing objects: 100% (10/10), 43.38 KiB | 3.10 MiB/s, done.
+Total 10 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/srichandra135/classroom.git
+   6e8123e..73e91db  master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+sony@Chandu MINGW64 ~/desktop/DevOps- Pragathi (master)
+$
+
+Final Step: GO to >github.com>>repository(classroom); check to see all files has been added or not.
