@@ -2,30 +2,31 @@
                           Server side configuration 
 -------------------------------------------------------------------------------------------------------
 Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83fac41fcc8
- SERVER SIDE														CLIENT SIDE
+ SERVER SIDE							CLIENT SIDE
  
-1)#yum install -y ansible								        #yum install -y ansible
-2)#useradd -md /home/ansadam ansadam							#useradd -md /home/ansadam ansadm
-3)#passwd ansadm												#passwd ansadm	
-4)a) #su - ansadm												#su -ansadm				
-  b) #ssh-keygen -t rsa											#mkdir .ssh
-  c) #cd .ssh>> ls -all											#chmod 700 .ssh		
-																#chown ansadm	
-																#cd .ssh
-5)#cat id_rsa.pub												#vi authorized_keys
+1)#yum install -y ansible					#yum install -y ansible
+2)#useradd -md /home/ansadam ansadam				#useradd -md /home/ansadam ansadm
+3)#passwd ansadm						#passwd ansadm	
+4)a) #su - ansadm						#su -ansadm				
+  b) #ssh-keygen -t rsa						#mkdir .ssh
+  c) #cd .ssh>> ls -all						#chmod 700 .ssh		
+								#chown ansadm	
+								#cd .ssh
+5)#cat id_rsa.pub						#vi authorized_keys
 (copy the key and paste in " authorized_keys" file in client side)
-																#hostname
-																#chmod 600 authorised_keys
+																								#hostname
+								#chmod 600 authorised_keys
 6)ssh ansadm@client
 (client=Copy client machine hostname full path)																
-Output is server can connect to client's machine.				
-   								 Next step is : Go to client machine
-               										     		 #exit
-																 #vi /etc/sudoers (pwd should be at root/ create file)
-																 go to end of the line and add (ESC+SHIFT+G)
-																 ansadm ALL=NOPASSWD: ALL	
-																 :wq!
-								Next step is: Go back to Server Machine
+Output is server can connect to client's machine.
+
+   					                        Next step is : Go to client machine
+               						 		 #exit
+									 #vi /etc/sudoers (pwd should be at root/ create file)
+								 		go to end of the line and add (ESC+SHIFT+G)
+							 	 	  ansadm ALL=NOPASSWD: ALL	
+								 	
+Next step is: Go back to Server Machine
 #exit
 pwd should be at root/
 #vi /etc/ansible/hosts
@@ -69,7 +70,7 @@ if you run above cmd again, output will display with green colour text and alrea
 
 
 
-
+LAB- SERVER SIDE
    
 [root@ip-172-30-0-186 ~]# ansible --version
 ansible 2.4.2.0
