@@ -14,13 +14,12 @@ Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83f
 								#cd .ssh
 5)#cat id_rsa.pub						#vi authorized_keys
 (copy the key contect and paste in " authorized_keys" file in client side)
-																									#chmod 600 authorised_keys														#hostname (Copy this hostname and paste in server to connect)
-								
-6)ssh ansadm@client
+																								        #chmod 600 authorised_keys														#hostname (Copy this hostname and paste in server to connect)
+#ssh ansadm@client
 (client= paste client's hostname full path)	
 Output is server can connect to client's machine.	
 
-						Next step is : Go to client machine
+					Next step is : Go to client machine
                								#exit
 									#vi /etc/sudoers (pwd should be at root/ create file)
 									Go to end of the line and add (ESC+SHIFT+G)
