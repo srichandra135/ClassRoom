@@ -1,0 +1,433 @@
+                         TOMCAT INSTALLATION CODING                             Date: 03rd Jan, 2019.
+						 
+						 
+login as: centos
+Authenticating with public key "imported-openssh-key"
+Last login: Wed Jan  2 02:46:43 2019 from 49.207.51.235
+[centos@ip-172-30-0-232 ~]$ sudo su -
+Last login: Wed Jan  2 02:46:50 UTC 2019 on pts/1
+
+
+STEP-1
+
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 48
+-rw-r--r--. 1 root root     0 Dec 20 03:36 !!,
+drwxr-xr-x. 3 root root  4096 Jan  2 02:37 .
+drwxr-xr-x. 3 root root    20 Dec 19 03:35 ..
+-rw-r--r--. 1 root root     0 Dec 20 03:36 -1,
+-rw-r--r--. 1 root root     0 Dec 20 03:36 53,
+-rw-r--r--. 1 root root     0 Dec 20 04:21 absent,
+-rw-r--r--. 1 root root     0 Dec 20 03:36 Apache Tomcat,
+drwxr-xr-x. 8 root root   163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root   324 Dec 20 03:12 package11.pp
+-rw-r--r--. 1 root root   380 Dec 20 03:14 package12.pp
+-rw-r--r--. 1 root root   154 Dec 19 03:46 package1.pp
+-rw-r--r--. 1 root root   219 Dec 20 03:02 package2.pp
+-rw-r--r--. 1 root root   219 Dec 20 02:58 package3.pp
+-rw-r--r--. 1 root root    42 Dec 19 03:40 package.pp
+-rw-r--r--. 1 root root     0 Dec 20 03:36 present,
+-rw-r--r--. 1 root root     8 Dec 19 03:35 README.md
+-rw-r--r--. 1 root root   557 Dec 21 04:43 tomcatinstall.pp
+-rw-r--r--. 1 root root 12288 Dec 21 04:19 .tomcatinstall.pp.swp
+
+#pwd
+/root/puppet/Puppet/
+
+[root@ip-172-30-0-232 Puppet]# puppet module generate chandra-tomcatmodule
+
+We need to create a metadata.json file for this module.  Please answer the
+following questions; if the question is not applicable to this module, feel free
+to leave it blank.
+
+Puppet uses Semantic Versioning (semver.org) to version modules.
+What version is this module?  [0.1.0]
+-->
+
+Who wrote this module?  [chandra]
+-->
+
+What license does this module code fall under?  [Apache 2.0]
+-->
+
+
+How would you describe this module in a single sentence?
+-->
+Where is this module's source code repository?
+-->
+
+Where can others go to learn more about this module?
+-->
+
+Where can others go to file issues about this module?
+-->
+
+----------------------------------------
+{
+  "name": "chandra-tomcatmodule",
+  "version": "0.1.0",
+  "author": "chandra",
+  "summary": null,
+  "license": "Apache 2.0",
+  "source": "",
+  "project_page": null,
+  "issues_url": null,
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+----------------------------------------
+
+About to generate this metadata; continue? [n/Y]
+-->
+
+Notice: Generating module at /root/puppet/Puppet/chandra-tomcatmodule...
+Notice: Populating templates...
+Finished; module generated in chandra-tomcatmodule.
+chandra-tomcatmodule/Gemfile
+chandra-tomcatmodule/Rakefile
+chandra-tomcatmodule/manifests
+chandra-tomcatmodule/manifests/init.pp
+chandra-tomcatmodule/spec
+chandra-tomcatmodule/spec/classes
+chandra-tomcatmodule/spec/classes/init_spec.rb
+chandra-tomcatmodule/spec/spec_helper.rb
+chandra-tomcatmodule/tests
+chandra-tomcatmodule/tests/init.pp
+chandra-tomcatmodule/README.md
+chandra-tomcatmodule/metadata.json
+[root@ip-172-30-0-232 Puppet]# cd tomcatmodule
+-bash: cd: tomcatmodule: No such file or directory
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 48
+-rw-r--r--. 1 root root     0 Dec 20 03:36 !!,
+drwxr-xr-x. 4 root root  4096 Jan  2 03:02 .
+drwxr-xr-x. 3 root root    20 Dec 19 03:35 ..
+-rw-r--r--. 1 root root     0 Dec 20 03:36 -1,
+-rw-r--r--. 1 root root     0 Dec 20 03:36 53,
+-rw-r--r--. 1 root root     0 Dec 20 04:21 absent,
+-rw-r--r--. 1 root root     0 Dec 20 03:36 Apache Tomcat,
+drwxr-xr-x. 5 root root   117 Jan  2 03:02 chandra-tomcatmodule
+drwxr-xr-x. 8 root root   163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root   324 Dec 20 03:12 package11.pp
+-rw-r--r--. 1 root root   380 Dec 20 03:14 package12.pp
+-rw-r--r--. 1 root root   154 Dec 19 03:46 package1.pp
+-rw-r--r--. 1 root root   219 Dec 20 03:02 package2.pp
+-rw-r--r--. 1 root root   219 Dec 20 02:58 package3.pp
+-rw-r--r--. 1 root root    42 Dec 19 03:40 package.pp
+-rw-r--r--. 1 root root     0 Dec 20 03:36 present,
+-rw-r--r--. 1 root root     8 Dec 19 03:35 README.md
+-rw-r--r--. 1 root root   557 Dec 21 04:43 tomcatinstall.pp
+-rw-r--r--. 1 root root 12288 Dec 21 04:19 .tomcatinstall.pp.swp
+
+[root@ip-172-30-0-232 Puppet]# cd chandra-tomcatmodule/ 
+[root@ip-172-30-0-232 chandra-tomcatmodule]# ls -all
+total 20
+drwxr-xr-x. 5 root root  117 Jan  2 03:02 .
+drwxr-xr-x. 4 root root 4096 Jan  2 03:02 ..
+-rw-r--r--. 1 root root  242 Jan  2 03:02 Gemfile
+drwxr-xr-x. 2 root root   21 Jan  2 03:02 manifests
+-rw-r--r--. 1 root root  282 Jan  2 03:02 metadata.json
+-rw-r--r--. 1 root root  633 Jan  2 03:02 Rakefile
+-rw-r--r--. 1 root root 2955 Jan  2 03:02 README.md
+drwxr-xr-x. 3 root root   43 Jan  2 03:02 spec
+drwxr-xr-x. 2 root root   21 Jan  2 03:02 tests
+
+
+[root@ip-172-30-0-232 chandra-tomcatmodule]# pwd
+/root/puppet/Puppet/chandra-tomcatmodule
+
+[root@ip-172-30-0-232 chandra-tomcatmodule]# cd manifests
+[root@ip-172-30-0-232 manifests]# pwd
+
+/root/puppet/Puppet/chandra-tomcatmodule/manifests
+
+
+Create all below files in /root/puppet/Puppet/chandra-tomcatmodule/manifests directory.
+
+vi params.pp  (1st Sub Class)
+vi pkginst.pp (2nd Sub Class)
+vi service.pp (3rd Sub Class)
+vi config.pp  (4th Sub Class)
+vi init.pp    (MAIN CLASS)
+
+
+vi params.pp
+
+class tomcatmodule::params(
+){
+  $pkg = [ 'tomcat', 'tomcat-webapps', 'tomcat-admin-webapps', 'tomcat-docs-webapp', 'tomcat-javadoc' ]
+  $service= tomcat
+}
+
+vi pkginst.pp
+class tomcatmodule::pkginst inherits tomcatmodule {
+    package{ $tomcatmodule::package1:
+          ensure => present
+          }
+        }
+
+vi service.pp
+class tomcatmodule::service inherits tomcatmodule{
+  service { $tomcatmodule::service1:
+    enable => true,
+    ensure => running
+}
+}
+
+vi config.pp
+class tomcatmodule::config inherits tomcatmodule {
+
+file {"/usr/share/tomcat/conf/tomcat.conf":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///modules/tomcatmodule/tomcat.conf',
+     }
+ file {"/usr/share/tomcat/conf/tomcat-users.xml":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///modules/tomcatmodule/tomcat-users.xml',
+     }
+}
+
+
+
+vi init.pp
+class tomcatmodule (
+  $package1 = $tomcatmodule::params::pkg,
+  $service1 = $tomcatmodule::params::service
+        ) inherits params{
+          include tomcatmodule::pkginst
+		  include tomcatmodule::config
+          include tomcatmodule::service
+		  
+}
+
+
+STEP-2
+
+Then copy whole directory 'chandra-tomcatmodule/' to /etc/puppet/modules/
+#pwd
+/root/puppet/Puppet/
+[root@ip-172-30-0-232 Puppet]# cp -pr chandra-tomcatmodule/ /etc/puppet/modules/
+[root@ip-172-30-0-232 Puppet]# cd /etc/puppet/modules/
+[root@ip-172-30-0-232 modules]# ls -all
+total 0
+drwxr-xr-x. 3 root root  34 Jan  3 03:23 .
+drwxr-xr-x. 5 root root 117 Dec 18 03:09 ..
+drwxr-xr-x. 5 root root 166 Jan  3 03:03 chandra-tomcatmodule
+
+Rename 'chandra-tomcatmodule/ to tomcatmodule
+[root@ip-172-30-0-232 modules]# mv chandra-tomcatmodule/ tomcatmodule
+[root@ip-172-30-0-232 modules]# ls -al
+total 0
+drwxr-xr-x. 3 root root  26 Jan  3 03:23 .
+drwxr-xr-x. 5 root root 117 Dec 18 03:09 ..
+drwxr-xr-x. 5 root root 166 Jan  3 03:03 tomcatmodule
+
+[root@ip-172-30-0-232 modules]# cd tomcatmodule
+[root@ip-172-30-0-232 tomcatmodule]# ls -all
+total 28
+drwxr-xr-x. 6 root root  179 Jan  3 04:40 .
+drwxr-xr-x. 3 root root   26 Jan  3 03:23 ..
+drwxr-xr-x. 2 root root   49 Jan  3 04:58 files
+-rw-r--r--. 1 root root  242 Jan  2 03:02 Gemfile
+-rw-r--r--. 1 root root  122 Jan  2 04:09 init.pp
+drwxr-xr-x. 2 root root  107 Jan  3 04:48 manifests
+-rw-r--r--. 1 root root  282 Jan  2 03:02 metadata.json
+-rw-r--r--. 1 root root  139 Jan  2 04:10 params.pp
+-rw-r--r--. 1 root root  115 Jan  2 04:18 pkgint.pp
+-rw-r--r--. 1 root root  633 Jan  2 03:02 Rakefile
+-rw-r--r--. 1 root root 2955 Jan  2 03:02 README.md
+drwxr-xr-x. 3 root root   43 Jan  2 03:02 spec
+drwxr-xr-x. 2 root root   21 Jan  2 03:02 tests
+[root@ip-172-30-0-232 tomcatmodule]# pwd
+/etc/puppet/modules/tomcatmodule
+
+
+[root@ip-172-30-0-232 tomcatmodule]# cd manifests
+[root@ip-172-30-0-232 manifests]# pwd
+/etc/puppet/modules/tomcatmodule/manifests
+[root@ip-172-30-0-232 manifests]# ls -all
+total 20
+drwxr-xr-x. 2 root root  107 Jan  3 04:48 .
+drwxr-xr-x. 6 root root  179 Jan  3 04:40 ..
+-rw-r--r--. 1 root root  426 Jan  3 04:48 config.pp
+-rw-r--r--. 1 root root 1219 Jan  3 04:45 init.pp
+-rw-r--r--. 1 root root    0 Jan  3 04:12 param.pp
+-rw-r--r--. 1 root root  157 Jan  3 04:12 params.pp
+-rw-r--r--. 1 root root  119 Jan  3 04:25 pkginst.pp
+-rw-r--r--. 1 root root  134 Jan  3 04:14 service.pp
+
+[root@ip-172-30-0-232 tomcatmodule]# pwd
+/etc/puppet/modules/tomcatmodule
+
+-Create "Files" directory into 'tomcatmodule' directory
+- Copy 'tomcat-user.xml' and 'tomcat.conf' files to "Files Directory" from /var/tmp/ directory.
+
+#mkdir files  (create "files" directory)
+#cd files 
+#pwd
+/etc/puppet/modules/tomcatmodule/manifests/files
+#cp /var/tmp/tomcat-user.xml . (copy 'tomcat-user.xml' file from /var/tmp/tomcat-user to /etc/puppet/modules/tomcatmodule/manifests/files)
+#cp /var/tmp/tomcat.conf .     (copy 'tomcat.conf' file from /var/tmp/tomcat-user to /etc/puppet/modules/tomcatmodule/manifests/files)
+
+
+STEP-3
+
+Go to /etc/puppet/manifests and create site.pp file in vi
+
+[root@ip-172-30-0-232 manifests]# cd ..
+[root@ip-172-30-0-232 tomcatmodule]# pwd
+/etc/puppet/modules/tomcatmodule
+[root@ip-172-30-0-232 tomcatmodule]# cd ..
+[root@ip-172-30-0-232 modules]# pwd
+/etc/puppet/modules
+[root@ip-172-30-0-232 modules]# cd ..
+[root@ip-172-30-0-232 puppet]# pwd
+/etc/puppet
+[root@ip-172-30-0-232 puppet]# ls -all
+total 28
+drwxr-xr-x.  5 root root  117 Dec 18 03:09 .
+drwxr-xr-x. 84 root root 8192 Dec 20 03:47 ..
+-rw-r--r--.  1 root root 4178 Apr 25  2016 auth.conf
+drwxr-xr-x.  3 root root   25 Dec 18 03:09 environments
+-rw-r--r--.  1 root root 1462 Apr 25  2016 fileserver.conf
+drwxr-xr-x.  2 root root   30 Jan  3 04:57 manifests
+drwxr-xr-x.  3 root root   26 Jan  3 03:23 modules
+-rw-r--r--.  1 root root  853 Apr 25  2016 puppet.conf
+
+[root@ip-172-30-0-232 puppet]# cd manifests
+[root@ip-172-30-0-232 manifests]# pwd
+/etc/puppet/manifests
+[root@ip-172-30-0-232 manifests]# ls -all
+total 8
+-rw-r--r--. 1 root root  40 Jan  3 04:57 !
+drwxr-xr-x. 2 root root  30 Jan  3 04:57 .
+drwxr-xr-x. 5 root root 117 Dec 18 03:09 ..
+-rw-r--r--. 1 root root  40 Jan  3 03:24 site.pp
+[root@ip-172-30-0-232 manifests]# vi site.pp
+
+
+vi site.pp
+
+node default {
+  include tomcatmodule
+}
+
+
+
+To Excecute TOMACAT  Module run below command
+
+[root@ip-172-30-0-232 manifests]# pwd
+/etc/puppet/manifests
+
+
+[root@ip-172-30-0-232 manifests]# puppet apply /etc/puppet/manifests/site.pp
+
+(Output dispalys as below)
+Warning: Config file /etc/puppet/hiera.yaml not found, using Hiera defaults
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.60 seconds
+Notice: /Stage[main]/Tomcatmodule::Config/File[/usr/share/tomcat/conf/tomcat-users.xml]/content: content changed '{md5}5a9a6d35473573a12dc0d5da945907f4' to '{md5}775cbcff6c65cfc21c0408b72afbc5ec'
+Notice: /Stage[main]/Tomcatmodule::Config/File[/usr/share/tomcat/conf/tomcat-users.xml]/owner: owner changed 'root' to 'tomcat'
+Notice: /Stage[main]/Tomcatmodule::Config/File[/usr/share/tomcat/conf/tomcat.conf]/content: content changed '{md5}1c13a774295dcb266855975e51e0640a' to '{md5}92efda2548e8426a5c55089390e9709b'
+Notice: /Stage[main]/Tomcatmodule::Config/File[/usr/share/tomcat/conf/tomcat.conf]/owner: owner changed 'root' to 'tomcat'
+Notice: Finished catalog run in 0.22 seconds
+
+
+----------------------------------------------------------------END---------------------------------------------------------------------------------------------
+
+
+
+
+
+Trouble shooting::
+
+[root@ip-172-30-0-232 manifests]# rpm -qa|grep -i tomcat  (Command to check whether tomcat installed before or not)
+tomcat-el-2.2-api-7.0.76-8.el7_5.noarch
+tomcat-javadoc-7.0.76-8.el7_5.noarch
+tomcat-jsp-2.2-api-7.0.76-8.el7_5.noarch
+tomcat-lib-7.0.76-8.el7_5.noarch
+tomcat-docs-webapp-7.0.76-8.el7_5.noarch
+tomcat-webapps-7.0.76-8.el7_5.noarch
+tomcat-servlet-3.0-api-7.0.76-8.el7_5.noarch
+tomcat-7.0.76-8.el7_5.noarch
+tomcat-admin-webapps-7.0.76-8.el7_5.noarch
+[root@ip-172-30-0-232 manifests]# yum remove tomcat    (command to uninstall tomcat)
+Loaded plugins: fastestmirror
+Resolving Dependencies
+--> Running transaction check
+---> Package tomcat.noarch 0:7.0.76-8.el7_5 will be erased
+--> Processing Dependency: tomcat = 7.0.76-8.el7_5 for package: tomcat-admin-webapps-7.0.76-8.el7_5.noarch
+--> Processing Dependency: tomcat = 7.0.76-8.el7_5 for package: tomcat-docs-webapp-7.0.76-8.el7_5.noarch
+--> Processing Dependency: tomcat = 7.0.76-8.el7_5 for package: tomcat-webapps-7.0.76-8.el7_5.noarch
+--> Running transaction check
+---> Package tomcat-admin-webapps.noarch 0:7.0.76-8.el7_5 will be erased
+---> Package tomcat-docs-webapp.noarch 0:7.0.76-8.el7_5 will be erased
+---> Package tomcat-webapps.noarch 0:7.0.76-8.el7_5 will be erased
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                             Arch                  Version                          Repository               Size
+==========================================================================================================================
+Removing:
+ tomcat                              noarch                7.0.76-8.el7_5                   @updates                303 k
+Removing for dependencies:
+ tomcat-admin-webapps                noarch                7.0.76-8.el7_5                   @updates                112 k
+ tomcat-docs-webapp                  noarch                7.0.76-8.el7_5                   @updates                3.8 M
+ tomcat-webapps                      noarch                7.0.76-8.el7_5                   @updates                1.1 M
+
+Transaction Summary
+==========================================================================================================================
+Remove  1 Package (+3 Dependent packages)
+
+Installed size: 5.3 M
+Is this ok [y/N]: y
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Erasing    : tomcat-admin-webapps-7.0.76-8.el7_5.noarch                                                             1/4
+  Erasing    : tomcat-webapps-7.0.76-8.el7_5.noarch                                                                   2/4
+  Erasing    : tomcat-docs-webapp-7.0.76-8.el7_5.noarch                                                               3/4
+  Erasing    : tomcat-7.0.76-8.el7_5.noarch                                                                           4/4
+  Verifying  : tomcat-docs-webapp-7.0.76-8.el7_5.noarch                                                               1/4
+  Verifying  : tomcat-webapps-7.0.76-8.el7_5.noarch                                                                   2/4
+  Verifying  : tomcat-7.0.76-8.el7_5.noarch                                                                           3/4
+  Verifying  : tomcat-admin-webapps-7.0.76-8.el7_5.noarch                                                             4/4
+
+Removed:
+  tomcat.noarch 0:7.0.76-8.el7_5
+
+Dependency Removed:
+  tomcat-admin-webapps.noarch 0:7.0.76-8.el7_5                 tomcat-docs-webapp.noarch 0:7.0.76-8.el7_5
+  tomcat-webapps.noarch 0:7.0.76-8.el7_5
+
+Complete!
+[root@ip-172-30-0-232 manifests]# puppet apply /etc/puppet/manifests/site.pp
+Warning: Config file /etc/puppet/hiera.yaml not found, using Hiera defaults
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.42 seconds
+Notice: /Stage[main]/Tomcatmodule::Pkginst/Package[tomcat]/ensure: created
+Notice: /Stage[main]/Tomcatmodule::Pkginst/Package[tomcat-docs-webapp]/ensure: created
+Notice: /Stage[main]/Tomcatmodule::Pkginst/Package[tomcat-webapps]/ensure: created
+Notice: /Stage[main]/Tomcatmodule::Pkginst/Package[tomcat-admin-webapps]/ensure: created
+Notice: Finished catalog run in 9.67 seconds
+[root@ip-172-30-0-232 manifests]# pwd
+/etc/puppet/modules/tomcatmodule/manifests
+
+
+
+
+
+
+
+
+
+
+
+
