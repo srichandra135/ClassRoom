@@ -14,7 +14,7 @@ Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83f
 								#cd .ssh
 5)#cat id_rsa.pub						#vi authorized_keys
 (copy the key contect and paste in " authorized_keys" file in client side)
-																								        #chmod 600 authorised_keys														#hostname (Copy this hostname and paste in server to connect)
+							        #chmod 600 authorised_keys														#hostname (Copy this hostname and paste in server to connect)
 #ssh ansadm@client
 (client= paste client's hostname full path)	
 Output is server can connect to client's machine.	
