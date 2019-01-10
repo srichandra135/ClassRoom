@@ -26,7 +26,7 @@ Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83f
 									ansadm ALL=NOPASSWD: ALL	
 									(save & Exit):wq!
 																 
-		Next step is: Go back to Server Machine
+		                     Next step is: Go back to Server Machine
 #exit
 pwd should be at root/
 #vi /etc/ansible/hosts
