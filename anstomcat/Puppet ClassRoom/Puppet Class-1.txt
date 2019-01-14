@@ -1,0 +1,965 @@
+											PUPPET CONFIGURATION (Installation)             Date:18th Dec, 2018.
+																							(Class Notes)
+
+Create 2 AWS instances (Centos7) with same subnet,reigion and connect each other through SSH.
+
+######   Server Side Configuration ######
+
+login as: centos
+Authenticating with public key "imported-openssh-key"
+[centos@ip-172-30-0-232 ~]$ sudo su -
+[root@ip-172-30-0-232 ~]# pwd
+/root
+[root@ip-172-30-0-232 ~]# ls -al
+total 36
+dr-xr-x---.  3 root root  149 Dec 18 02:54 .
+dr-xr-xr-x. 17 root root  224 Jun  5  2018 ..
+-rw-------.  1 root root 6921 Jun  5  2018 anaconda-ks.cfg
+-rw-r--r--.  1 root root   18 Dec 29  2013 .bash_logout
+-rw-r--r--.  1 root root  176 Dec 29  2013 .bash_profile
+-rw-r--r--.  1 root root  176 Dec 29  2013 .bashrc
+-rw-r--r--.  1 root root  100 Dec 29  2013 .cshrc
+-rw-------.  1 root root 6577 Jun  5  2018 original-ks.cfg
+drwx------.  2 root root   29 Dec 18 02:54 .ssh
+-rw-r--r--.  1 root root  129 Dec 29  2013 .tcshrc
+
+[root@ip-172-30-0-232 ~]# cd .ssh
+[root@ip-172-30-0-232 .ssh]# ls -al
+total 4
+0 drwx------. 2 root root  29 Dec 18 02:54 .
+0 dr-xr-x---. 3 root root 149 Dec 18 02:54 ..
+4 -rw-------. 1 root root 540 Dec 18 02:54 authorized_keys
+
+[root@ip-172-30-0-232 .ssh]# vi test.pem (open test.pem and copy existing .pem file from your system and save)
+[root@ip-172-30-0-232 .ssh]# ls
+authorized_keys  test.pem
+
+[root@ip-172-30-0-232 centos]# ls -al
+total 12
+drwx------. 3 centos centos  74 Dec 18 02:54 .
+drwxr-xr-x. 3 root   root    20 Dec 18 02:54 ..
+-rw-r--r--. 1 centos centos  18 Apr 11  2018 .bash_logout
+-rw-r--r--. 1 centos centos 193 Apr 11  2018 .bash_profile
+-rw-r--r--. 1 centos centos 231 Apr 11  2018 .bashrc
+drwx------. 2 centos centos  29 Dec 18 02:54 .ssh
+
+## Above configuration is for to ping both instances each other. 
+
+
+
+******Install Puppet (go to https://www.tecmint.com/install-puppet-in-centos/ and search for below and paste here to install)*******
+
+[root@ip-172-30-0-232 centos]# rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+Retrieving http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+warning: /var/tmp/rpm-tmp.a3iKu7: Header V4 RSA/SHA1 Signature, key ID ef8d349f: NOKEY
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:puppetlabs-release-22.0-2        ################################# [100%]
+[root@ip-172-30-0-232 centos]# yum repolist
+Loaded plugins: fastestmirror
+Determining fastest mirrors
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+base
+extras
+puppetlabs-deps
+puppetlabs-products
+updates
+(1/6): puppetlabs-products/x86_64/primary_db
+(2/6): puppetlabs-deps/x86_64/primary_db
+(3/6): extras/7/x86_64/primary_db
+(4/6): base/7/x86_64/group_gz
+(5/6): updates/7/x86_64/primary_db
+(6/6): base/7/x86_64/primary_db
+repo id                                                                    repo name
+base/7/x86_64                                                              CentOS-7 - Base
+extras/7/x86_64                                                            CentOS-7 - Extras
+puppetlabs-deps/x86_64                                                     Puppet Labs Dependencies El 7 - x86_64
+puppetlabs-products/x86_64                                                 Puppet Labs Products El 7 - x86_64
+updates/7/x86_64                                                           CentOS-7 - Updates
+repolist: 11,181
+[root@ip-172-30-0-232 centos]# yum list|grep -i puppet
+puppetlabs-release.noarch                   22.0-2                     installed
+
+[root@ip-172-30-0-232 centos]# yum install puppet-server
+
+
+Installed:
+  puppet-server.noarch 0:3.8.7-1.el7
+Complete!
+
+[root@ip-172-30-0-232 centos]# puppet --version   (Command to check version of puppet)
+3.8.7
+
+[root@ip-172-30-0-232 centos]# puppet help   (Command to check Puppet Help)
+
+Usage: puppet <subcommand> [options] <action> [options]
+
+Available subcommands:
+
+  agent             The puppet agent daemon
+  apply             Apply Puppet manifests locally
+  ca                Local Puppet Certificate Authority management.
+  catalog           Compile, save, view, and convert catalogs.
+  cert              Manage certificates and requests
+  certificate       Provide access to the CA for certificate management.
+  certificate_request  Manage certificate requests.
+  certificate_revocation_list  Manage the list of revoked certificates.
+  config            Interact with Puppet's settings.
+  describe          Display help about resource types
+  device            Manage remote network devices
+  doc               Generate Puppet documentation and references
+  facts             Retrieve and store facts.
+  file              Retrieve and store files in a filebucket
+  filebucket        Store and retrieve files in a filebucket
+  help              Display Puppet help.
+  inspect           Send an inspection report
+  instrumentation_data  Manage instrumentation listener accumulated data. DEPRECATED.
+  instrumentation_listener  Manage instrumentation listeners. DEPRECATED.
+  instrumentation_probe  Manage instrumentation probes. Deprecated
+  key               Create, save, and remove certificate keys.
+  kick              Remotely control puppet agent
+  man               Display Puppet manual pages.
+  master            The puppet master daemon
+  module            Creates, installs and searches for modules on the Puppet Forge.
+  node              View and manage node definitions.
+  parser            Interact directly with the parser.
+  plugin            Interact with the Puppet plugin system.
+  queue             Deprecated queuing daemon for asynchronous storeconfigs
+  report            Create, display, and submit reports.
+  resource          The resource abstraction layer shell
+  resource_type     View classes, defined resource types, and nodes from all manifests.
+  secret_agent      Mimics puppet agent.
+  status            View puppet server status.
+
+See 'puppet help <subcommand> <action>' for help on a specific subcommand action.
+See 'puppet help <subcommand>' for help on a specific subcommand.
+Puppet v3.8.7
+[root@ip-172-30-0-232 centos]# puppet resource list
+[root@ip-172-30-0-232 centos]# puppet describe resource
+Unknown type resource
+[root@ip-172-30-0-232 centos]# puppet describe resource_type
+Unknown type resource_type
+[root@ip-172-30-0-232 centos]# puppet describe resource user
+Unknown type resource
+
+user
+====
+Manage users.  This type is mostly built to manage system
+users, so it is lacking some features useful for managing normal
+users.
+This resource type uses the prescribed native tools for creating
+groups and generally uses POSIX APIs for retrieving information
+about them.  It does not directly modify `/etc/passwd` or anything.
+**Autorequires:** If Puppet is managing the user's primary group (as
+provided in the `gid` attribute), the user resource will autorequire
+that group. If Puppet is managing any role accounts corresponding to the
+user's roles, the user resource will autorequire those role accounts.
+
+
+Parameters
+----------
+
+- **allowdupe**
+    Whether to allow duplicate UIDs. Defaults to `false`.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+- **attribute_membership**
+    Whether specified attribute value pairs should be treated as the
+    **complete list** (`inclusive`) or the **minimum list** (`minimum`) of
+    attribute/value pairs for the user. Defaults to `minimum`.
+    Valid values are `inclusive`, `minimum`.
+
+- **attributes**
+    Specify AIX attributes for the user in an array of attribute = value
+    pairs.
+Requires features manages_aix_lam.
+
+- **auth_membership**
+    Whether specified auths should be considered the **complete list**
+    (`inclusive`) or the **minimum list** (`minimum`) of auths the user
+    has. Defaults to `minimum`.
+Valid values are `inclusive`, `minimum`.
+
+- **auths**
+    The auths the user has.  Multiple auths should be
+    specified as an array.
+Requires features manages_solaris_rbac.
+
+- **comment**
+    A description of the user.  Generally the user's full name.
+
+- **ensure**
+    The basic state that the object should be in.
+    Valid values are `present`, `absent`, `role`.
+
+- **expiry**
+    The expiry date for this user. Must be provided in
+    a zero-padded YYYY-MM-DD format --- e.g. 2010-02-19.
+    If you want to make sure the user account does never
+    expire, you can pass the special value `absent`.
+    Valid values are `absent`. Values can match `/^\d{4}-\d{2}-\d{2}$/`.
+    Requires features manages_expiry.
+
+- **forcelocal**
+    Forces the management of local accounts when accounts are also
+    being managed by some other NSS
+    Valid values are `true`, `false`, `yes`, `no`.
+    Requires features libuser.
+
+- **gid**
+    The user's primary group.  Can be specified numerically or by name.
+    This attribute is not supported on Windows systems; use the `groups`
+    attribute instead. (On Windows, designating a primary group is only
+    meaningful for domain accounts, which Puppet does not currently manage.)
+
+- **groups**
+    The groups to which the user belongs.  The primary group should
+    not be listed, and groups should be identified by name rather than by
+    GID.  Multiple groups should be specified as an array.
+
+- **home**
+    The home directory of the user.  The directory must be created
+    separately and is not currently checked for existence.
+
+- **ia_load_module**
+    The name of the I&A module to use to manage this user.
+    Requires features manages_aix_lam.
+
+- **iterations**
+    This is the number of iterations of a chained computation of the
+    password hash (http://en.wikipedia.org/wiki/PBKDF2).  This parameter
+    is used in OS X. This field is required for managing passwords on OS X
+    >= 10.8.
+Requires features manages_password_salt.
+
+- **key_membership**
+    Whether specified key/value pairs should be considered the
+    **complete list** (`inclusive`) or the **minimum list** (`minimum`) of
+    the user's attributes. Defaults to `minimum`.
+    Valid values are `inclusive`, `minimum`.
+
+- **keys**
+    Specify user attributes in an array of key = value pairs.
+    Requires features manages_solaris_rbac.
+
+- **managehome**
+    Whether to manage the home directory when managing the user.
+    This will create the home directory when `ensure => present`, and
+    delete the home directory when `ensure => absent`. Defaults to `false`.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+- **membership**
+    Whether specified groups should be considered the **complete list**
+    (`inclusive`) or the **minimum list** (`minimum`) of groups to which
+    the user belongs. Defaults to `minimum`.
+    Valid values are `inclusive`, `minimum`.
+
+- **name**
+    The user name. While naming limitations vary by operating system,
+    it is advisable to restrict names to the lowest common denominator,
+    which is a maximum of 8 characters beginning with a letter.
+    Note that Puppet considers user names to be case-sensitive, regardless
+    of the platform's own rules; be sure to always use the same case when
+    referring to a given user.
+
+- **password**
+    The user's password, in whatever encrypted format the local
+    system requires.
+    * Most modern Unix-like systems use salted SHA1 password hashes. You can
+    use
+      Puppet's built-in `sha1` function to generate a hash from a password.
+    * Mac OS X 10.5 and 10.6 also use salted SHA1 hashes.
+    * Mac OS X 10.7 (Lion) uses salted SHA512 hashes. The Puppet Labs
+    [stdlib][]
+      module contains a `str2saltedsha512` function which can generate
+    password
+      hashes for Lion.
+    * Mac OS X 10.8 and higher use salted SHA512 PBKDF2 hashes. When
+      managing passwords on these systems the salt and iterations properties
+      need to be specified as well as the password.
+    * Windows passwords can only be managed in cleartext, as there is no
+    Windows API
+      for setting the password hash.
+    [stdlib]: https://github.com/puppetlabs/puppetlabs-stdlib/
+    Be sure to enclose any value that includes a dollar sign ($) in single
+    quotes (') to avoid accidental variable interpolation.
+    Requires features manages_passwords.
+
+- **password_max_age**
+    The maximum number of days a password may be used before it must be
+    changed.
+Requires features manages_password_age.
+
+- **password_min_age**
+    The minimum number of days a password must be used before it may be
+    changed.
+Requires features manages_password_age.
+
+- **profile_membership**
+    Whether specified roles should be treated as the **complete list**
+    (`inclusive`) or the **minimum list** (`minimum`) of roles
+    of which the user is a member. Defaults to `minimum`.
+    Valid values are `inclusive`, `minimum`.
+
+- **profiles**
+    The profiles the user has.  Multiple profiles should be
+    specified as an array.
+Requires features manages_solaris_rbac.
+
+- **project**
+    The name of the project associated with a user.
+    Requires features manages_solaris_rbac.
+
+- **purge_ssh_keys**
+    Whether to purge authorized SSH keys for this user if they are not
+    managed
+    with the `ssh_authorized_key` resource type. Allowed values are:
+    * `false` (default) --- don't purge SSH keys for this user.
+    * `true` --- look for keys in the `.ssh/authorized_keys` file in the
+    user's
+      home directory. Purge any keys that aren't managed as
+    `ssh_authorized_key`
+      resources.
+    * An array of file paths --- look for keys in all of the files listed.
+    Purge
+      any keys that aren't managed as `ssh_authorized_key` resources. If any
+    of
+      these paths starts with `~` or `%h`, that token will be replaced with
+      the user's home directory.
+Valid values are `true`, `false`.
+
+- **role_membership**
+    Whether specified roles should be considered the **complete list**
+    (`inclusive`) or the **minimum list** (`minimum`) of roles the user
+    has. Defaults to `minimum`.
+Valid values are `inclusive`, `minimum`.
+
+- **roles**
+    The roles the user has.  Multiple roles should be
+    specified as an array.
+Requires features manages_solaris_rbac.
+
+- **salt**
+    This is the 32 byte salt used to generate the PBKDF2 password used in
+    OS X. This field is required for managing passwords on OS X >= 10.8.
+    Requires features manages_password_salt.
+
+- **shell**
+    The user's login shell.  The shell must exist and be
+    executable.
+    This attribute cannot be managed on Windows systems.
+    Requires features manages_shell.
+
+- **system**
+    Whether the user is a system user, according to the OS's criteria;
+    on most platforms, a UID less than or equal to 500 indicates a system
+    user. This parameter is only used when the resource is created and will
+    not affect the UID when the user is present. Defaults to `false`.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+- **uid**
+    The user ID; must be specified numerically. If no user ID is
+    specified when creating a new user, then one will be chosen
+    automatically. This will likely result in the same user having
+    different UIDs on different systems, which is not recommended. This is
+    especially noteworthy when managing the same user on both Darwin and
+    other platforms, since Puppet does UID generation on Darwin, but
+    the underlying tools do so on other platforms.
+    On Windows, this property is read-only and will return the user's
+    security identifier (SID).
+
+Providers
+---------
+    aix, directoryservice, hpuxuseradd, ldap, pw, user_role_add, useradd,
+    windows_adsi
+
+[root@ip-172-30-0-232 centos]# puppet help
+
+Usage: puppet <subcommand> [options] <action> [options]
+
+Available subcommands:
+
+  agent             The puppet agent daemon
+  apply             Apply Puppet manifests locally
+  ca                Local Puppet Certificate Authority management.
+  catalog           Compile, save, view, and convert catalogs.
+  cert              Manage certificates and requests
+  certificate       Provide access to the CA for certificate management.
+  certificate_request  Manage certificate requests.
+  certificate_revocation_list  Manage the list of revoked certificates.
+  config            Interact with Puppet's settings.
+  describe          Display help about resource types
+  device            Manage remote network devices
+  doc               Generate Puppet documentation and references
+  facts             Retrieve and store facts.
+  file              Retrieve and store files in a filebucket
+  filebucket        Store and retrieve files in a filebucket
+  help              Display Puppet help.
+  inspect           Send an inspection report
+  instrumentation_data  Manage instrumentation listener accumulated data. DEPRECATED.
+  instrumentation_listener  Manage instrumentation listeners. DEPRECATED.
+  instrumentation_probe  Manage instrumentation probes. Deprecated
+  key               Create, save, and remove certificate keys.
+  kick              Remotely control puppet agent
+  man               Display Puppet manual pages.
+  master            The puppet master daemon
+  module            Creates, installs and searches for modules on the Puppet Forge.
+  node              View and manage node definitions.
+  parser            Interact directly with the parser.
+  plugin            Interact with the Puppet plugin system.
+  queue             Deprecated queuing daemon for asynchronous storeconfigs
+  report            Create, display, and submit reports.
+  resource          The resource abstraction layer shell
+  resource_type     View classes, defined resource types, and nodes from all manifests.
+  secret_agent      Mimics puppet agent.
+  status            View puppet server status.
+
+See 'puppet help <subcommand> <action>' for help on a specific subcommand action.
+See 'puppet help <subcommand>' for help on a specific subcommand.
+Puppet v3.8.7
+[root@ip-172-30-0-232 centos]# puppet help resource
+
+puppet-resource(8) -- The resource abstraction layer shell
+========
+
+SYNOPSIS
+--------
+Uses the Puppet RAL to directly interact with the system.
+
+
+USAGE
+-----
+puppet resource [-h|--help] [-d|--debug] [-v|--verbose] [-e|--edit]
+  [-H|--host <host>] [-p|--param <parameter>] [-t|--types] <type>
+  [<name>] [<attribute>=<value> ...]
+
+
+DESCRIPTION
+-----------
+This command provides simple facilities for converting current system
+state into Puppet code, along with some ability to modify the current
+state using Puppet's RAL.
+
+By default, you must at least provide a type to list, in which case
+puppet resource will tell you everything it knows about all resources of
+that type. You can optionally specify an instance name, and puppet
+resource will only describe that single instance.
+
+If given a type, a name, and a series of <attribute>=<value> pairs,
+puppet resource will modify the state of the specified resource.
+Alternately, if given a type, a name, and the '--edit' flag, puppet
+resource will write its output to a file, open that file in an editor,
+and then apply the saved file as a Puppet transaction.
+
+
+OPTIONS
+-------
+Note that any setting that's valid in the configuration
+file is also a valid long argument. For example, 'ssldir' is a valid
+setting, so you can specify '--ssldir <directory>' as an
+argument.
+
+See the configuration file documentation at
+http://docs.puppetlabs.com/references/stable/configuration.html for the
+full list of acceptable parameters. A commented list of all
+configuration options can also be generated by running puppet with
+'--genconfig'.
+
+* --debug:
+  Enable full debugging.
+
+* --edit:
+  Write the results of the query to a file, open the file in an editor,
+  and read the file back in as an executable Puppet manifest.
+
+* --host:
+  When specified, connect to the resource server on the named host
+  and retrieve the list of resouces of the type specified.
+
+* --help:
+  Print this help message.
+
+* --param:
+  Add more parameters to be outputted from queries.
+
+* --types:
+  List all available types.
+
+* --verbose:
+  Print extra information.
+
+
+EXAMPLE
+-------
+This example uses `puppet resource` to return a Puppet configuration for
+the user `luke`:
+
+    $ puppet resource user luke
+    user { 'luke':
+     home => '/home/luke',
+     uid => '100',
+     ensure => 'present',
+     comment => 'Luke Kanies,,,',
+     gid => '1000',
+     shell => '/bin/bash',
+     groups => ['sysadmin','audio','video','puppet']
+    }
+
+
+AUTHOR
+------
+Luke Kanies
+
+
+COPYRIGHT
+---------
+Copyright (c) 2011 Puppet Labs, LLC Licensed under the Apache 2.0 License
+
+[root@ip-172-30-0-232 centos]# puppet resource --types
+augeas
+computer
+cron
+exec
+file
+filebucket
+group
+host
+interface
+k5login
+macauthorization
+mailalias
+maillist
+mcx
+mount
+nagios_command
+nagios_contact
+nagios_contactgroup
+nagios_host
+nagios_hostdependency
+nagios_hostescalation
+nagios_hostextinfo
+nagios_hostgroup
+nagios_service
+nagios_servicedependency
+nagios_serviceescalation
+nagios_serviceextinfo
+nagios_servicegroup
+nagios_timeperiod
+notify
+package
+resources
+router
+schedule
+scheduled_task
+selboolean
+selmodule
+service
+ssh_authorized_key
+sshkey
+stage
+tidy
+user
+vlan
+whit
+yumrepo
+zfs
+zone
+zpool
+[root@ip-172-30-0-232 centos]# puppet resource --types   (Command to check to find Resource Types)
+augeas
+computer
+cron
+exec
+file
+filebucket
+group
+host
+interface
+k5login
+macauthorization
+mailalias
+maillist
+mcx
+mount
+nagios_command
+nagios_contact
+nagios_contactgroup
+nagios_host
+nagios_hostdependency
+nagios_hostescalation
+nagios_hostextinfo
+nagios_hostgroup
+nagios_service
+nagios_servicedependency
+nagios_serviceescalation
+nagios_serviceextinfo
+nagios_servicegroup
+nagios_timeperiod
+notify
+package
+resources
+router
+schedule
+scheduled_task
+selboolean
+selmodule
+service
+ssh_authorized_key
+sshkey
+stage
+tidy
+user
+vlan
+whit
+yumrepo
+zfs
+zone
+zpool
+
+[root@ip-172-30-0-232 ~]# find / -name *group.rb* -ls 
+  1549    4 -rw-r--r--   1 root     root         2385 May 10  2011 /usr/share/ruby/webrick/httpauth/htgroup.rb
+4195982    4 -rw-r--r--   1 root     root         1306 Apr 25  2016 /usr/share/ruby/vendor_ruby/puppet/type/file/group.rb
+  5378    8 -rw-r--r--   1 root     root         6160 Apr 25  2016 /usr/share/ruby/vendor_ruby/puppet/type/group.rb
+  5389    4 -rw-r--r--   1 root     root           95 Apr 25  2016 /usr/share/ruby/vendor_ruby/puppet/type/nagios_contactgroup.rb
+  5394    4 -rw-r--r--   1 root     root           92 Apr 25  2016 /usr/share/ruby/vendor_ruby/puppet/type/nagios_hostgroup.rb
+  5399    4 -rw-r--r--   1 root     root           95 Apr 25  2016 /usr/share/ruby/vendor_ruby/puppet/type/nagios_servicegroup.rb
+
+[root@ip-172-30-0-232 ~]# cd /usr/share/ruby/vendor_ruby/puppet/type  (copy 3nd line from above)
+
+[root@ip-172-30-0-232 type]# ls -al
+total 388
+drwxr-xr-x.  3 root root  4096 Dec 18 03:09 .
+drwxr-xr-x. 41 root root  4096 Dec 18 03:09 ..
+-rw-r--r--.  1 root root  6937 Apr 25  2016 augeas.rb
+-rw-r--r--.  1 root root  1596 Apr 25  2016 component.rb
+-rw-r--r--.  1 root root  1882 Apr 25  2016 computer.rb
+-rw-r--r--.  1 root root 14804 Apr 25  2016 cron.rb
+-rw-r--r--.  1 root root 20262 Apr 25  2016 exec.rb
+drwxr-xr-x.  2 root root   209 Dec 18 03:09 file
+-rw-r--r--.  1 root root  4213 Apr 25  2016 filebucket.rb
+-rw-r--r--.  1 root root 31584 Apr 25  2016 file.rb
+-rw-r--r--.  1 root root  6160 Apr 25  2016 group.rb
+-rw-r--r--.  1 root root  3482 Apr 25  2016 host.rb
+-rw-r--r--.  1 root root  3160 Apr 25  2016 interface.rb
+-rw-r--r--.  1 root root  2306 Apr 25  2016 k5login.rb
+-rw-r--r--.  1 root root  4865 Apr 25  2016 macauthorization.rb
+-rw-r--r--.  1 root root  1051 Apr 25  2016 mailalias.rb
+-rw-r--r--.  1 root root  1536 Apr 25  2016 maillist.rb
+-rw-r--r--.  1 root root  2703 Apr 25  2016 mcx.rb
+-rw-r--r--.  1 root root  9631 Apr 25  2016 mount.rb
+-rw-r--r--.  1 root root    90 Apr 25  2016 nagios_command.rb
+-rw-r--r--.  1 root root    95 Apr 25  2016 nagios_contactgroup.rb
+-rw-r--r--.  1 root root    90 Apr 25  2016 nagios_contact.rb
+-rw-r--r--.  1 root root    97 Apr 25  2016 nagios_hostdependency.rb
+-rw-r--r--.  1 root root    97 Apr 25  2016 nagios_hostescalation.rb
+-rw-r--r--.  1 root root    94 Apr 25  2016 nagios_hostextinfo.rb
+-rw-r--r--.  1 root root    92 Apr 25  2016 nagios_hostgroup.rb
+-rw-r--r--.  1 root root    87 Apr 25  2016 nagios_host.rb
+-rw-r--r--.  1 root root   100 Apr 25  2016 nagios_servicedependency.rb
+-rw-r--r--.  1 root root   100 Apr 25  2016 nagios_serviceescalation.rb
+-rw-r--r--.  1 root root    97 Apr 25  2016 nagios_serviceextinfo.rb
+-rw-r--r--.  1 root root    95 Apr 25  2016 nagios_servicegroup.rb
+-rw-r--r--.  1 root root    90 Apr 25  2016 nagios_service.rb
+-rw-r--r--.  1 root root    93 Apr 25  2016 nagios_timeperiod.rb
+-rw-r--r--.  1 root root   904 Apr 25  2016 notify.rb
+-rw-r--r--.  1 root root 16849 Apr 25  2016 package.rb
+-rw-r--r--.  1 root root  5900 Apr 25  2016 resources.rb
+-rw-r--r--.  1 root root   343 Apr 25  2016 router.rb
+-rw-r--r--.  1 root root  7764 Apr 25  2016 scheduled_task.rb
+-rw-r--r--.  1 root root 15628 Apr 25  2016 schedule.rb
+-rw-r--r--.  1 root root   681 Apr 25  2016 selboolean.rb
+-rw-r--r--.  1 root root  1819 Apr 25  2016 selmodule.rb
+-rw-r--r--.  1 root root  8914 Apr 25  2016 service.rb
+-rw-r--r--.  1 root root  5639 Apr 25  2016 ssh_authorized_key.rb
+-rw-r--r--.  1 root root  2248 Apr 25  2016 sshkey.rb
+-rw-r--r--.  1 root root   870 Apr 25  2016 stage.rb
+-rw-r--r--.  1 root root  9505 Apr 25  2016 tidy.rb
+-rw-r--r--.  1 root root 23333 Apr 25  2016 user.rb
+-rw-r--r--.  1 root root   457 Apr 25  2016 vlan.rb
+-rw-r--r--.  1 root root  1304 Apr 25  2016 whit.rb
+-rw-r--r--.  1 root root  9532 Apr 25  2016 yumrepo.rb
+-rw-r--r--.  1 root root  4419 Apr 25  2016 zfs.rb
+-rw-r--r--.  1 root root 11424 Apr 25  2016 zone.rb
+-rw-r--r--.  1 root root  2753 Apr 25  2016 zpool.rb
+[root@ip-172-30-0-232 type]# ls -al|wc -l
+54
+
+[root@ip-172-30-0-232 type]# puppet describe resource group
+Unknown type resource
+
+group
+=====
+Manage groups. On most platforms this can only create groups.
+Group membership must be managed on individual users.
+On some platforms such as OS X, group membership is managed as an
+attribute of the group, not the user record. Providers must have
+the feature 'manages_members' to manage the 'members' property of
+a group record.
+
+
+Parameters
+----------
+
+- **allowdupe**
+    Whether to allow duplicate GIDs. Defaults to `false`.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+- **attribute_membership**
+    Whether specified attribute value pairs should be treated as the only
+    attributes
+    of the user or whether they should merely
+    be treated as the minimum list.
+    Valid values are `inclusive`, `minimum`.
+
+- **attributes**
+    Specify group AIX attributes in an array of `key=value` pairs.
+    Requires features manages_aix_lam.
+
+- **auth_membership**
+    Whether the provider is authoritative for group membership. This
+    must be set to true to allow setting the group to no members with
+    `members => [],`.
+Valid values are `true`, `false`, `yes`, `no`.
+
+- **ensure**
+    Create or remove the group.
+Valid values are `present`, `absent`.
+
+- **forcelocal**
+    Forces the management of local accounts when accounts are also
+    being managed by some other NSS
+    Valid values are `true`, `false`, `yes`, `no`.
+    Requires features libuser.
+
+- **gid**
+    The group ID.  Must be specified numerically.  If no group ID is
+    specified when creating a new group, then one will be chosen
+    automatically according to local system standards. This will likely
+    result in the same group having different GIDs on different systems,
+    which is not recommended.
+    On Windows, this property is read-only and will return the group's
+    security
+identifier (SID).
+
+- **ia_load_module**
+    The name of the I&A module to use to manage this user
+    Requires features manages_aix_lam.
+
+- **members**
+    The members of the group. For directory services where group
+    membership is stored in the group objects, not the users. Use
+    with auth_membership to determine whether the specified members
+    are inclusive or the minimum.
+Requires features manages_members.
+
+- **name**
+    The group name. While naming limitations vary by operating system,
+    it is advisable to restrict names to the lowest common denominator,
+    which is a maximum of 8 characters beginning with a letter.
+    Note that Puppet considers group names to be case-sensitive, regardless
+    of the platform's own rules; be sure to always use the same case when
+    referring to a given group.
+
+- **system**
+    Whether the group is a system group with lower GID.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+Providers
+---------
+    aix, directoryservice, groupadd, ldap, pw, windows_adsi
+[root@ip-172-30-0-232 type]# puppet resource group
+group { 'adm':
+  ensure => 'present',
+  gid    => '4',
+}
+group { 'audio':
+  ensure => 'present',
+  gid    => '63',
+}
+group { 'bin':
+  ensure => 'present',
+  gid    => '1',
+}
+group { 'cdrom':
+  ensure => 'present',
+  gid    => '11',
+}
+group { 'centos':
+  ensure => 'present',
+  gid    => '1000',
+}
+group { 'cgred':
+  ensure => 'present',
+  gid    => '996',
+}
+group { 'chrony':
+  ensure => 'present',
+  gid    => '995',
+}
+group { 'daemon':
+  ensure => 'present',
+  gid    => '2',
+}
+group { 'dbus':
+  ensure => 'present',
+  gid    => '81',
+}
+group { 'dialout':
+  ensure => 'present',
+  gid    => '18',
+}
+group { 'disk':
+  ensure => 'present',
+  gid    => '6',
+}
+group { 'floppy':
+  ensure => 'present',
+  gid    => '19',
+}
+group { 'ftp':
+  ensure => 'present',
+  gid    => '50',
+}
+group { 'games':
+  ensure => 'present',
+  gid    => '20',
+}
+group { 'input':
+  ensure => 'present',
+  gid    => '999',
+}
+group { 'kmem':
+  ensure => 'present',
+  gid    => '9',
+}
+group { 'lock':
+  ensure => 'present',
+  gid    => '54',
+}
+group { 'lp':
+  ensure => 'present',
+  gid    => '7',
+}
+group { 'mail':
+  ensure => 'present',
+  gid    => '12',
+}
+group { 'man':
+  ensure => 'present',
+  gid    => '15',
+}
+group { 'mem':
+  ensure => 'present',
+  gid    => '8',
+}
+group { 'nfsnobody':
+  ensure => 'present',
+  gid    => '65534',
+}
+group { 'nobody':
+  ensure => 'present',
+  gid    => '99',
+}
+group { 'polkitd':
+  ensure => 'present',
+  gid    => '998',
+}
+group { 'postdrop':
+  ensure => 'present',
+  gid    => '90',
+}
+group { 'postfix':
+  ensure => 'present',
+  gid    => '89',
+}
+group { 'puppet':
+  ensure => 'present',
+  gid    => '52',
+}
+group { 'root':
+  ensure => 'present',
+  gid    => '0',
+}
+group { 'rpc':
+  ensure => 'present',
+  gid    => '32',
+}
+group { 'rpcuser':
+  ensure => 'present',
+  gid    => '29',
+}
+group { 'ssh_keys':
+  ensure => 'present',
+  gid    => '997',
+}
+group { 'sshd':
+  ensure => 'present',
+  gid    => '74',
+}
+group { 'sys':
+  ensure => 'present',
+  gid    => '3',
+}
+group { 'systemd-journal':
+  ensure => 'present',
+  gid    => '190',
+}
+group { 'systemd-network':
+  ensure => 'present',
+  gid    => '192',
+}
+group { 'tape':
+  ensure => 'present',
+  gid    => '33',
+}
+group { 'tty':
+  ensure => 'present',
+  gid    => '5',
+}
+group { 'users':
+  ensure => 'present',
+  gid    => '100',
+}
+group { 'utempter':
+  ensure => 'present',
+  gid    => '35',
+}
+group { 'utmp':
+  ensure => 'present',
+  gid    => '22',
+}
+group { 'video':
+  ensure => 'present',
+  gid    => '39',
+}
+group { 'wheel':
+  ensure => 'present',
+  gid    => '10',
+}
+
+**CREATE NEW PUPPET GROUP**
+[root@ip-172-30-0-232 type]# vi test.pp   
+group { cmgrp:
+  ensure => present,
+  gid => 500 
+  }
+:wq!
+Note: Groupname=cmgrp & gid(group id)=500
+
+[root@ip-172-30-0-232 type]# puppet parser validate test.pp   (command for to check syntax)
+
+[root@ip-172-30-0-232 type]# puppet apply  test.pp --noop      (Commnad for DRY Run - Should not through any errors)
+
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.11 seconds
+Notice: /Stage[main]/Main/Group[cmgrp]/ensure: current_value absent, should be present (noop)
+Notice: Class[Main]: Would have triggered 'refresh' from 1 events
+Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+Notice: Finished catalog run in 0.01 seconds
+
+[root@ip-172-30-0-232 type]# puppet apply  test.pp (Command to create/save group)
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.11 seconds
+Notice: /Stage[main]/Main/Group[cmgrp]/ensure: created
+Notice: Finished catalog run in 0.17 seconds
+[root@ip-172-30-0-232 type]# puppet resource group ( cmd to check whether group name (cmgrp) created or not)

@@ -1,0 +1,75 @@
+                     How to Create Module						Date: 02nd Jan, 2019.
+
+
+
+
+Single class:
+vi tomcatinstallation.pp
+
+class tomcatinstallation {
+  $pkg = [ 'tomcat', 'tomcat-webapps', 'tomcat-admin-webapps', 'tomcat-docs-webapp', 'tomcat-javadoc' ]
+
+  package { $pkg:
+    ensure => present,
+    }
+  file {"/usr/share/tomcat/conf/tomcat.conf":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///var/tmp/tomcat.conf',
+     }
+ file {"/usr/share/tomcat/conf/tomcat-users.xml":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///var/tmp/tomcat-users.xml',
+     }
+}
+include tomcatinstallation
+
+vi config.pp
+
+class tomcatmodule::config inherits tomcatmodule {
+
+file {"/usr/share/tomcat/conf/tomcat.conf":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///modules/tomcatmodule/tomcat.conf',
+     }
+ file {"/usr/share/tomcat/conf/tomcat-users.xml":
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///modules/tomcatmodule/tomcat-users.xml',
+     }
+}
+
+
+Module: tomcatmodule
+Manifests
+
+vi params.pp  (1st Sub Class)
+
+class tomcatmodule::params(
+){
+  $pkg = [ 'tomcat', 'tomcat-webapps', 'tomcat-admin-webapps', 'tomcat-docs-webapp', 'tomcat-javadoc' ]
+  }
+  
+vi init.pp (Main Class)
+  
+  class tomcatmodule (
+    $package1=$tomcatmodule::params::pkg
+	) inherits params{
+	  include tomcatmodule::pkginst 
+      include tomcatmodule::config        
+      include tomcatmodule::service			   
+	  }
+	
+vi pkginst.pp  (2nd Sub class)
+	  
+  class tomcatmodule::pkginst inherits tomcatmodule {
+    package{$tomcatmodule::package1:
+	  ensure => present
+	  }
+	}

@@ -1,0 +1,1846 @@
+                                            Puppet Class3 LAB                    Date:20th Dec, 2018
+                                              
+	Topics:
+	1)https://github.com/Devops-Grp/puppetsingle
+	 Excecute package1, package2.. etc from above link.
+	2) Installation of TOMCAT SERVER
+
+
+login as: centos
+Authenticating with public key "imported-openssh-key"
+Last login: Thu Dec 20 02:24:39 2018 from 49.207.54.97
+[centos@ip-172-30-0-232 ~]$ sudo su -
+Last login: Thu Dec 20 02:24:48 UTC 2018 on pts/0
+
+TOPIC 1:
+
+	1)https://github.com/Devops-Grp/puppetsingle
+	 Excecute package1, package2.. etc from above link.
+
+
+[root@ip-172-30-0-232 ~]# ls -all
+total 40
+dr-xr-x---.  5 root root  212 Dec 19 03:35 .
+dr-xr-xr-x. 17 root root  224 Jun  5  2018 ..
+-rw-------.  1 root root 6921 Jun  5  2018 anaconda-ks.cfg
+-rw-------.  1 root root 1959 Dec 19 06:22 .bash_history
+-rw-r--r--.  1 root root   18 Dec 29  2013 .bash_logout
+-rw-r--r--.  1 root root  176 Dec 29  2013 .bash_profile
+-rw-r--r--.  1 root root  176 Dec 29  2013 .bashrc
+-rw-r--r--.  1 root root  100 Dec 29  2013 .cshrc
+-rw-------.  1 root root 6577 Jun  5  2018 original-ks.cfg
+drwxr-----.  3 root root   19 Dec 19 03:35 .pki
+drwxr-xr-x.  3 root root   20 Dec 19 03:35 puppet
+drwx------.  2 root root   45 Dec 19 02:24 .ssh
+-rw-r--r--.  1 root root  129 Dec 29  2013 .tcshrc
+-rw-r--r--.  1 root root    0 Dec 19 02:17 test.pem
+[root@ip-172-30-0-232 ~]# cd puppet
+[root@ip-172-30-0-232 puppet]# ls -all
+total 0
+drwxr-xr-x. 3 root root  20 Dec 19 03:35 .
+dr-xr-x---. 5 root root 212 Dec 19 03:35 ..
+drwxr-xr-x. 3 root root  70 Dec 19 06:09 Puppet
+[root@ip-172-30-0-232 puppet]# cd Puppet
+[root@ip-172-30-0-232 Puppet]# cat puppet1.pp
+class package_installation {
+   $pkgname = [ 'screen', 'strace', 'sudo' ]
+
+  package { $pkgname:
+    ensure => present,
+        }
+}
+include package_installation
+[root@ip-172-30-0-232 Puppet]# vi puppet3.p
+[root@ip-172-30-0-232 Puppet]# cat puppet3.pp
+cat: puppet3.pp: No such file or directory
+[root@ip-172-30-0-232 Puppet]# cat puppet3.p
+class pkgs_install
+{
+ if $::osfamily == 'RedHat'
+ {
+ $pkgs_list = [
+   'binutils',
+   'compat-db',
+   'gcc',
+   'openmotif*'
+       ]
+  package { $pkgs_list:
+     ensure => latest,
+        }
+  }
+}
+include pkgs_install
+[root@ip-172-30-0-232 Puppet]# cp puppet3.p puppet3.pp
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 20
+drwxr-xr-x. 3 root root 105 Dec 20 02:58 .
+drwxr-xr-x. 3 root root  20 Dec 19 03:35 ..
+drwxr-xr-x. 8 root root 163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root 154 Dec 19 03:46 puppet1.pp
+-rw-r--r--. 1 root root 219 Dec 20 02:57 puppet3.p
+-rw-r--r--. 1 root root 219 Dec 20 02:58 puppet3.pp
+-rw-r--r--. 1 root root  42 Dec 19 03:40 puppet.pp
+-rw-r--r--. 1 root root   8 Dec 19 03:35 README.md
+[root@ip-172-30-0-232 Puppet]# rm puppet3.p
+rm: remove regular file ‘puppet3.p’? y
+[root@ip-172-30-0-232 Puppet]# puppet parser validate puppet3.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply puppet.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.39 seconds
+Notice: Finished catalog run in 0.11 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply puppet3.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.38 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Notice: /Stage[main]/Pkgs_install/Package[gcc]/ensure: created
+Notice: /Stage[main]/Pkgs_install/Package[compat-db]/ensure: created
+Notice: /Stage[main]/Pkgs_install/Package[binutils]/ensure: ensure changed '2.27-27.base.el7' to '0:2.27-34.base.el7'
+Notice: Finished catalog run in 24.64 seconds
+[root@ip-172-30-0-232 Puppet]# vi package2.pp
+[root@ip-172-30-0-232 Puppet]# puppet parser validate package2.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply package2.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.38 seconds
+Notice: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: current_value absent, should be latest (noop)
+Notice: Class[Pkgs_install]: Would have triggered 'refresh' from 1 events
+Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+Notice: Finished catalog run in 0.75 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package2.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.36 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 1.39 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package2.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.38 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 1.39 seconds
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 20
+drwxr-xr-x. 3 root root 107 Dec 20 03:02 .
+drwxr-xr-x. 3 root root  20 Dec 19 03:35 ..
+drwxr-xr-x. 8 root root 163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root 219 Dec 20 03:02 package2.pp
+-rw-r--r--. 1 root root 154 Dec 19 03:46 puppet1.pp
+-rw-r--r--. 1 root root 219 Dec 20 02:58 puppet3.pp
+-rw-r--r--. 1 root root  42 Dec 19 03:40 puppet.pp
+-rw-r--r--. 1 root root   8 Dec 19 03:35 README.md
+[root@ip-172-30-0-232 Puppet]# cat puppet.pp
+package { 'tomcat':
+  ensure => present
+}
+[root@ip-172-30-0-232 Puppet]# mv puppet.pp package.pp
+[root@ip-172-30-0-232 Puppet]# mv puppet1.pp package1.pp
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 20
+drwxr-xr-x. 3 root root 109 Dec 20 03:08 .
+drwxr-xr-x. 3 root root  20 Dec 19 03:35 ..
+drwxr-xr-x. 8 root root 163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root 154 Dec 19 03:46 package1.pp
+-rw-r--r--. 1 root root 219 Dec 20 03:02 package2.pp
+-rw-r--r--. 1 root root  42 Dec 19 03:40 package.pp
+-rw-r--r--. 1 root root 219 Dec 20 02:58 puppet3.pp
+-rw-r--r--. 1 root root   8 Dec 19 03:35 README.md
+[root@ip-172-30-0-232 Puppet]# cat puppet3.pp
+class pkgs_install
+{
+ if $::osfamily == 'RedHat'
+ {
+ $pkgs_list = [
+   'binutils',
+   'compat-db',
+   'gcc',
+   'openmotif*'
+       ]
+  package { $pkgs_list:
+     ensure => latest,
+        }
+  }
+}
+include pkgs_install
+[root@ip-172-30-0-232 Puppet]# mv puppet3.pp package3.pp
+[root@ip-172-30-0-232 Puppet]# puppet parser validate package3.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply package3.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.42 seconds
+Notice: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: current_value absent, should be latest (noop)
+Notice: Class[Pkgs_install]: Would have triggered 'refresh' from 1 events
+Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+Notice: Finished catalog run in 0.79 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package3.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.36 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Pkgs_install/Package[openmotif*]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list openmotif*' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 1.41 seconds
+[root@ip-172-30-0-232 Puppet]# ls -all
+total 20
+drwxr-xr-x. 3 root root 110 Dec 20 03:09 .
+drwxr-xr-x. 3 root root  20 Dec 19 03:35 ..
+drwxr-xr-x. 8 root root 163 Dec 19 03:37 .git
+-rw-r--r--. 1 root root 154 Dec 19 03:46 package1.pp
+-rw-r--r--. 1 root root 219 Dec 20 03:02 package2.pp
+-rw-r--r--. 1 root root 219 Dec 20 02:58 package3.pp
+-rw-r--r--. 1 root root  42 Dec 19 03:40 package.pp
+-rw-r--r--. 1 root root   8 Dec 19 03:35 README.md
+[root@ip-172-30-0-232 Puppet]# vi package11.pp
+[root@ip-172-30-0-232 Puppet]# puppet parser validate package11.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply package11.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.37 seconds
+Notice: Finished catalog run in 0.14 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package11.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.39 seconds
+Notice: Finished catalog run in 0.12 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package11.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.37 seconds
+Notice: Finished catalog run in 0.14 seconds
+[root@ip-172-30-0-232 Puppet]# vi package12.pp
+[root@ip-172-30-0-232 Puppet]# cat package12.pp
+class package_installation {
+
+   case $::osfamily {
+        'RedHat': {
+           $pkgname = [ 'screen', 'strace', 'sudo' ]
+        }
+        'Debian': {
+           $pkgname = [ 'screen', 'strace', 'sudo' ]
+        }
+        default: {
+          $pkgname = [ 'screen' ]
+        }
+
+    }
+
+
+  package { $pkgname:
+    ensure => present,
+        }
+}
+include package_installation
+[root@ip-172-30-0-232 Puppet]# puppet parser package12.pp
+Error: 'parser' has no 'package12.pp' action.  See `puppet help parser`.
+[root@ip-172-30-0-232 Puppet]# puppet parser validate package12.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply package12.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.38 seconds
+Notice: Finished catalog run in 0.11 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package12.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.36 seconds
+Notice: Finished catalog run in 0.14 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply package12.pp -v
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.41 seconds
+Info: Applying configuration version '1545275795'
+Notice: Finished catalog run in 0.14 seconds
+
+TOPIC 2
+
+### INSTALLTION OF TOM CAT SERVER###########
+
+[root@ip-172-30-0-232 Puppet]# puppet resource --types
+augeas
+computer
+cron
+exec
+file
+filebucket
+group
+host
+interface
+k5login
+macauthorization
+mailalias
+maillist
+mcx
+mount
+nagios_command
+nagios_contact
+nagios_contactgroup
+nagios_host
+nagios_hostdependency
+nagios_hostescalation
+nagios_hostextinfo
+nagios_hostgroup
+nagios_service
+nagios_servicedependency
+nagios_serviceescalation
+nagios_serviceextinfo
+nagios_servicegroup
+nagios_timeperiod
+notify
+package
+resources
+router
+schedule
+scheduled_task
+selboolean
+selmodule
+service
+ssh_authorized_key
+sshkey
+stage
+tidy
+user
+vlan
+whit
+yumrepo
+zfs
+zone
+zpool
+[root@ip-172-30-0-232 Puppet]# puppet describe resource group
+Unknown type resource
+
+group
+=====
+Manage groups. On most platforms this can only create groups.
+Group membership must be managed on individual users.
+On some platforms such as OS X, group membership is managed as an
+attribute of the group, not the user record. Providers must have
+the feature 'manages_members' to manage the 'members' property of
+a group record.
+
+
+Parameters
+----------
+
+- **allowdupe**
+    Whether to allow duplicate GIDs. Defaults to `false`.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+- **attribute_membership**
+    Whether specified attribute value pairs should be treated as the only
+    attributes
+    of the user or whether they should merely
+    be treated as the minimum list.
+    Valid values are `inclusive`, `minimum`.
+
+- **attributes**
+    Specify group AIX attributes in an array of `key=value` pairs.
+    Requires features manages_aix_lam.
+
+- **auth_membership**
+    Whether the provider is authoritative for group membership. This
+    must be set to true to allow setting the group to no members with
+    `members => [],`.
+Valid values are `true`, `false`, `yes`, `no`.
+
+- **ensure**
+    Create or remove the group.
+Valid values are `present`, `absent`.
+
+- **forcelocal**
+    Forces the management of local accounts when accounts are also
+    being managed by some other NSS
+    Valid values are `true`, `false`, `yes`, `no`.
+    Requires features libuser.
+
+- **gid**
+    The group ID.  Must be specified numerically.  If no group ID is
+    specified when creating a new group, then one will be chosen
+    automatically according to local system standards. This will likely
+    result in the same group having different GIDs on different systems,
+    which is not recommended.
+    On Windows, this property is read-only and will return the group's
+    security
+identifier (SID).
+
+- **ia_load_module**
+    The name of the I&A module to use to manage this user
+    Requires features manages_aix_lam.
+
+- **members**
+    The members of the group. For directory services where group
+    membership is stored in the group objects, not the users. Use
+    with auth_membership to determine whether the specified members
+    are inclusive or the minimum.
+Requires features manages_members.
+
+- **name**
+    The group name. While naming limitations vary by operating system,
+    it is advisable to restrict names to the lowest common denominator,
+    which is a maximum of 8 characters beginning with a letter.
+    Note that Puppet considers group names to be case-sensitive, regardless
+    of the platform's own rules; be sure to always use the same case when
+    referring to a given group.
+
+- **system**
+    Whether the group is a system group with lower GID.
+    Valid values are `true`, `false`, `yes`, `no`.
+
+Providers
+---------
+    aix, directoryservice, groupadd, ldap, pw, windows_adsi
+[root@ip-172-30-0-232 Puppet]# puppet resorce group
+Error: Unknown Puppet subcommand 'resorce'
+See 'puppet help' for help on available puppet subcommands
+[root@ip-172-30-0-232 Puppet]# puppet resource group
+group { 'adm':
+  ensure => 'present',
+  gid    => '4',
+}
+group { 'audio':
+  ensure => 'present',
+  gid    => '63',
+}
+group { 'bin':
+  ensure => 'present',
+  gid    => '1',
+}
+group { 'cdrom':
+  ensure => 'present',
+  gid    => '11',
+}
+group { 'centos':
+  ensure => 'present',
+  gid    => '1000',
+}
+group { 'cgred':
+  ensure => 'present',
+  gid    => '996',
+}
+group { 'chrony':
+  ensure => 'present',
+  gid    => '995',
+}
+group { 'cmgrp':
+  ensure => 'present',
+  gid    => '500',
+}
+group { 'daemon':
+  ensure => 'present',
+  gid    => '2',
+}
+group { 'dbus':
+  ensure => 'present',
+  gid    => '81',
+}
+group { 'dialout':
+  ensure => 'present',
+  gid    => '18',
+}
+group { 'disk':
+  ensure => 'present',
+  gid    => '6',
+}
+group { 'floppy':
+  ensure => 'present',
+  gid    => '19',
+}
+group { 'ftp':
+  ensure => 'present',
+  gid    => '50',
+}
+group { 'games':
+  ensure => 'present',
+  gid    => '20',
+}
+group { 'input':
+  ensure => 'present',
+  gid    => '999',
+}
+group { 'kmem':
+  ensure => 'present',
+  gid    => '9',
+}
+group { 'lock':
+  ensure => 'present',
+  gid    => '54',
+}
+group { 'lp':
+  ensure => 'present',
+  gid    => '7',
+}
+group { 'mail':
+  ensure => 'present',
+  gid    => '12',
+}
+group { 'man':
+  ensure => 'present',
+  gid    => '15',
+}
+group { 'mem':
+  ensure => 'present',
+  gid    => '8',
+}
+group { 'nfsnobody':
+  ensure => 'present',
+  gid    => '65534',
+}
+group { 'nobody':
+  ensure => 'present',
+  gid    => '99',
+}
+group { 'polkitd':
+  ensure => 'present',
+  gid    => '998',
+}
+group { 'postdrop':
+  ensure => 'present',
+  gid    => '90',
+}
+group { 'postfix':
+  ensure => 'present',
+  gid    => '89',
+}
+group { 'puppet':
+  ensure => 'present',
+  gid    => '52',
+}
+group { 'root':
+  ensure => 'present',
+  gid    => '0',
+}
+group { 'rpc':
+  ensure => 'present',
+  gid    => '32',
+}
+group { 'rpcuser':
+  ensure => 'present',
+  gid    => '29',
+}
+group { 'screen':
+  ensure => 'present',
+  gid    => '84',
+}
+group { 'ssh_keys':
+  ensure => 'present',
+  gid    => '997',
+}
+group { 'sshd':
+  ensure => 'present',
+  gid    => '74',
+}
+group { 'sys':
+  ensure => 'present',
+  gid    => '3',
+}
+group { 'systemd-journal':
+  ensure => 'present',
+  gid    => '190',
+}
+group { 'systemd-network':
+  ensure => 'present',
+  gid    => '192',
+}
+group { 'tape':
+  ensure => 'present',
+  gid    => '33',
+}
+group { 'tomcat':
+  ensure => 'present',
+  gid    => '53',
+}
+group { 'tty':
+  ensure => 'present',
+  gid    => '5',
+}
+group { 'users':
+  ensure => 'present',
+  gid    => '100',
+}
+group { 'utempter':
+  ensure => 'present',
+  gid    => '35',
+}
+group { 'utmp':
+  ensure => 'present',
+  gid    => '22',
+}
+group { 'video':
+  ensure => 'present',
+  gid    => '39',
+}
+group { 'wheel':
+  ensure => 'present',
+  gid    => '10',
+}
+[root@ip-172-30-0-232 Puppet]# group { 'tomcat':
+-bash: group: command not found
+[root@ip-172-30-0-232 Puppet]#   ensure => 'present',
+-bash: ensure: command not found
+[root@ip-172-30-0-232 Puppet]#   gid    => '53',
+-bash: gid: command not found
+[root@ip-172-30-0-232 Puppet]# }
+-bash: syntax error near unexpected token `}'
+[root@ip-172-30-0-232 Puppet]# puppet resource group
+group { 'adm':
+  ensure => 'present',
+  gid    => '4',
+}
+group { 'audio':
+  ensure => 'present',
+  gid    => '63',
+}
+group { 'bin':
+  ensure => 'present',
+  gid    => '1',
+}
+group { 'cdrom':
+  ensure => 'present',
+  gid    => '11',
+}
+group { 'centos':
+  ensure => 'present',
+  gid    => '1000',
+}
+group { 'cgred':
+  ensure => 'present',
+  gid    => '996',
+}
+group { 'chrony':
+  ensure => 'present',
+  gid    => '995',
+}
+group { 'cmgrp':
+  ensure => 'present',
+  gid    => '500',
+}
+group { 'daemon':
+  ensure => 'present',
+  gid    => '2',
+}
+group { 'dbus':
+  ensure => 'present',
+  gid    => '81',
+}
+group { 'dialout':
+  ensure => 'present',
+  gid    => '18',
+}
+group { 'disk':
+  ensure => 'present',
+  gid    => '6',
+}
+group { 'floppy':
+  ensure => 'present',
+  gid    => '19',
+}
+group { 'ftp':
+  ensure => 'present',
+  gid    => '50',
+}
+group { 'games':
+  ensure => 'present',
+  gid    => '20',
+}
+group { 'input':
+  ensure => 'present',
+  gid    => '999',
+}
+group { 'kmem':
+  ensure => 'present',
+  gid    => '9',
+}
+group { 'lock':
+  ensure => 'present',
+  gid    => '54',
+}
+group { 'lp':
+  ensure => 'present',
+  gid    => '7',
+}
+group { 'mail':
+  ensure => 'present',
+  gid    => '12',
+}
+group { 'man':
+  ensure => 'present',
+  gid    => '15',
+}
+group { 'mem':
+  ensure => 'present',
+  gid    => '8',
+}
+group { 'nfsnobody':
+  ensure => 'present',
+  gid    => '65534',
+}
+group { 'nobody':
+  ensure => 'present',
+  gid    => '99',
+}
+group { 'polkitd':
+  ensure => 'present',
+  gid    => '998',
+}
+group { 'postdrop':
+  ensure => 'present',
+  gid    => '90',
+}
+group { 'postfix':
+  ensure => 'present',
+  gid    => '89',
+}
+group { 'puppet':
+  ensure => 'present',
+  gid    => '52',
+}
+group { 'root':
+  ensure => 'present',
+  gid    => '0',
+}
+group { 'rpc':
+  ensure => 'present',
+  gid    => '32',
+}
+group { 'rpcuser':
+  ensure => 'present',
+  gid    => '29',
+}
+group { 'screen':
+  ensure => 'present',
+  gid    => '84',
+}
+group { 'ssh_keys':
+  ensure => 'present',
+  gid    => '997',
+}
+group { 'sshd':
+  ensure => 'present',
+  gid    => '74',
+}
+group { 'sys':
+  ensure => 'present',
+  gid    => '3',
+}
+group { 'systemd-journal':
+  ensure => 'present',
+  gid    => '190',
+}
+group { 'systemd-network':
+  ensure => 'present',
+  gid    => '192',
+}
+group { 'tape':
+  ensure => 'present',
+  gid    => '33',
+}
+group { 'tomcat':
+  ensure => 'present',
+  gid    => '53',
+}
+group { 'tty':
+  ensure => 'present',
+  gid    => '5',
+}
+group { 'users':
+  ensure => 'present',
+  gid    => '100',
+}
+group { 'utempter':
+  ensure => 'present',
+  gid    => '35',
+}
+group { 'utmp':
+  ensure => 'present',
+  gid    => '22',
+}
+group { 'video':
+  ensure => 'present',
+  gid    => '39',
+}
+group { 'wheel':
+  ensure => 'present',
+  gid    => '10',
+}
+[root@ip-172-30-0-232 Puppet]# ^C
+[root@ip-172-30-0-232 Puppet]# puppet resource user
+user { 'adm':
+  ensure           => 'present',
+  comment          => 'adm',
+  gid              => '4',
+  home             => '/var/adm',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '3',
+}
+user { 'bin':
+  ensure           => 'present',
+  comment          => 'bin',
+  gid              => '1',
+  home             => '/bin',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '1',
+}
+user { 'centos':
+  ensure           => 'present',
+  comment          => 'Cloud User',
+  gid              => '1000',
+  groups           => ['adm', 'wheel', 'systemd-journal'],
+  home             => '/home/centos',
+  password         => '!!',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/bin/bash',
+  uid              => '1000',
+}
+user { 'chrony':
+  ensure           => 'present',
+  gid              => '995',
+  home             => '/var/lib/chrony',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '998',
+}
+user { 'daemon':
+  ensure           => 'present',
+  comment          => 'daemon',
+  gid              => '2',
+  home             => '/sbin',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '2',
+}
+user { 'dbus':
+  ensure           => 'present',
+  comment          => 'System message bus',
+  gid              => '81',
+  home             => '/',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '81',
+}
+user { 'ftp':
+  ensure           => 'present',
+  comment          => 'FTP User',
+  gid              => '50',
+  home             => '/var/ftp',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '14',
+}
+user { 'games':
+  ensure           => 'present',
+  comment          => 'games',
+  gid              => '100',
+  home             => '/usr/games',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '12',
+}
+user { 'halt':
+  ensure           => 'present',
+  comment          => 'halt',
+  gid              => '0',
+  home             => '/sbin',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/halt',
+  uid              => '7',
+}
+user { 'lp':
+  ensure           => 'present',
+  comment          => 'lp',
+  gid              => '7',
+  home             => '/var/spool/lpd',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '4',
+}
+user { 'mail':
+  ensure           => 'present',
+  comment          => 'mail',
+  gid              => '12',
+  home             => '/var/spool/mail',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '8',
+}
+user { 'nfsnobody':
+  ensure           => 'present',
+  comment          => 'Anonymous NFS User',
+  gid              => '65534',
+  home             => '/var/lib/nfs',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '65534',
+}
+user { 'nobody':
+  ensure           => 'present',
+  comment          => 'Nobody',
+  gid              => '99',
+  home             => '/',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '99',
+}
+user { 'operator':
+  ensure           => 'present',
+  comment          => 'operator',
+  gid              => '0',
+  home             => '/root',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '11',
+}
+user { 'polkitd':
+  ensure           => 'present',
+  comment          => 'User for polkitd',
+  gid              => '998',
+  home             => '/',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '999',
+}
+user { 'postfix':
+  ensure           => 'present',
+  gid              => '89',
+  groups           => ['mail'],
+  home             => '/var/spool/postfix',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '89',
+}
+user { 'puppet':
+  ensure           => 'present',
+  comment          => 'Puppet',
+  gid              => '52',
+  home             => '/var/lib/puppet',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '52',
+}
+user { 'root':
+  ensure           => 'present',
+  comment          => 'root',
+  gid              => '0',
+  home             => '/root',
+  password         => '!!',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/bin/bash',
+  uid              => '0',
+}
+user { 'rpc':
+  ensure           => 'present',
+  comment          => 'Rpcbind Daemon',
+  gid              => '32',
+  home             => '/var/lib/rpcbind',
+  password         => '!!',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/nologin',
+  uid              => '32',
+}
+user { 'rpcuser':
+  ensure           => 'present',
+  comment          => 'RPC Service User',
+  gid              => '29',
+  home             => '/var/lib/nfs',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '29',
+}
+user { 'shutdown':
+  ensure           => 'present',
+  comment          => 'shutdown',
+  gid              => '0',
+  home             => '/sbin',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/sbin/shutdown',
+  uid              => '6',
+}
+user { 'sshd':
+  ensure           => 'present',
+  comment          => 'Privilege-separated SSH',
+  gid              => '74',
+  home             => '/var/empty/sshd',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '74',
+}
+user { 'sync':
+  ensure           => 'present',
+  comment          => 'sync',
+  gid              => '0',
+  home             => '/sbin',
+  password         => '*',
+  password_max_age => '99999',
+  password_min_age => '0',
+  shell            => '/bin/sync',
+  uid              => '5',
+}
+user { 'systemd-network':
+  ensure           => 'present',
+  comment          => 'systemd Network Management',
+  gid              => '192',
+  home             => '/',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '192',
+}
+user { 'tomcat':
+  ensure           => 'present',
+  comment          => 'Apache Tomcat',
+  gid              => '53',
+  home             => '/usr/share/tomcat',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '53',
+}
+[root@ip-172-30-0-232 Puppet]# ^C
+[root@ip-172-30-0-232 Puppet]# user { 'tomcat':
+  ensure           => 'present',
+  comment          => 'Apache Tomcat',
+-bash: user: command not found
+[root@ip-172-30-0-232 Puppet]#   ensure           => 'present',
+  gid              => '53',
+  home             => '/usr/share/tomcat',
+  password         => '!!',
+  password_max_age => '-1',
+  password_min_age => '-1',
+  shell            => '/sbin/nologin',
+  uid              => '53',
+}
+-bash: ensure: command not found
+[root@ip-172-30-0-232 Puppet]#   comment          => 'Apache Tomcat',
+-bash: comment: command not found
+[root@ip-172-30-0-232 Puppet]#   gid              => '53',
+-bash: gid: command not found
+[root@ip-172-30-0-232 Puppet]#   home             => '/usr/share/tomcat',
+-bash: home: command not found
+[root@ip-172-30-0-232 Puppet]#   password         => '!!',
+-bash: password: command not found
+[root@ip-172-30-0-232 Puppet]#   password_max_age => '-1',
+-bash: password_max_age: command not found
+[root@ip-172-30-0-232 Puppet]#   password_min_age => '-1',
+-bash: password_min_age: command not found
+[root@ip-172-30-0-232 Puppet]#   shell            => '/sbin/nologin',
+-bash: shell: command not found
+[root@ip-172-30-0-232 Puppet]#   uid              => '53',
+-bash: uid: command not found
+[root@ip-172-30-0-232 Puppet]# }
+-bash: syntax error near unexpected token `}'
+[root@ip-172-30-0-232 Puppet]# puppet resource package java
+package { 'java':
+  ensure => 'absent',
+}
+[root@ip-172-30-0-232 Puppet]# puppet describe resource package
+Unknown type resource
+
+package
+=======
+Manage packages.  There is a basic dichotomy in package
+support right now:  Some package types (e.g., yum and apt) can
+retrieve their own package files, while others (e.g., rpm and sun)
+cannot.  For those package formats that cannot retrieve their own files,
+you can use the `source` parameter to point to the correct file.
+Puppet will automatically guess the packaging format that you are
+using based on the platform you are on, but you can override it
+using the `provider` parameter; each provider defines what it
+requires in order to function, and you must meet those requirements
+to use a given provider.
+**Autorequires:** If Puppet is managing the files specified as a
+package's `adminfile`, `responsefile`, or `source`, the package
+resource will autorequire those files.
+
+
+Parameters
+----------
+
+- **adminfile**
+    A file containing package defaults for installing packages.
+    This attribute is only used on Solaris. Its value should be a path to a
+    local file stored on the target system. Solaris's package tools expect
+    either an absolute file path or a relative path to a file in
+    `/var/sadm/install/admin`.
+    The value of `adminfile` will be passed directly to the `pkgadd` or
+    `pkgrm` command with the `-a <ADMINFILE>` option.
+
+- **allow_virtual**
+    Specifies if virtual package names are allowed for install and
+    uninstall.
+    Valid values are `true`, `false`, `yes`, `no`.
+    Requires features virtual_packages.
+
+- **allowcdrom**
+    Tells apt to allow cdrom sources in the sources.list file.
+    Normally apt will bail if you try this.
+    Valid values are `true`, `false`.
+
+- **category**
+    A read-only parameter set by the package.
+
+- **configfiles**
+    Whether configfiles should be kept or replaced.  Most packages
+    types do not support this parameter. Defaults to `keep`.
+    Valid values are `keep`, `replace`.
+
+- **description**
+    A read-only parameter set by the package.
+
+- **ensure**
+    What state the package should be in. On packaging systems that can
+    retrieve new packages on their own, you can choose which package to
+    retrieve by specifying a version number or `latest` as the ensure
+    value. On packaging systems that manage configuration files separately
+    from "normal" system files, you can uninstall config files by
+    specifying `purged` as the ensure value. This defaults to `installed`.
+    Valid values are `present` (also called `installed`), `absent`,
+    `purged`, `held`, `latest`. Values can match `/./`.
+
+- **flavor**
+    OpenBSD supports 'flavors', which are further specifications for
+    which type of package you want.
+
+- **install_options**
+    An array of additional options to pass when installing a package. These
+    options are package-specific, and should be documented by the software
+    vendor.  One commonly implemented option is `INSTALLDIR`:
+    package { 'mysql':
+          ensure          => installed,
+          source          => 'N:/packages/mysql-5.5.16-winx64.msi',
+          install_options => [ '/S', { 'INSTALLDIR' => 'C:\mysql-5.5' } ],
+        }
+
+    Each option in the array can either be a string or a hash, where each
+    key and value pair are interpreted in a provider specific way.  Each
+    option will automatically be quoted when passed to the install command.
+
+    On Windows, this is the **only** place in Puppet where backslash
+    separators should be used.  Note that backslashes in double-quoted
+    strings _must_ be double-escaped and backslashes in single-quoted
+    strings _may_ be double-escaped.
+
+
+
+Requires features install_options.
+
+- **instance**
+    A read-only parameter set by the package.
+
+- **name**
+    The package name.  This is the name that the packaging
+    system uses internally, which is sometimes (especially on Solaris)
+    a name that is basically useless to humans.  If you want to
+    abstract package installation, then you can use aliases to provide
+    a common name to packages:
+    # In the 'openssl' class
+        $ssl = $operatingsystem ? {
+          solaris => SMCossl,
+          default => openssl
+        }
+    # It is not an error to set an alias to the same value as the
+        # object name.
+        package { $ssl:
+          ensure => installed,
+          alias  => openssl
+        }
+    . etc. .
+    $ssh = $operatingsystem ? {
+          solaris => SMCossh,
+          default => openssh
+        }
+    # Use the alias to specify a dependency, rather than
+        # having another selector to figure it out again.
+        package { $ssh:
+          ensure  => installed,
+          alias   => openssh,
+      require => Package[openssl]
+    }
+
+
+- **package_settings**
+    Settings that can change the contents or configuration of a package.
+    The formatting and effects of package_settings are provider-specific;
+    any
+    provider that implements them must explain how to use them in its
+    documentation. (Our general expectation is that if a package is
+    installed but its settings are out of sync, the provider should
+    re-install that package with the desired settings.)
+    An example of how package_settings could be used is FreeBSD's port build
+    options --- a future version of the provider could accept a hash of
+    options,
+    and would reinstall the port if the installed version lacked the correct
+    settings.
+        package { 'www/apache22':
+          package_settings => { 'SUEXEC' => false }
+        }
+    Again, check the documentation of your platform's package provider to
+    see
+the actual usage.
+Requires features package_settings.
+
+- **platform**
+    A read-only parameter set by the package.
+
+- **responsefile**
+    A file containing any necessary answers to questions asked by
+    the package.  This is currently used on Solaris and Debian.  The
+    value will be validated according to system rules, but it should
+    generally be a fully qualified path.
+
+- **root**
+    A read-only parameter set by the package.
+
+- **source**
+    Where to find the package file. This is only used by providers that
+    don't
+    automatically download packages from a central repository. (For example:
+    the `yum` and `apt` providers ignore this attribute, but the `rpm` and
+    `dpkg` providers require it.)
+    Different providers accept different values for `source`. Most providers
+    accept paths to local files stored on the target system. Some providers
+    may also accept URLs or network drive paths. Puppet will not
+    automatically retrieve source files for you, and usually just passes the
+    value of `source` to the package installation command.
+    You can use a `file` resource if you need to manually copy package files
+    to the target system.
+
+- **status**
+    A read-only parameter set by the package.
+
+- **uninstall_options**
+    An array of additional options to pass when uninstalling a package.
+    These
+    options are package-specific, and should be documented by the software
+    vendor.  For example:
+    package { 'VMware Tools':
+          ensure            => absent,
+          uninstall_options => [ { 'REMOVE' => 'Sync,VSS' } ],
+        }
+
+    Each option in the array can either be a string or a hash, where each
+    key and value pair are interpreted in a provider specific way.  Each
+    option will automatically be quoted when passed to the uninstall
+    command.
+
+    On Windows, this is the **only** place in Puppet where backslash
+    separators should be used.  Note that backslashes in double-quoted
+    strings _must_ be double-escaped and backslashes in single-quoted
+    strings _may_ be double-escaped.
+
+
+
+Requires features uninstall_options.
+
+- **vendor**
+    A read-only parameter set by the package.
+
+Providers
+---------
+    aix, appdmg, apple, apt, aptitude, aptrpm, blastwave, dpkg, fink,
+    freebsd, gem, hpux, macports, msi, nim, openbsd, opkg, pacman, pip, pkg,
+    pkgdmg, pkgin, pkgutil, portage, ports, portupgrade, rpm, rug, sun,
+    sunfreeware, up2date, urpmi, windows, yum, zypper
+[root@ip-172-30-0-232 Puppet]# puppet resource package tomcat
+package { 'tomcat':
+  ensure => '7.0.76-8.el7_5',
+}
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+
+class tomcatinstall {
+
+package { 'java-1.8.0-openjdk-src.x86_64':
+  ensure => 'present',
+}
+
+package { 'tomcat':
+  ensure => 'present',
+}
+
+group { 'tomcatgroup':
+  ensure => 'present',
+  gid    => '505',
+  }
+
+user { 'tomcatuser':
+  ensure           => 'present',
+  comment          => 'Apache Tomcat testing ',
+  gid              => '505',
+  home             => '/export/home/tomcatuser',
+  }
+}
+include tomcatinstall
+
+:wq!
+
+
+[root@ip-172-30-0-232 Puppet]# puppet parser validate tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.56 seconds
+Notice: /Stage[main]/Tomcatinstall/Package[java]/ensure: current_value absent, should be latest (noop)
+Notice: /Stage[main]/Tomcatinstall/Group[tomcatgroup]/ensure: current_value absent, should be present (noop)
+Notice: /Stage[main]/Tomcatinstall/User[tomcatuser]/ensure: current_value absent, should be present (noop)
+Notice: Class[Tomcatinstall]: Would have triggered 'refresh' from 3 events
+Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+Notice: Finished catalog run in 0.18 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.55 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Tomcatinstall/Package[java]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: Could not create group tomcatgroup: Execution of '/sbin/groupadd -g 999 tomcatgroup' returned 4: groupadd: GID '999' already exists
+Error: /Stage[main]/Tomcatinstall/Group[tomcatgroup]/ensure: change from absent to present failed: Could not create group tomcatgroup: Execution of '/sbin/groupadd -g 999 tomcatgroup' returned 4: groupadd: GID '999' already exists
+Notice: /Stage[main]/Tomcatinstall/User[tomcatuser]: Dependency Group[tomcatgroup] has failures: true
+Warning: /Stage[main]/Tomcatinstall/User[tomcatuser]: Skipping because of failed dependencies
+Notice: Finished catalog run in 2.11 seconds
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp --noop
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.56 seconds
+Notice: /Stage[main]/Tomcatinstall/Package[java]/ensure: current_value absent, should be latest (noop)
+Notice: /Stage[main]/Tomcatinstall/Group[tomcatgroup]/ensure: current_value absent, should be present (noop)
+Notice: /Stage[main]/Tomcatinstall/User[tomcatuser]/ensure: current_value absent, should be present (noop)
+Notice: Class[Tomcatinstall]: Would have triggered 'refresh' from 3 events
+Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+Notice: Finished catalog run in 0.18 seconds
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.57 seconds
+Error: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Tomcatinstall/Package[java]/ensure: change from absent to latest failed: Could not update: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Notice: /Stage[main]/Tomcatinstall/Group[tomcatgroup]/ensure: created
+Notice: /Stage[main]/Tomcatinstall/User[tomcatuser]/ensure: created
+Notice: Finished catalog run in 0.87 seconds
+[root@ip-172-30-0-232 Puppet]# yum ^C
+[root@ip-172-30-0-232 Puppet]# yum install java
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+Package 1:java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64 already installed and latest version
+Nothing to do
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.57 seconds
+Error: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Tomcatinstall/Package[java]/ensure: change from absent to present failed: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 0.75 seconds
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.60 seconds
+Error: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Tomcatinstall/Package[java]/ensure: change from absent to present failed: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 0.75 seconds
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp  -v
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.56 seconds
+Info: Applying configuration version '1545277850'
+Error: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Error: /Stage[main]/Tomcatinstall/Package[java]/ensure: change from absent to present failed: Execution of '/bin/yum -d 0 -e 0 -y list java' returned 1: Error: No matching Packages to list
+Notice: Finished catalog run in 0.75 seconds
+[root@ip-172-30-0-232 Puppet]# /bin/yum -d 0 -e 0 -y list java
+Error: No matching Packages to list
+[root@ip-172-30-0-232 Puppet]# /bin/yum -d 0 -e 0 -y list java^C
+[root@ip-172-30-0-232 Puppet]# yum list java
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+Error: No matching Packages to list
+[root@ip-172-30-0-232 Puppet]# yum list|grep -i java
+java-1.8.0-openjdk.x86_64                   1:1.8.0.191.b12-1.el7_6    @updates
+java-1.8.0-openjdk-headless.x86_64          1:1.8.0.191.b12-1.el7_6    @updates
+javamail.noarch                             1.4.6-8.el7                @base
+javapackages-tools.noarch                   3.4.1-11.el7               @base
+python-javapackages.noarch                  3.4.1-11.el7               @base
+tzdata-java.noarch                          2018g-1.el7                @updates
+abrt-java-connector.x86_64                  1.0.6-12.el7               base
+aether-javadoc.noarch                       1.13.1-13.el7              base
+ant-antunit-javadoc.noarch                  1.2-10.el7                 base
+ant-contrib-javadoc.noarch                  1.0-0.23.b3.el7            base
+ant-javadoc.noarch                          1.9.4-2.el7                base
+ant-javamail.noarch                         1.9.4-2.el7                base
+antlr-javadoc.noarch                        2.7.7-30.el7               base
+aopalliance-javadoc.noarch                  1.0-8.el7                  base
+apache-commons-beanutils-javadoc.noarch     1.8.3-14.el7               base
+apache-commons-cli-javadoc.noarch           1.2-13.el7                 base
+apache-commons-codec-javadoc.noarch         1.8-7.el7                  base
+apache-commons-collections-javadoc.noarch   3.2.1-22.el7_2             base
+apache-commons-collections-testframework-javadoc.noarch
+apache-commons-compress-javadoc.noarch      1.5-4.el7                  base
+apache-commons-configuration-javadoc.noarch 1.9-8.el7                  base
+apache-commons-daemon-javadoc.noarch        1.0.13-7.el7               base
+apache-commons-dbcp-javadoc.noarch          1.4-17.el7                 base
+apache-commons-digester-javadoc.noarch      1.8.1-19.el7               base
+apache-commons-exec-javadoc.noarch          1.1-11.el7                 base
+apache-commons-io-javadoc.noarch            1:2.4-12.el7               base
+apache-commons-jexl-javadoc.noarch          2.1.1-9.el7                base
+apache-commons-jxpath-javadoc.noarch        1.3-20.el7                 base
+apache-commons-lang-javadoc.noarch          2.6-15.el7                 base
+apache-commons-lang3-javadoc.noarch         3.1-9.el7                  base
+apache-commons-logging-javadoc.noarch       1.1.2-7.el7                base
+apache-commons-net-javadoc.noarch           3.2-8.el7.centos           base
+apache-commons-pool-javadoc.noarch          1.6-9.el7                  base
+apache-commons-validator-javadoc.noarch     1.4.0-8.el7                base
+apache-commons-vfs-javadoc.noarch           2.0-11.el7                 base
+apache-ivy-javadoc.noarch                   2.3.0-4.el7                base
+apache-rat-javadoc.noarch                   0.8-13.el7                 base
+aqute-bnd-javadoc.noarch                    0.0.363-11.el7             base
+aqute-bndlib-javadoc.noarch                 1.50.0-8.el7               base
+args4j-javadoc.noarch                       2.0.16-13.el7              base
+atinject-javadoc.noarch                     1-13.20100611svn86.el7     base
+avalon-framework-javadoc.noarch             4.3-10.el7                 base
+avalon-logkit-javadoc.noarch                2.1-14.el7                 base
+base64coder-javadoc.noarch                  20101219-10.el7            base
+batik-javadoc.noarch                        1.8-0.12.svn1230816.el7    base
+bcel-javadoc.noarch                         5.2-18.el7                 base
+bea-stax-javadoc.noarch                     1.2.0-9.el7                base
+beust-jcommander-javadoc.noarch             1.30-5.el7                 base
+brlapi-java.x86_64                          0.6.0-16.el7               base
+bsf-javadoc.noarch                          2.4.0-19.el7               base
+bsh-javadoc.noarch                          1.3.0-29.el7               base
+buildnumber-maven-plugin-javadoc.noarch     1.2-7.el7                  base
+byteman-javadoc.noarch                      2.1.4.1-3.el7              base
+cal10n-javadoc.noarch                       0.7.7-4.el7                base
+cdi-api-javadoc.noarch                      1.0-11.SP4.el7             base
+cglib-javadoc.noarch                        2.2-18.el7                 base
+cobertura-javadoc.noarch                    1.9.4.1-9.el7              base
+codemodel-javadoc.noarch                    2.6-9.el7                  base
+dom4j-javadoc.noarch                        1.6.1-20.el7               base
+easymock-javadoc.noarch                     1.2-22.el7                 base
+easymock2-javadoc.noarch                    2.5.2-12.el7               base
+exec-maven-plugin-javadoc.noarch            1.2.1-13.el7               base
+felix-bundlerepository-javadoc.noarch       1.6.6-15.el7               base
+felix-framework-javadoc.noarch              4.2.1-5.el7                base
+felix-osgi-compendium-javadoc.noarch        1.4.0-19.el7               base
+felix-osgi-core-javadoc.noarch              1.4.0-15.el7               base
+felix-osgi-foundation-javadoc.noarch        1.2.0-16.el7               base
+felix-osgi-obr-javadoc.noarch               1.0.2-12.el7               base
+felix-shell-javadoc.noarch                  1.4.3-5.el7                base
+felix-utils-javadoc.noarch                  1.2.0-5.el7                base
+flute-javadoc.noarch                        1.3.0-11.OOo31.el7         base
+fop-javadoc.noarch                          1.1-6.el7                  base
+geronimo-annotation-javadoc.noarch          1.0-15.el7                 base
+geronimo-jaspic-spec-javadoc.noarch         1.1-9.el7                  base
+geronimo-jaxrpc-javadoc.noarch              2.1-14.el7                 base
+geronimo-jms-javadoc.noarch                 1.1.1-19.el7               base
+geronimo-jta-javadoc.noarch                 1.1.1-17.el7               base
+geronimo-osgi-support-javadoc.noarch        1.0-15.el7                 base
+geronimo-saaj-javadoc.noarch                1.1-14.el7                 base
+glassfish-dtd-parser-javadoc.noarch         1.2-0.8.20120120svn.el7    base
+glassfish-el-api-javadoc.noarch             2.2.4-5.el7                base
+glassfish-el-javadoc.noarch                 2.2.5-6.el7                base
+glassfish-fastinfoset-javadoc.noarch        1.2.12-9.el7               base
+glassfish-jaxb-api-javadoc.noarch           2.2.7-4.el7                base
+glassfish-jaxb-javadoc.noarch               2.2.5-6.el7                base
+glassfish-jsp-api-javadoc.noarch            2.2.1-9.el7                base
+glassfish-jsp-javadoc.noarch                2.2.6-11.el7               base
+gnu-getopt-javadoc.noarch                   1.0.14-5.el7               base
+google-guice-javadoc.noarch                 3.1.3-9.el7                base
+google-noto-sans-javanese-fonts.noarch      20141117-5.el7             base
+graphviz-java.x86_64                        2.30.1-21.el7              base
+groovy-javadoc.noarch                       1.8.9-8.el7_4              base
+guava-javadoc.noarch                        13.0-6.el7                 base
+hamcrest-javadoc.noarch                     1.3-6.el7                  base
+hawtjni-javadoc.noarch                      1.6-9.el7                  base
+hsqldb-javadoc.noarch                       1:1.8.1.3-14.el7           base
+httpcomponents-client-javadoc.noarch        4.2.5-5.el7_0              base
+httpcomponents-core-javadoc.noarch          4.2.4-6.el7                base
+httpunit-javadoc.noarch                     1.7-15.el7                 base
+icedtea-web-javadoc.noarch                  1.7.1-1.el7                base
+isorelax-javadoc.noarch                     1:0-0.15.release20050331.el7
+istack-commons-javadoc.noarch               2.17-4.el7                 base
+jackson-javadoc.noarch                      1.9.4-7.el7                base
+jai-imageio-core-javadoc.noarch             1.2-0.14.20100217cvs.el7   base
+jakarta-commons-httpclient-javadoc.noarch   1:3.1-16.el7_0             base
+jakarta-oro-javadoc.noarch                  2.0.8-16.el7               base
+jakarta-taglibs-standard-javadoc.noarch     1.1.2-14.el7_1             base
+jandex-javadoc.noarch                       1.0.3-8.el7                base
+jansi-javadoc.noarch                        1.9-7.el7                  base
+jansi-native-javadoc.x86_64                 1.4-11.el7                 base
+jarjar-javadoc.noarch                       1.4-6.el7                  base
+java-1.6.0-openjdk.x86_64                   1:1.6.0.41-1.13.13.1.el7_3 base
+java-1.6.0-openjdk-demo.x86_64              1:1.6.0.41-1.13.13.1.el7_3 base
+java-1.6.0-openjdk-devel.x86_64             1:1.6.0.41-1.13.13.1.el7_3 base
+java-1.6.0-openjdk-javadoc.x86_64           1:1.6.0.41-1.13.13.1.el7_3 base
+java-1.6.0-openjdk-src.x86_64               1:1.6.0.41-1.13.13.1.el7_3 base
+java-1.7.0-openjdk.x86_64                   1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-accessibility.x86_64     1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-demo.x86_64              1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-devel.x86_64             1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-headless.x86_64          1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-javadoc.noarch           1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.7.0-openjdk-src.x86_64               1:1.7.0.201-2.6.16.1.el7_6 updates
+java-1.8.0-openjdk.i686                     1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-accessibility.i686       1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-accessibility.x86_64     1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-accessibility-debug.i686 1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-accessibility-debug.x86_64
+java-1.8.0-openjdk-debug.i686               1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-debug.x86_64             1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-demo.i686                1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-demo.x86_64              1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-demo-debug.i686          1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-demo-debug.x86_64        1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-devel.i686               1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-devel.x86_64             1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-devel-debug.i686         1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-devel-debug.x86_64       1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-headless.i686            1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-headless-debug.i686      1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-headless-debug.x86_64    1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-javadoc.noarch           1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-javadoc-debug.noarch     1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-javadoc-zip.noarch       1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-javadoc-zip-debug.noarch 1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-src.i686                 1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-src.x86_64               1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-src-debug.i686           1:1.8.0.191.b12-1.el7_6    updates
+java-1.8.0-openjdk-src-debug.x86_64         1:1.8.0.191.b12-1.el7_6    updates
+java-11-openjdk.i686                        1:11.0.1.13-3.el7_6        updates
+java-11-openjdk.x86_64                      1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-debug.i686                  1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-debug.x86_64                1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-demo.i686                   1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-demo.x86_64                 1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-demo-debug.i686             1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-demo-debug.x86_64           1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-devel.i686                  1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-devel.x86_64                1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-devel-debug.i686            1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-devel-debug.x86_64          1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-headless.i686               1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-headless.x86_64             1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-headless-debug.i686         1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-headless-debug.x86_64       1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc.i686                1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc.x86_64              1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-debug.i686          1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-debug.x86_64        1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-zip.i686            1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-zip.x86_64          1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-zip-debug.i686      1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-javadoc-zip-debug.x86_64    1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-jmods.i686                  1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-jmods.x86_64                1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-jmods-debug.i686            1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-jmods-debug.x86_64          1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-src.i686                    1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-src.x86_64                  1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-src-debug.i686              1:11.0.1.13-3.el7_6        updates
+java-11-openjdk-src-debug.x86_64            1:11.0.1.13-3.el7_6        updates
+java-atk-wrapper.i686                       0.30.4-5.el7               base
+java-atk-wrapper.x86_64                     0.30.4-5.el7               base
+java_cup.noarch                             1:0.11a-16.el7             base
+java_cup-javadoc.noarch                     1:0.11a-16.el7             base
+java_cup-manual.noarch                      1:0.11a-16.el7             base
+javacc.noarch                               5.0-10.el7                 base
+javacc-demo.noarch                          5.0-10.el7                 base
+javacc-javadoc.noarch                       5.0-10.el7                 base
+javacc-manual.noarch                        5.0-10.el7                 base
+javacc-maven-plugin.noarch                  2.6-17.el7                 base
+javacc-maven-plugin-javadoc.noarch          2.6-17.el7                 base
+javamail-javadoc.noarch                     1.4.6-8.el7                base
+javassist.noarch                            3.16.1-10.el7              base
+javassist-javadoc.noarch                    3.16.1-10.el7              base
+jaxen-javadoc.noarch                        1.1.3-11.el7               base
+jboss-annotations-1.1-api-javadoc.noarch    1.0.1-0.6.20120212git76e1a2.el7
+jboss-ejb-3.1-api-javadoc.noarch            1.0.2-10.el7               base
+jboss-el-2.2-api-javadoc.noarch             1.0.1-0.7.20120212git2fabd8.el7
+jboss-interceptors-1.1-api-javadoc.noarch   1.0.2-0.9.20120319git49a904.el7
+jboss-jaxrpc-1.1-api-javadoc.noarch         1.0.1-7.el7                base
+jboss-servlet-2.5-api-javadoc.noarch        1.0.1-5.el7                base
+jboss-servlet-3.0-api-javadoc.noarch        1.0.1-9.el7                base
+jboss-transaction-1.1-api-javadoc.noarch    1.0.1-8.el7                base
+jdepend-javadoc.noarch                      2.9.1-10.el7               base
+jdependency-javadoc.noarch                  0.7-10.el7                 base
+jdom-javadoc.noarch                         1.1.3-6.el7                base
+jettison-javadoc.noarch                     1.3.3-4.el7                base
+jetty-build-support-javadoc.noarch          1.1-9.el7                  base
+jetty-javadoc.noarch                        9.0.3-8.el7                base
+jetty-test-policy-javadoc.noarch            1.2-10.el7                 base
+jetty-version-maven-plugin-javadoc.noarch   1.0.7-9.el7                base
+jflex-javadoc.noarch                        1.4.3-20.el7               base
+jing-javadoc.noarch                         20091111-14.el7            base
+jline-javadoc.noarch                        1.0-8.el7                  base
+jna-javadoc.noarch                          3.5.2-8.el7                base
+joda-convert-javadoc.noarch                 1.3-5.el7                  base
+joda-time-javadoc.noarch                    2.2-3.tzdata2013c.el7      base
+jsch-javadoc.noarch                         0.1.50-5.el7               base
+jsoup-javadoc.noarch                        1.6.1-10.el7               base
+jsr-305-javadoc.noarch                      0-0.18.20090319svn.el7     base
+jsr-311-javadoc.noarch                      1.1.1-6.el7                base
+jss-javadoc.x86_64                          4.4.4-3.el7                base
+jtidy-javadoc.noarch                        2:1.0-0.16.20100930svn1125.el7
+junit-javadoc.noarch                        4.11-8.el7                 base
+jzlib-javadoc.noarch                        1.1.1-6.el7                base
+keytool-maven-plugin-javadoc.noarch         1.0-13.el7                 base
+kxml-javadoc.noarch                         2.3.0-5.el7                base
+ldapjdk-javadoc.noarch                      4.19-5.el7                 base
+libbase-javadoc.noarch                      1.1.3-10.el7               base
+libdb-java.i686                             5.3.21-24.el7              base
+libdb-java.x86_64                           5.3.21-24.el7              base
+libdb-java-devel.i686                       5.3.21-24.el7              base
+libdb-java-devel.x86_64                     5.3.21-24.el7              base
+libfonts-javadoc.noarch                     1.1.3-13.el7               base
+libformula-javadoc.noarch                   1.1.3-10.el7               base
+libguestfs-java.x86_64                      1:1.38.2-12.el7_6.1        updates
+libguestfs-java-devel.x86_64                1:1.38.2-12.el7_6.1        updates
+libguestfs-javadoc.noarch                   1:1.38.2-12.el7_6.1        updates
+liblayout-javadoc.noarch                    0.2.10-8.el7               base
+libloader-javadoc.noarch                    1.1.3-9.el7                base
+librepository-javadoc.noarch                1.1.3-9.el7                base
+libserializer-javadoc.noarch                1.1.2-10.el7               base
+libvirt-java.noarch                         0.4.9-4.el7                base
+libvirt-java-devel.noarch                   0.4.9-4.el7                base
+libvirt-java-javadoc.noarch                 0.4.9-4.el7                base
+libwebp-java.x86_64                         0.3.0-7.el7                base
+log4j-javadoc.noarch                        1.2.17-16.el7_4            base
+maven-antrun-plugin-javadoc.noarch          1.7-8.el7                  base
+maven-archiver-javadoc.noarch               2.5-9.el7                  base
+maven-artifact-resolver-javadoc.noarch      1:1.0-10.el7               base
+maven-assembly-plugin-javadoc.noarch        2.4-8.el7                  base
+maven-changes-plugin-javadoc.noarch         2.8-7.el7                  base
+maven-clean-plugin-javadoc.noarch           2.5-8.el7                  base
+maven-common-artifact-filters-javadoc.noarch
+maven-compiler-plugin-javadoc.noarch        3.1-4.el7                  base
+maven-dependency-analyzer-javadoc.noarch    1.3-9.el7                  base
+maven-dependency-plugin-javadoc.noarch      2.7-3.el7                  base
+maven-dependency-tree-javadoc.noarch        2.0-7.el7                  base
+maven-deploy-plugin-javadoc.noarch          2.7-11.el7                 base
+maven-downloader-javadoc.noarch             1:1.1-6.el7                base
+maven-doxia-javadoc.noarch                  1.4-5.el7                  base
+maven-doxia-sitetools-javadoc.noarch        1.4-3.el7                  base
+maven-doxia-tools-javadoc.noarch            1.4-15.el7                 base
+maven-ear-plugin-javadoc.noarch             2.8-5.el7                  base
+maven-ejb-plugin-javadoc.noarch             2.3-9.el7                  base
+maven-enforcer-javadoc.noarch               1.2-8.el7                  base
+maven-file-management-javadoc.noarch        1:1.2.1-8.el7              base
+maven-filtering-javadoc.noarch              1.1-3.el7                  base
+maven-gpg-plugin-javadoc.noarch             1.4-11.el7                 base
+maven-install-plugin-javadoc.noarch         2.4-7.el7                  base
+maven-invoker-javadoc.noarch                2.1.1-9.el7                base
+maven-invoker-plugin-javadoc.noarch         1.8-8.el7                  base
+maven-jar-plugin-javadoc.noarch             2.4-8.el7                  base
+maven-jarsigner-plugin-javadoc.noarch       1.2-9.el7                  base
+maven-javadoc.noarch                        3.0.5-17.el7               base
+maven-javadoc-plugin.noarch                 2.9-8.el7                  base
+maven-javadoc-plugin-javadoc.noarch         2.9-8.el7                  base
+maven-jxr-javadoc.noarch                    2.3-11.el7                 base
+maven-osgi-javadoc.noarch                   1:0.2.0-7.el7              base
+maven-plugin-build-helper-javadoc.noarch    1.5-13.el7                 base
+maven-plugin-bundle-javadoc.noarch          2.3.7-12.el7               base
+maven-plugin-testing-javadoc.noarch         2.1-11.el7                 base
+maven-plugin-tools-java.noarch              3.1-17.el7                 base
+maven-plugin-tools-javadoc.noarch           3.1-17.el7                 base
+maven-plugin-tools-javadocs.noarch          3.1-17.el7                 base
+maven-project-info-reports-plugin-javadoc.noarch
+maven-release-javadoc.noarch                2.2.1-12.el7               base
+maven-remote-resources-plugin-javadoc.noarch
+maven-reporting-api-javadoc.noarch          1:3.0-5.el7                base
+maven-reporting-impl-javadoc.noarch         2.2-8.el7                  base
+maven-repository-builder-javadoc.noarch     1:1.0-0.5.alpha2.el7       base
+maven-resources-plugin-javadoc.noarch       2.6-6.el7                  base
+maven-scm-javadoc.noarch                    1.8.1-2.el7                base
+maven-script-interpreter-javadoc.noarch     1.0-7.el7                  base
+maven-shade-plugin-javadoc.noarch           2.0-6.el7                  base
+maven-shared-incremental-javadoc.noarch     1.1-6.el7                  base
+maven-shared-io-javadoc.noarch              1:1.1-7.el7                base
+maven-shared-jar-javadoc.noarch             1:1.1-8.el7                base
+maven-shared-utils-javadoc.noarch           0.4-3.el7                  base
+maven-site-plugin-javadoc.noarch            3.2-7.el7                  base
+maven-source-plugin-javadoc.noarch          2.2.1-7.el7                base
+maven-surefire-javadoc.noarch               2.15-3.el7                 base
+maven-verifier-javadoc.noarch               1.4-7.el7                  base
+maven-verifier-plugin-javadoc.noarch        1.0-10.el7                 base
+maven-wagon-javadoc.noarch                  2.4-3.el7                  base
+maven-war-plugin-javadoc.noarch             2.3-9.el7                  base
+maven2-javadoc.noarch                       2.2.1-47.el7               base
+modello-javadoc.noarch                      1.7-4.el7                  base
+msv-javadoc.noarch                          1:2013.5.1-7.el7           base
+munge-maven-plugin-javadoc.noarch           1.0-2.el7                  base
+mysql-connector-java.noarch                 1:5.1.25-3.el7             base
+nekohtml-javadoc.noarch                     1.9.14-13.el7              base
+nuxwdog-client-java.x86_64                  1.0.3-8.el7                base
+objectweb-anttask-javadoc.noarch            1.3.2-10.el7               base
+objectweb-asm-javadoc.noarch                3.3.1-9.el7                base
+objectweb-asm4-javadoc.noarch               4.0-3.el7                  base
+parfait-javadoc.noarch                      0.5.4-2.el7                base
+pentaho-libxml-javadoc.noarch               1.1.3-10.el7               base
+pentaho-reporting-flow-engine-javadoc.noarch
+pki-base-java.noarch                        10.5.9-6.el7               base
+pki-javadoc.noarch                          10.5.9-6.el7               base
+plexus-ant-factory-javadoc.noarch           1.0-0.12.a2.3.el7          base
+plexus-archiver-javadoc.noarch              2.4.2-5.el7_5              base
+plexus-bsh-factory-javadoc.noarch           1.0-0.14.a7.el7            base
+plexus-build-api-javadoc.noarch             0.0.7-11.el7               base
+plexus-cdc-javadoc.noarch                   1.0-0.20.a14.el7           base
+plexus-cipher-javadoc.noarch                1.7-5.el7                  base
+plexus-classworlds-javadoc.noarch           2.4.2-8.el7                base
+plexus-cli-javadoc.noarch                   1.2-20.el7                 base
+plexus-compiler-javadoc.noarch              2.2-7.el7                  base
+plexus-component-api-javadoc.noarch         1.0-0.16.alpha15.el7       base
+plexus-containers-component-javadoc.noarch  1.5.5-14.el7               base
+plexus-containers-javadoc.noarch            1.5.5-14.el7               base
+plexus-digest-javadoc.noarch                1.1-15.el7                 base
+plexus-i18n-javadoc.noarch                  1.0-0.6.b10.4.el7          base
+plexus-interactivity-javadoc.noarch         1.0-0.14.alpha6.el7        base
+plexus-interpolation-javadoc.noarch         1.15-8.el7                 base
+plexus-io-javadoc.noarch                    2.0.5-9.el7                base
+plexus-mail-sender-javadoc.noarch           1.0-1.a2.25.el7            base
+plexus-resources-javadoc.noarch             1.0-0.15.a7.el7            base
+plexus-sec-dispatcher-javadoc.noarch        1.4-13.el7                 base
+plexus-utils-javadoc.noarch                 3.0.9-9.el7                base
+plexus-velocity-javadoc.noarch              1.1.8-16.el7               base
+postgresql-jdbc-javadoc.noarch              9.2.1002-6.el7_5           base
+protobuf-java.x86_64                        2.5.0-8.el7                base
+protobuf-javadoc.x86_64                     2.5.0-8.el7                base
+qdox-javadoc.noarch                         1.12.1-10.el7              base
+regexp-javadoc.noarch                       1.5-13.el7                 base
+relaxngDatatype-javadoc.noarch              1.0-11.el7                 base
+relaxngcc-javadoc.noarch                    1.12-6.el7                 base
+resteasy-base-javadoc.noarch                3.0.6-4.el7                base
+rhino-javadoc.noarch                        1.7R5-1.el7                base
+rngom-javadoc.noarch                        201103-0.8.20120119svn.el7 base
+sac-javadoc.noarch                          1.3-17.el7                 base
+saxon-javadoc.noarch                        9.3.0.4-11.el7             base
+sblim-cim-client2-javadoc.noarch            2.2.1-3.el7                base
+scannotation-javadoc.noarch                 1.0.3-0.7.r12.el7          base
+si-units-javadoc.noarch                     0.6.5-1.el7                base
+sisu-javadoc.noarch                         2.3.0-11.el7               base
+sisu-maven-plugin-javadoc.noarch            1.1-8.el7                  base
+slf4j-javadoc.noarch                        1.7.4-4.el7_4              base
+snakeyaml-javadoc.noarch                    1.11-8.el7                 base
+stax-ex-javadoc.noarch                      1.7.1-6.el7                base
+stax2-api-javadoc.noarch                    3.1.1-10.el7               base
+subversion-javahl.i686                      1.7.14-14.el7              base
+subversion-javahl.x86_64                    1.7.14-14.el7              base
+system-switch-java.noarch                   1.1.7.1-0.el7              base
+systemtap-runtime-java.x86_64               3.3-3.el7                  base
+tagsoup-javadoc.noarch                      1.2.1-8.el7                base
+testng-javadoc.noarch                       6.8.7-3.el7                base
+tomcat-javadoc.noarch                       7.0.76-8.el7_5             updates
+txw2-javadoc.noarch                         20110809-8.el7             base
+unit-api-javadoc.noarch                     1.0-3.el7                  base
+uom-lib-javadoc.noarch                      1.0.1-5.el7                base
+uom-se-javadoc.noarch                       1.0.4-3.el7                base
+uom-systems-javadoc.noarch                  0.7-1.el7                  base
+velocity-javadoc.noarch                     1.7-10.el7                 base
+woodstox-core-javadoc.noarch                4.1.2-8.el7                base
+ws-commons-util-javadoc.noarch              1.0.1-29.el7               base
+ws-jaxme-javadoc.noarch                     0.5.2-10.el7               base
+wsdl4j-javadoc.noarch                       1.6.3-3.el7                base
+xalan-j2-javadoc.noarch                     2.7.1-23.el7               base
+xbean-javadoc.noarch                        3.13-6.el7                 base
+xerces-j2-javadoc.noarch                    2.11.0-17.el7_0            base
+xml-commons-apis-javadoc.noarch             1.4.01-16.el7              base
+xml-commons-apis12-javadoc.noarch           1.2.04-10.el7              base
+xml-commons-resolver-javadoc.noarch         1.2-15.el7                 base
+xml-stylebook-javadoc.noarch                1.0-0.14.b3_xalan2.svn313293.el7
+xmlgraphics-commons-javadoc.noarch          1.5-3.el7                  base
+xmlrpc-javadoc.noarch                       1:3.1.3-9.el7_5            base
+xmlunit-javadoc.noarch                      1.4-6.el7                  base
+xmvn-javadoc.noarch                         1.3.0-6.el7_3              base
+xpp3-javadoc.noarch                         1.1.3.8-11.el7             base
+xsom-javadoc.noarch                         0-10.20110809svn.el7       base
+xstream-javadoc.noarch                      1.3.1-10.el7               base
+xz-java.noarch                              1.3-3.el7                  base
+xz-java-javadoc.noarch                      1.3-3.el7                  base
+[root@ip-172-30-0-232 Puppet]# yum list java-1.8.0-openjdk-src.x86_64
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+Available Packages
+java-1.8.0-openjdk-src.x86_64                               1:1.8.0.191.b12-1.el7_6                                updates
+[root@ip-172-30-0-232 Puppet]# vi tomcat.pp
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcat.pp  -v
+Notice: Compiled catalog for ip-172-30-0-232.ap-south-1.compute.internal in environment production in 0.54 seconds
+Info: Applying configuration version '1545277941'
+Notice: /Stage[main]/Tomcatinstall/Package[java-1.8.0-openjdk-src.x86_64]/ensure: created
+Notice: Finished catalog run in 7.32 seconds
+[root@ip-172-30-0-232 Puppet]#
+
+
+
+
+Some Important commands to find list of packages installed in terminal or not.
+
+[root@ip-172-30-0-232 Puppet]# yum list java (Command to list java installtions)
+
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+Error: No matching Packages to list
+
+[root@ip-172-30-0-232 Puppet]# yum list|grep -i java (Command to list installed java packages) 
+
+a-1.8.0-openjdk.x86_64                   1:1.8.0.191.b12-1.el7_6    @updates
+java-1.8.0-openjdk-headless.x86_64          1:1.8.0.191.b12-1.el7_6    @updates
+javamail.noarch                             1.4.6-8.el7                @base
+javapackages-tools.noarch                   3.4.1-11.el7               @base
+python-javapackages.noarch                  3.4.1-11.el7               @base
+tzdata-java.noarch                          2018g-1.el7                @updates
+abrt-java-connector.x86_64                  1.0.6-12.el7               base
+aether-javadoc.noarch                       1.13.1-13.el7              base
+ant-antunit-javadoc.noarch                  1.2-10.el7                 base
+ 
+[root@ip-172-30-0-232 Puppet]# yum list java-1.8.0-openjdk-src.x86_64
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.excellmedia.net
+ * extras: centos.excellmedia.net
+ * updates: centos.excellmedia.net
+Available Packages
+java-1.8.0-openjdk-src.x86_64                               1:1.8.0.191.b12-1.el7_6                                updates
+
+
+In this terminal java package name is : java-1.8.0-openjdk-src.x86_64
+
+#vi tomcat.pp
+
+class tomcatinstall {
+
+package { 'java-1.8.0-openjdk-src.x86_64':
+  ensure => 'present',
+}
+
+package { 'tomcat':
+  ensure => 'present',
+}
+
+group { 'tomcatgroup':
+  ensure => 'present',
+  gid    => '505',
+  }
+
+user { 'tomcatuser':
+  ensure           => 'present',
+  comment          => 'Apache Tomcat testing ',
+  gid              => '505',
+  home             => '/export/home/tomcatuser',
+  }
+}
+include tomcatinstall
+
+

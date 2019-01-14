@@ -1,0 +1,2373 @@
+                       ANSIBLE INTRODUCTION CLASS			Date:07th Jan, 2018
+
+
+login as: centos
+Authenticating with public key "imported-openssh-key"
+Last login: Sat Jan  5 03:08:28 2019 from 106.51.19.213
+[centos@ip-172-30-0-186 ~]$ sudo su -
+Last login: Sat Jan  5 03:08:31 UTC 2019 on pts/0 
+
+[root@ip-172-30-0-186 ~]# yum install ansible
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirror.net.in
+ * extras: centos.mirror.net.in
+ * updates: centos.mirror.net.in
+base                                                                                               | 3.6 kB  00:00:00
+extras                                                                                             | 3.4 kB  00:00:00
+puppet6                                                                                            | 2.5 kB  00:00:00
+updates                                                                                            | 3.4 kB  00:00:00
+updates/7/x86_64/primary_db                                                                        | 1.3 MB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package ansible.noarch 0:2.4.2.0-2.el7 will be installed
+--> Processing Dependency: sshpass for package: ansible-2.4.2.0-2.el7.noarch
+--> Processing Dependency: python-cryptography for package: ansible-2.4.2.0-2.el7.noarch
+--> Running transaction check
+---> Package python-httplib2.noarch 0:0.9.2-1.el7 will be installed
+---> Package python-paramiko.noarch 0:2.1.1-9.el7 will be installed
+
+Installed:
+  ansible.noarch 0:2.4.2.0-2.el7
+
+Dependency Installed:
+  python-cffi.x86_64 0:1.6.0-5.el7       python-enum34.noarch 0:1.0.4-1.el7    python-httplib2.noarch 0:0.9.2-1.el7
+  python-idna.noarch 0:2.4-1.el7         python-paramiko.noarch 0:2.1.1-9.el7  python-passlib.noarch 0:1.6.5-2.el7
+  python-ply.noarch 0:3.4-11.el7         python-pycparser.noarch 0:2.14-1.el7  python2-cryptography.x86_64 0:1.7.2-2.el7
+  python2-jmespath.noarch 0:0.9.0-3.el7  python2-pyasn1.noarch 0:0.1.9-7.el7   sshpass.x86_64 0:1.06-2.el7
+
+Complete!
+
+[root@ip-172-30-0-186 ~]# ansible --version
+ansible 2.4.2.0
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = [u'/root/.ansible/plugins/modules', u'/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python2.7/site-packages/ansible
+  executable location = /bin/ansible
+  python version = 2.7.5 (default, Apr 11 2018, 07:36:10) [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)]
+
+[root@ip-172-30-0-186 ~]# cd /usr/lib/python2.7/site-packages/ansible (#Ansible python module location)
+
+[root@ip-172-30-0-186 ansible]# ls -all
+total 112
+drwxr-xr-x. 17 root root 4096 Jan  7 02:53 .
+drwxr-xr-x. 54 root root 8192 Jan  7 02:53 ..
+drwxr-xr-x.  2 root root 4096 Jan  7 02:53 cli
+drwxr-xr-x.  4 root root   95 Jan  7 02:53 compat
+drwxr-xr-x.  2 root root  184 Jan  7 02:53 config
+-rw-r--r--.  1 root root 4442 Nov 29  2017 constants.py
+-rw-r--r--.  2 root root 4810 Jan 29  2018 constants.pyc
+-rw-r--r--.  2 root root 4810 Jan 29  2018 constants.pyo
+drwxr-xr-x.  2 root root  136 Jan  7 02:53 errors
+drwxr-xr-x.  3 root root 4096 Jan  7 02:53 executor
+drwxr-xr-x.  3 root root  268 Jan  7 02:53 galaxy
+-rw-r--r--.  1 root root 1224 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root  384 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root  384 Jan 29  2018 __init__.pyo
+drwxr-xr-x.  2 root root 4096 Jan  7 02:53 inventory
+drwxr-xr-x. 23 root root 4096 Jan  7 02:53 modules
+drwxr-xr-x.  7 root root 8192 Jan  7 02:53 module_utils
+drwxr-xr-x.  5 root root 4096 Jan  7 02:53 parsing
+drwxr-xr-x.  3 root root 4096 Jan  7 02:53 playbook
+drwxr-xr-x. 16 root root 4096 Jan  7 02:53 plugins
+-rw-r--r--.  1 root root  887 Nov 29  2017 release.py
+-rw-r--r--.  2 root root  370 Jan 29  2018 release.pyc
+-rw-r--r--.  2 root root  370 Jan 29  2018 release.pyo
+drwxr-xr-x.  2 root root  233 Jan  7 02:53 template
+drwxr-xr-x.  3 root root 4096 Jan  7 02:53 utils
+drwxr-xr-x.  2 root root 4096 Jan  7 02:53 vars
+
+[root@ip-172-30-0-186 ansible]# cd modules (#go to modules to check for existing ansible modules) 
+
+[root@ip-172-30-0-186 modules]# ls -all
+
+total 100
+drwxr-xr-x. 23 root root  4096 Jan  7 02:53 .
+drwxr-xr-x. 17 root root  4096 Jan  7 02:53 ..
+drwxr-xr-x. 28 root root  4096 Jan  7 02:53 cloud
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 clustering
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 commands
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 crypto
+drwxr-xr-x. 10 root root   183 Jan  7 02:53 database
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 files
+drwxr-xr-x.  5 root root   106 Jan  7 02:53 identity
+-rw-r--r--.  1 root root     0 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root   147 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root   147 Jan 29  2018 __init__.pyo
+drwxr-xr-x.  2 root root   183 Jan  7 02:53 inventory
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 messaging
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 monitoring
+drwxr-xr-x.  6 root root  4096 Jan  7 02:53 net_tools
+drwxr-xr-x. 42 root root  4096 Jan  7 02:53 network
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 notification
+drwxr-xr-x.  4 root root    91 Jan  7 02:53 packaging
+drwxr-xr-x.  9 root root   223 Jan  7 02:53 remote_management
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 source_control
+drwxr-xr-x.  6 root root   126 Jan  7 02:53 storage
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 system
+drwxr-xr-x.  4 root root    92 Jan  7 02:53 utilities
+drwxr-xr-x.  3 root root  4096 Jan  7 02:53 web_infrastructure
+drwxr-xr-x.  2 root root 12288 Jan  7 02:53 windows
+
+[root@ip-172-30-0-186 modules]# cd cloud
+[root@ip-172-30-0-186 cloud]# ls -all
+total 140
+drwxr-xr-x. 28 root root  4096 Jan  7 02:53 .
+drwxr-xr-x. 23 root root  4096 Jan  7 02:53 ..
+drwxr-xr-x.  2 root root 16384 Jan  7 02:53 amazon
+drwxr-xr-x.  2 root root   287 Jan  7 02:53 atomic
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 azure
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 centurylink
+drwxr-xr-x.  2 root root   151 Jan  7 02:53 cloudscale
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 cloudstack
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 digital_ocean
+drwxr-xr-x.  2 root root   163 Jan  7 02:53 dimensiondata
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 docker
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 google
+-rw-r--r--.  1 root root     0 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root   153 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root   153 Jan 29  2018 __init__.pyo
+drwxr-xr-x.  2 root root   118 Jan  7 02:53 linode
+drwxr-xr-x.  2 root root   139 Jan  7 02:53 lxc
+drwxr-xr-x.  2 root root   207 Jan  7 02:53 lxd
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 misc
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 openstack
+drwxr-xr-x.  2 root root   184 Jan  7 02:53 ovh
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 ovirt
+drwxr-xr-x.  2 root root   213 Jan  7 02:53 packet
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 profitbricks
+drwxr-xr-x.  2 root root   139 Jan  7 02:53 pubnub
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 rackspace
+drwxr-xr-x.  2 root root   260 Jan  7 02:53 smartos
+drwxr-xr-x.  2 root root   115 Jan  7 02:53 softlayer
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 univention
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 vmware
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 webfaction
+
+[root@ip-172-30-0-186 cloud]# ansible- (#Command to display lists of Ansible Commands)
+ansible-2             ansible-console-2     ansible-galaxy        ansible-playbook-2    ansible-vault
+ansible-2.7           ansible-console-2.7   ansible-galaxy-2      ansible-playbook-2.7  ansible-vault-2
+ansible-config        ansible-doc           ansible-galaxy-2.7    ansible-pull          ansible-vault-2.7
+ansible-connection    ansible-doc-2         ansible-inventory     ansible-pull-2
+ansible-console       ansible-doc-2.7       ansible-playbook      ansible-pull-2.7
+
+[root@ip-172-30-0-186 cloud]# ansible-doc -l (#cmd to display list of all modules)
+a10_server                                Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' server object.
+a10_server_axapi3                         Manage A10 Networks AX/SoftAX/Thunder/vThunder devices
+a10_service_group                         Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' service groups.
+a10_virtual_server                        Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' virtual servers.
+accelerate                                Enable accelerated mode on remote node
+aci_aep                                   Manage attachable Access Entity Profile (AEP) on Cisco ACI fabrics (infra:A...
+aci_ap                                    Manage top level Application Profile (AP) objects on Cisco ACI fabrics (fv:...
+aci_bd                                    Manage Bridge Domains (BD) on Cisco ACI Fabrics (fv:BD)
+aci_bd_subnet                             Manage Subnets on Cisco ACI fabrics (fv:Subnet)
+aci_bd_to_l3out                           Bind Bridge Domain to L3 Out on Cisco ACI fabrics (fv:RsBDToOut)
+aci_config_rollback                       Provides rollback and rollback preview functionality for Cisco ACI fabrics ...
+aci_config_snapshot                       Manage Config Snapshots on Cisco ACI fabrics (config:Snapshot, config:Expor...
+aci_contract                              Manage contract resources on Cisco ACI fabrics (vz:BrCP)
+aci_contract_subject                      Manage initial Contract Subjects on Cisco ACI fabrics (vz:Subj)
+aci_contract_subject_to_filter            Bind Contract Subjects to Filters on Cisco ACI fabrics (vz:RsSubjFiltAtt)
+aci_epg                                   Manage End Point Groups (EPG) on Cisco ACI fabrics (fv:AEPg)
+aci_epg_monitoring_policy                 Manage monitoring policies on Cisco ACI fabrics (mon:EPGPol)
+aci_epg_to_contract                       Bind EPGs to Contracts on Cisco ACI fabrics (fv:RsCons and fv:RsProv)
+aci_epg_to_domain                         Bind EPGs to Domains on Cisco ACI fabrics (fv:RsDomAtt)
+aci_filter                                Manages top level filter objects on Cisco ACI fabrics (vz:Filter)
+aci_filter_entry                          Manage filter entries on Cisco ACI fabrics (vz:Entry)
+aci_intf_policy_fc                        Manage Fibre Channel interface policies on Cisco ACI fabrics (fc:IfPol)
+aci_intf_policy_l2                        Manage Layer 2 interface policies on Cisco ACI fabrics (l2:IfPol)
+aci_intf_policy_lldp                      Manage LLDP interface policies on Cisco ACI fabrics (lldp:IfPol)
+aci_intf_policy_mcp                       Manage MCP interface policies on Cisco ACI fabrics (mcp:IfPol)
+aci_intf_policy_port_channel              Manage port channel interface policies on Cisco ACI fabrics (lacp:LagPol)
+aci_intf_policy_port_security             Manage port security on Cisco ACI fabrics (l2:PortSecurityPol)
+aci_l3out_route_tag_policy                Manage route tag policies on Cisco ACI fabrics (l3ext:RouteTagPol)
+aci_rest                                  Direct access to the Cisco APIC REST API
+aci_taboo_contract                        Manage taboo contracts on Cisco ACI fabrics (vz:BrCP)
+aci_tenant                                Manage tenants on Cisco ACI fabrics (fv:Tenant)
+aci_tenant_action_rule_profile            Manage action rule profiles on Cisco ACI fabrics (rtctrl:AttrP)
+aci_tenant_ep_retention_policy            Manage End Point (EP) retention protocol policies on Cisco ACI fabrics (fv:...
+aci_tenant_span_dst_group                 Manage SPAN destination groups on Cisco ACI fabrics (span:DestGrp)
+aci_tenant_span_src_group                 Manage SPAN source groups on Cisco ACI fabrics (span:SrcGrp)
+aci_tenant_span_src_group_to_dst_group    Manage SPAN source group to destination group bindings on Cisco ACI fabrics...
+aci_vrf                                   Manage VRF (private networks aka. contexts) on Cisco ACI fabrics (fv:Ctx)
+acl                                       Sets and retrieves file ACL information.
+add_host                                  add a host (and alternatively a group) to the ansible-playbook in-memory in...
+airbrake_deployment                       Notify airbrake about app deployments
+aireos_command                            Run commands on remote devices running Cisco WLC
+aireos_config                             Manage Cisco WLC configurations
+aix_inittab                               Manages the inittab on AIX.
+aix_lvol                                  Configure AIX LVM logical volumes
+alternatives                              Manages alternative programs for common commands
+aos_asn_pool                              Manage AOS ASN Pool
+aos_blueprint                             Manage AOS blueprint instance
+aos_blueprint_param                       Manage AOS blueprint parameter values
+aos_blueprint_virtnet                     Manage AOS blueprint parameter values
+aos_device                                Manage Devices on AOS Server
+aos_external_router                       Manage AOS External Router
+aos_ip_pool                               Manage AOS IP Pool
+aos_logical_device                        Manage AOS Logical Device
+aos_logical_device_map                    Manage AOS Logical Device Map
+aos_login                                 Login to AOS server for session token
+aos_rack_type                             Manage AOS Rack Type
+aos_template                              Manage AOS Template
+apache2_mod_proxy                         Set and/or get members' attributes of an Apache httpd 2.4 mod_proxy balance...
+apache2_module                            enables/disables a module of the Apache2 webserver
+apk                                       Manages apk packages
+apt                                       Manages apt-packages
+apt_key                                   Add or remove an apt key
+apt_repository                            Add and remove APT repositories
+apt_rpm                                   apt_rpm package manager
+archive                                   Creates a compressed archive of one or more files or trees.
+aruba_command                             Run commands on remote devices running Aruba Mobility Controller
+aruba_config                              Manage Aruba configuration sections
+asa_acl                                   Manage access-lists on a Cisco ASA
+asa_command                               Run arbitrary commands on Cisco ASA devices
+asa_config                                Manage configuration sections on Cisco ASA devices
+assemble                                  Assembles a configuration file from fragments
+assert                                    Asserts given expressions are true
+async_status                              Obtain status of asynchronous task
+at                                        Schedule the execution of a command or script file via the at command.
+atomic_container                          Manage the containers on the atomic host platform
+atomic_host                               Manage the atomic host platform
+atomic_image                              Manage the container images on the atomic host platform
+authorized_key                            Adds or removes an SSH authorized key
+avi_actiongroupconfig                     Module for setup of ActionGroupConfig Avi RESTful Object
+avi_alertconfig                           Module for setup of AlertConfig Avi RESTful Object
+avi_alertemailconfig                      Module for setup of AlertEmailConfig Avi RESTful Object
+avi_alertscriptconfig                     Module for setup of AlertScriptConfig Avi RESTful Object
+avi_alertsyslogconfig                     Module for setup of AlertSyslogConfig Avi RESTful Object
+avi_analyticsprofile                      Module for setup of AnalyticsProfile Avi RESTful Object
+avi_api_session                           Avi API Module
+avi_applicationpersistenceprofile         Module for setup of ApplicationPersistenceProfile Avi RESTful Object
+avi_applicationprofile                    Module for setup of ApplicationProfile Avi RESTful Object
+avi_authprofile                           Module for setup of AuthProfile Avi RESTful Object
+avi_backup                                Module for setup of Backup Avi RESTful Object
+avi_backupconfiguration                   Module for setup of BackupConfiguration Avi RESTful Object
+avi_certificatemanagementprofile          Module for setup of CertificateManagementProfile Avi RESTful Object
+avi_cloud                                 Module for setup of Cloud Avi RESTful Object
+avi_cloudconnectoruser                    Module for setup of CloudConnectorUser Avi RESTful Object
+avi_cloudproperties                       Module for setup of CloudProperties Avi RESTful Object
+avi_cluster                               Module for setup of Cluster Avi RESTful Object
+avi_controllerproperties                  Module for setup of ControllerProperties Avi RESTful Object
+avi_dnspolicy                             Module for setup of DnsPolicy Avi RESTful Object
+avi_gslb                                  Module for setup of Gslb Avi RESTful Object
+avi_gslbapplicationpersistenceprofile     Module for setup of GslbApplicationPersistenceProfile Avi RESTful Object
+avi_gslbgeodbprofile                      Module for setup of GslbGeoDbProfile Avi RESTful Object
+avi_gslbhealthmonitor                     Module for setup of GslbHealthMonitor Avi RESTful Object
+avi_gslbservice                           Module for setup of GslbService Avi RESTful Object
+avi_hardwaresecuritymodulegroup           Module for setup of HardwareSecurityModuleGroup Avi RESTful Object
+avi_healthmonitor                         Module for setup of HealthMonitor Avi RESTful Object
+avi_httppolicyset                         Module for setup of HTTPPolicySet Avi RESTful Object
+avi_ipaddrgroup                           Module for setup of IpAddrGroup Avi RESTful Object
+avi_ipamdnsproviderprofile                Module for setup of IpamDnsProviderProfile Avi RESTful Object
+avi_microservicegroup                     Module for setup of MicroServiceGroup Avi RESTful Object
+avi_network                               Module for setup of Network Avi RESTful Object
+avi_networkprofile                        Module for setup of NetworkProfile Avi RESTful Object
+avi_networksecuritypolicy                 Module for setup of NetworkSecurityPolicy Avi RESTful Object
+avi_pkiprofile                            Module for setup of PKIProfile Avi RESTful Object
+avi_pool                                  Module for setup of Pool Avi RESTful Object
+avi_poolgroup                             Module for setup of PoolGroup Avi RESTful Object
+avi_poolgroupdeploymentpolicy             Module for setup of PoolGroupDeploymentPolicy Avi RESTful Object
+avi_prioritylabels                        Module for setup of PriorityLabels Avi RESTful Object
+avi_role                                  Module for setup of Role Avi RESTful Object
+avi_scheduler                             Module for setup of Scheduler Avi RESTful Object
+avi_seproperties                          Module for setup of SeProperties Avi RESTful Object
+avi_serverautoscalepolicy                 Module for setup of ServerAutoScalePolicy Avi RESTful Object
+avi_serviceengine                         Module for setup of ServiceEngine Avi RESTful Object
+avi_serviceenginegroup                    Module for setup of ServiceEngineGroup Avi RESTful Object
+avi_snmptrapprofile                       Module for setup of SnmpTrapProfile Avi RESTful Object
+avi_sslkeyandcertificate                  Module for setup of SSLKeyAndCertificate Avi RESTful Object
+avi_sslprofile                            Module for setup of SSLProfile Avi RESTful Object
+avi_stringgroup                           Module for setup of StringGroup Avi RESTful Object
+avi_systemconfiguration                   Module for setup of SystemConfiguration Avi RESTful Object
+avi_tenant                                Module for setup of Tenant Avi RESTful Object
+avi_trafficcloneprofile                   Module for setup of TrafficCloneProfile Avi RESTful Object
+avi_useraccountprofile                    Module for setup of UserAccountProfile Avi RESTful Object
+avi_virtualservice                        Module for setup of VirtualService Avi RESTful Object
+avi_vrfcontext                            Module for setup of VrfContext Avi RESTful Object
+avi_vsdatascriptset                       Module for setup of VSDataScriptSet Avi RESTful Object
+avi_vsvip                                 Module for setup of VsVip Avi RESTful Object
+avi_webhook                               Module for setup of Webhook Avi RESTful Object
+awall                                     Manage awall policies
+aws_api_gateway                           Manage AWS API Gateway APIs
+aws_direct_connect_connection             Creates, deletes, modifies a DirectConnect connection
+aws_direct_connect_link_aggregation_group Manage Direct Connect LAG bundles.
+aws_kms                                   Perform various KMS management tasks.
+aws_s3                                    manage objects in S3.
+aws_s3_bucket_facts                       Lists S3 buckets in AWS
+aws_waf_facts                             Retrieve facts for WAF ACLs, Rule , Conditions and Filters.
+azure                                     create or terminate a virtual machine in azure
+azure_rm_acs                              Manage an Azure Container Service Instance (ACS).
+azure_rm_availabilityset                  Manage Azure availability set.
+azure_rm_availabilityset_facts            Get availability set facts.
+azure_rm_deployment                       Create or destroy Azure Resource Manager template deployments
+azure_rm_dnsrecordset                     Create, delete and update DNS record sets and records.
+azure_rm_dnsrecordset_facts               Get DNS Record Set facts.
+azure_rm_dnszone                          Manage Azure DNS zones.
+azure_rm_dnszone_facts                    Get DNS zone facts.
+azure_rm_functionapp                      Manage Azure Function Apps
+azure_rm_functionapp_facts                Get Azure Function App facts
+azure_rm_loadbalancer                     Manage Azure load balancers.
+azure_rm_loadbalancer_facts               Get load balancer facts.
+azure_rm_managed_disk                     Manage Azure Manage Disks
+azure_rm_managed_disk_facts               Get managed disk facts.
+azure_rm_networkinterface                 Manage Azure network interfaces.
+azure_rm_networkinterface_facts           Get network interface facts.
+azure_rm_publicipaddress                  Manage Azure Public IP Addresses.
+azure_rm_publicipaddress_facts            Get public IP facts.
+azure_rm_resourcegroup                    Manage Azure resource groups.
+azure_rm_resourcegroup_facts              Get resource group facts.
+azure_rm_securitygroup                    Manage Azure network security groups.
+azure_rm_securitygroup_facts              Get security group facts.
+azure_rm_storageaccount                   Manage Azure storage accounts.
+azure_rm_storageaccount_facts             Get storage account facts.
+azure_rm_storageblob                      Manage blob containers and blob objects.
+azure_rm_subnet                           Manage Azure subnets.
+azure_rm_virtualmachine                   Manage Azure virtual machines.
+azure_rm_virtualmachine_extension         Managed Azure Virtual Machine extension
+azure_rm_virtualmachine_scaleset          Manage Azure virtual machine scale sets.
+azure_rm_virtualmachine_scaleset_facts    Get Virtual Machine Scale Set facts
+azure_rm_virtualmachineimage_facts        Get virtual machine image facts.
+azure_rm_virtualnetwork                   Manage Azure virtual networks.
+azure_rm_virtualnetwork_facts             Get virtual network facts.
+bcf_switch                                Create and remove a bcf switch.
+beadm                                     Manage ZFS boot environments on FreeBSD/Solaris/illumos systems.
+bearychat                                 Send BearyChat notifications
+bigip_command                             Run arbitrary command on F5 devices.
+bigip_config                              Manage BIG-IP configuration sections.
+bigip_configsync_actions                  Perform different actions related to config-sync.
+bigip_device_dns                          Manage BIG-IP device DNS settings
+bigip_device_ntp                          Manage NTP servers on a BIG-IP
+bigip_device_sshd                         Manage the SSHD settings of a BIG-IP
+bigip_facts                               Collect facts from F5 BIG-IP devices
+bigip_gtm_datacenter                      Manage Datacenter configuration in BIG-IP
+bigip_gtm_facts                           Collect facts from F5 BIG-IP GTM devices.
+bigip_gtm_pool                            Manages F5 BIG-IP GTM pools.
+bigip_gtm_virtual_server                  Manages F5 BIG-IP GTM virtual servers
+bigip_gtm_wide_ip                         Manages F5 BIG-IP GTM wide ip.
+bigip_hostname                            Manage the hostname of a BIG-IP.
+bigip_iapp_service                        Manages TCL iApp services on a BIG-IP.
+bigip_iapp_template                       Manages TCL iApp templates on a BIG-IP.
+bigip_irule                               Manage iRules across different modules on a BIG-IP.
+bigip_monitor_http                        Manages F5 BIG-IP LTM http monitors
+bigip_monitor_tcp                         Manages F5 BIG-IP LTM tcp monitors.
+bigip_monitor_tcp_echo                    Manages F5 BIG-IP LTM tcp monitors.
+bigip_monitor_tcp_half_open               Manages F5 BIG-IP LTM tcp monitors.
+bigip_node                                Manages F5 BIG-IP LTM nodes
+bigip_pool                                Manages F5 BIG-IP LTM pools.
+bigip_pool_member                         Manages F5 BIG-IP LTM pool members
+bigip_provision                           Manage BIG-IP module provisioning.
+bigip_qkview                              Manage qkviews on the device.
+bigip_routedomain                         Manage route domains on a BIG-IP
+bigip_selfip                              Manage Self-IPs on a BIG-IP system
+bigip_snat_pool                           Manage SNAT pools on a BIG-IP.
+bigip_snmp                                Manipulate general SNMP settings on a BIG-IP.
+bigip_snmp_trap                           Manipulate SNMP trap information on a BIG-IP.
+bigip_ssl_certificate                     Import/Delete certificates from BIG-IP.
+bigip_sys_db                              Manage BIG-IP system database variables
+bigip_sys_global                          Manage BIG-IP global settings.
+bigip_ucs                                 Manage upload, installation and removal of UCS files.
+bigip_user                                Manage user accounts and user attributes on a BIG-IP.
+bigip_virtual_address                     Manage LTM virtual addresses on a BIG-IP.
+bigip_virtual_server                      Manages F5 BIG-IP LTM virtual servers
+bigip_vlan                                Manage VLANs on a BIG-IP system
+bigmon_chain                              Create and remove a bigmon inline service chain.
+bigmon_policy                             Create and remove a bigmon out-of-band policy.
+bigpanda                                  Notify BigPanda about deployments
+blockinfile                               Insert/update/remove a text block surrounded by marker lines.
+boundary_meter                            Manage boundary meters
+bower                                     Manage bower packages with bower
+bundler                                   Manage Ruby Gem dependencies with Bundler
+bzr                                       Deploy software (or files) from bzr branches
+campfire                                  Send a message to Campfire
+capabilities                              Manage Linux capabilities
+catapult                                  Send a sms / mms using the catapult bandwidth api
+ce_aaa_server                             Manages AAA server global configuration on HUAWEI CloudEngine switches.
+ce_aaa_server_host                        Manages AAA server host configuration on HUAWEI CloudEngine switches.
+ce_acl                                    Manages base ACL configuration on HUAWEI CloudEngine switches.
+ce_acl_advance                            Manages advanced ACL configuration on HUAWEI CloudEngine switches.
+ce_acl_interface                          Manages applying ACLs to interfaces on HUAWEI CloudEngine switches.
+ce_bfd_global                             Manages BFD global configuration on HUAWEI CloudEngine devices.
+ce_bfd_session                            Manages BFD session configuration on HUAWEI CloudEngine devices.
+ce_bfd_view                               Manages BFD session view configuration on HUAWEI CloudEngine devices.
+ce_bgp                                    Manages BGP configuration on HUAWEI CloudEngine switches.
+ce_bgp_af                                 Manages BGP Address-family configuration on HUAWEI CloudEngine switches.
+ce_bgp_neighbor                           Manages BGP peer configuration on HUAWEI CloudEngine switches.
+ce_bgp_neighbor_af                        Manages BGP neighbor Address-family configuration on HUAWEI CloudEngine swi...
+ce_command                                Run arbitrary command on HUAWEI CloudEngine devices.
+ce_config                                 Manage Huawei CloudEngine configuration sections.
+ce_dldp                                   Manages global DLDP configuration on HUAWEI CloudEngine switches.
+ce_dldp_interface                         Manages interface DLDP configuration on HUAWEI CloudEngine switches.
+ce_eth_trunk                              Manages Eth-Trunk interfaces on HUAWEI CloudEngine switches.
+ce_evpn_bd_vni                            Manages EVPN VXLAN Network Identifier (VNI) on HUAWEI CloudEngine switches.
+ce_evpn_bgp                               Manages BGP EVPN configuration on HUAWEI CloudEngine switches.
+ce_evpn_bgp_rr                            Manages RR for the VXLAN Network on HUAWEI CloudEngine switches.
+ce_evpn_global                            Manages global configuration of EVPN on HUAWEI CloudEngine switches.
+ce_facts                                  Gets facts about HUAWEI CloudEngine switches.
+ce_file_copy                              Copy a file to a remote cloudengine device over SCP on HUAWEI CloudEngine s...
+ce_info_center_debug                      Manages information center debug configuration on HUAWEI CloudEngine switch...
+ce_info_center_global                     Manages outputting logs on HUAWEI CloudEngine switches.
+ce_info_center_log                        Manages information center log configuration on HUAWEI CloudEngine switches...
+ce_info_center_trap                       Manages information center trap configuration on HUAWEI CloudEngine switche...
+ce_interface                              Manages physical attributes of interfaces on HUAWEI CloudEngine switches.
+ce_interface_ospf                         Manages configuration of an OSPF interface instanceon HUAWEI CloudEngine sw...
+ce_ip_interface                           Manages L3 attributes for IPv4 and IPv6 interfaces on HUAWEI CloudEngine sw...
+ce_link_status                            Get interface link status on HUAWEI CloudEngine switches.
+ce_mlag_config                            Manages MLAG configuration on HUAWEI CloudEngine switches.
+ce_mlag_interface                         Manages MLAG interfaces on HUAWEI CloudEngine switches.
+ce_mtu                                    Manages MTU settings on HUAWEI CloudEngine switches.
+ce_netconf                                Run an arbitrary netconf command on HUAWEI CloudEngine switches.
+ce_netstream_aging                        Manages timeout mode of NetStream on HUAWEI CloudEngine switches.
+ce_netstream_export                       Manages netstream export on HUAWEI CloudEngine switches.
+ce_netstream_global                       Manages global parameters of NetStream on HUAWEI CloudEngine switches.
+ce_netstream_template                     Manages NetStream template configuration on HUAWEI CloudEngine switches.
+ce_ntp                                    Manages core NTP configuration on HUAWEI CloudEngine switches.
+ce_ntp_auth                               Manages NTP authentication configuration on HUAWEI CloudEngine switches.
+ce_ospf                                   Manages configuration of an OSPF instance on HUAWEI CloudEngine switches.
+ce_ospf_vrf                               Manages configuration of an OSPF VPN instance on HUAWEI CloudEngine switche...
+ce_reboot                                 Reboot a HUAWEI CloudEngine switches.
+ce_rollback                               Set a checkpoint or rollback to a checkpoint on HUAWEI CloudEngine switches...
+ce_sflow                                  Manages sFlow configuration on HUAWEI CloudEngine switches.
+ce_snmp_community                         Manages SNMP community configuration on HUAWEI CloudEngine switches.
+ce_snmp_contact                           Manages SNMP contact configuration on HUAWEI CloudEngine switches.
+ce_snmp_location                          Manages SNMP location configuration on HUAWEI CloudEngine switches.
+ce_snmp_target_host                       Manages SNMP target host configuration on HUAWEI CloudEngine switches.
+ce_snmp_traps                             Manages SNMP traps configuration on HUAWEI CloudEngine switches.
+ce_snmp_user                              Manages SNMP user configuration on HUAWEI CloudEngine switches.
+ce_startup                                Manages a system startup information on HUAWEI CloudEngine switches.
+ce_static_route                           Manages static route configuration on HUAWEI CloudEngine switches.
+ce_stp                                    Manages STP configuration on HUAWEI CloudEngine switches.
+ce_switchport                             Manages Layer 2 switchport interfaces on HUAWEI CloudEngine switches.
+ce_vlan                                   Manages VLAN resources and attributes on Huawei CloudEngine switches.
+ce_vrf                                    Manages VPN instance on HUAWEI CloudEngine switches.
+ce_vrf_af                                 Manages VPN instance address family on HUAWEI CloudEngine switches.
+[root@ip-172-30-0-186 cloud]# ansible-doc -l|wc -l (#cmd to display count of modules)
+1378
+[root@ip-172-30-0-186 cloud]# ansible-doc -l|grep -i ec2 (#cmd to display list of amazon ec2 modules)
+ec2                                       create, terminate, start or stop an instance in ec2
+ec2_ami                                   create or destroy an image in ec2
+ec2_ami_copy                              copies AMI between AWS regions, return new image id
+ec2_ami_find                              Searches for AMIs to obtain the AMI ID and other information
+ec2_ami_search                            Retrieve AWS AMI information for a given operating system.
+ec2_asg                                   Create or delete AWS Autoscaling Groups
+ec2_asg_facts                             Gather facts about ec2 Auto Scaling Groups (ASGs) in AWS
+ec2_customer_gateway                      Manage an AWS customer gateway
+ec2_eip                                   manages EC2 elastic IP (EIP) addresses.
+ec2_elb                                   De-registers or registers instances from EC2 ELBs
+ec2_elb_facts                             Gather facts about EC2 Elastic Load Balancers in AWS
+ec2_elb_lb                                Creates or destroys Amazon ELB.
+ec2_eni                                   Create and optionally attach an Elastic Network Interface (ENI) to an insta...
+ec2_eni_facts                             Gather facts about ec2 ENI interfaces in AWS
+ec2_group                                 maintain an ec2 VPC security group.
+ec2_group_facts                           Gather facts about ec2 security groups in AWS.
+ec2_instance_facts                        Gather facts about ec2 instances in AWS
+ec2_key                                   maintain an ec2 key pair.
+ec2_lc                                    Create or delete AWS Autoscaling Launch Configurations
+ec2_lc_facts                              Gather facts about AWS Autoscaling Launch Configurations
+ec2_lc_find                               Find AWS Autoscaling Launch Configurations
+ec2_metadata_facts                        Gathers facts (instance metadata) about remote hosts within ec2
+ec2_metric_alarm                          Create/update or delete AWS Cloudwatch 'metric alarms'
+ec2_remote_facts                          Gather facts about ec2 instances in AWS
+ec2_scaling_policy                        Create or delete AWS scaling policies for Autoscaling groups
+ec2_snapshot                              creates a snapshot from an existing volume
+ec2_snapshot_copy                         copies an EC2 snapshot and returns the new Snapshot ID.
+ec2_snapshot_facts                        Gather facts about ec2 volume snapshots in AWS
+ec2_tag                                   create and remove tag(s) to ec2 resources.
+ec2_vol                                   create and attach a volume, return volume id and device map
+ec2_vol_facts                             Gather facts about ec2 volumes in AWS
+ec2_vpc                                   configure AWS virtual private clouds
+ec2_vpc_dhcp_option                       Manages DHCP Options, and can ensure the DHCP options for the given VPC mat...
+ec2_vpc_dhcp_option_facts                 Gather facts about dhcp options sets in AWS
+ec2_vpc_endpoint                          Create and delete AWS VPC Endpoints.
+ec2_vpc_endpoint_facts                    Retrieves AWS VPC endpoints details using AWS methods.
+ec2_vpc_igw                               Manage an AWS VPC Internet gateway
+ec2_vpc_igw_facts                         Gather facts about internet gateways in AWS
+ec2_vpc_nacl                              create and delete Network ACLs.
+ec2_vpc_nacl_facts                        Gather facts about Network ACLs in an AWS VPC
+ec2_vpc_nat_gateway                       Manage AWS VPC NAT Gateways.
+ec2_vpc_nat_gateway_facts                 Retrieves AWS VPC Managed Nat Gateway details using AWS methods.
+ec2_vpc_net                               Configure AWS virtual private clouds
+ec2_vpc_net_facts                         Gather facts about ec2 VPCs in AWS
+ec2_vpc_peer                              create, delete, accept, and reject VPC peering connections between two VPCs...
+ec2_vpc_peering_facts                     Retrieves AWS VPC Peering details using AWS methods.
+ec2_vpc_route_table                       Manage route tables for AWS virtual private clouds
+ec2_vpc_route_table_facts                 Gather facts about ec2 VPC route tables in AWS
+ec2_vpc_subnet                            Manage subnets in AWS virtual private clouds
+ec2_vpc_subnet_facts                      Gather facts about ec2 VPC subnets in AWS
+ec2_vpc_vgw                               Create and delete AWS VPN Virtual Gateways.
+ec2_vpc_vgw_facts                         Gather facts about virtual gateways in AWS
+ec2_vpc_vpn                               Create, modify, and delete EC2 VPN connections.
+ec2_win_password                          gets the default administrator password for ec2 windows instances
+elb_classic_lb_facts                      Gather facts about EC2 Elastic Load Balancers in AWS
+elb_instance                              De-registers or registers instances from EC2 ELBs
+[root@ip-172-30-0-186 cloud]# ansible-doc -l|grep -i jenk (#cmd to display list of jenkins modules)
+jenkins_job                               Manage jenkins jobs
+jenkins_plugin                            Add or remove Jenkins plugin
+jenkins_script                            Executes a groovy script in the jenkins instance
+[root@ip-172-30-0-186 cloud]# ansible-doc -l|grep -i network (3cmd to display list of netwrok modules)
+a10_server                                Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' server object.
+a10_server_axapi3                         Manage A10 Networks AX/SoftAX/Thunder/vThunder devices
+a10_service_group                         Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' service groups.
+a10_virtual_server                        Manage A10 Networks AX/SoftAX/Thunder/vThunder devices' virtual servers.
+aci_vrf                                   Manage VRF (private networks aka. contexts) on Cisco ACI fabrics (fv:Ctx)
+avi_network                               Module for setup of Network Avi RESTful Object
+avi_networkprofile                        Module for setup of NetworkProfile Avi RESTful Object
+avi_networksecuritypolicy                 Module for setup of NetworkSecurityPolicy Avi RESTful Object
+azure_rm_networkinterface                 Manage Azure network interfaces.
+azure_rm_networkinterface_facts           Get network interface facts.
+azure_rm_securitygroup                    Manage Azure network security groups.
+azure_rm_virtualnetwork                   Manage Azure virtual networks.
+azure_rm_virtualnetwork_facts             Get virtual network facts.
+ce_evpn_bd_vni                            Manages EVPN VXLAN Network Identifier (VNI) on HUAWEI CloudEngine switches.
+ce_evpn_bgp_rr                            Manages RR for the VXLAN Network on HUAWEI CloudEngine switches.
+ce_vxlan_gateway                          Manages gateway for the VXLAN network on HUAWEI CloudEngine devices.
+cs_network                                Manages networks on Apache CloudStack based clouds.
+cs_network_acl                            Manages network access control lists (ACL) on Apache CloudStack based cloud...
+cs_network_acl_rule                       Manages network access control list (ACL) rules on Apache CloudStack based ...
+dellos10_config                           Manage Dell EMC Networking OS10 configuration sections
+dellos10_facts                            Collect facts from remote devices running Dell EMC Networking OS10
+dellos6_config                            Manage Dell EMC Networking OS6 configuration sections
+dellos6_facts                             Collect facts from remote devices running Dell EMC Networking OS6
+dellos9_config                            Manage Dell EMC Networking OS9 configuration sections
+dellos9_facts                             Collect facts from remote devices running Dell EMC Networking OS9
+dimensiondata_network                     Create, update, and delete MCP 1.0 & 2.0 networks
+docker_network                            Manage Docker networks
+ec2_eni                                   Create and optionally attach an Elastic Network Interface (ENI) to an insta...
+ec2_vpc_nacl                              create and delete Network ACLs.
+ec2_vpc_nacl_facts                        Gather facts about Network ACLs in an AWS VPC
+eos_logging                               Manage logging on network devices
+eos_vlan                                  Manage VLANs on Arista EOS network devices
+eos_vrf                                   Manage VRFs on Arista EOS network devices
+gce_net                                   create/destroy GCE networks and firewall rules
+interfaces_file                           Tweak settings in /etc/network/interfaces files
+ios_interface                             Manage Interface on Cisco IOS network devices
+ios_logging                               Manage logging on network devices
+ios_static_route                          Manage static IP routes on Cisco IOS network devices
+iosxr_interface                           Manage Interface on Cisco IOS XR network devices
+iosxr_logging                             Manage logging on network devices
+junos_interface                           Manage Interface on Juniper JUNOS network devices
+junos_l3_interface                        Manage L3 interfaces on Juniper JUNOS network devices
+junos_linkagg                             Manage link aggregation groups on Juniper JUNOS network devices
+junos_lldp                                Manage LLDP configuration on Juniper JUNOS network devices
+junos_lldp_interface                      Manage LLDP interfaces configuration on Juniper JUNOS network devices
+junos_logging                             Manage logging on network devices
+junos_static_route                        Manage static IP routes on Juniper JUNOS network devices
+junos_vlan                                Manage VLANs on Juniper JUNOS network devices
+nclu                                      Configure network interfaces using NCLU
+net_banner                                Manage multiline banners on network devices
+net_interface                             Manage Interface on network devices
+net_l2_interface                          Manage Layer-2 interface on network devices
+net_l3_interface                          Manage L3 interfaces on network devices
+net_linkagg                               Manage link aggregation groups on network devices
+net_lldp                                  Manage LLDP service configuration on network devices
+net_lldp_interface                        Manage LLDP interfaces configuration on network devices
+net_logging                               Manage logging on network devices
+net_ping                                  Tests reachability using ping from a network device
+net_static_route                          Manage static IP routes on network devices
+net_system                                Manage the system attributes on network devices
+net_user                                  Manage the aggregate of local users on network device
+net_vlan                                  Manage VLANs on network devices
+net_vrf                                   Manage VRFs on network devices
+nmcli                                     Manage Networking
+nxos_evpn_vni                             Manages Cisco EVPN VXLAN Network Identifier (VNI).
+nxos_logging                              Manage logging on network devices
+nxos_reboot                               Reboot a network device.
+nxos_vxlan_vtep                           Manages VXLAN Network Virtualization Endpoint (NVE).
+nxos_vxlan_vtep_vni                       Creates a Virtual Network Identifier member (VNI)
+oneview_ethernet_network                  Manage OneView Ethernet Network resources
+oneview_ethernet_network_facts            Retrieve the facts about one or more of the OneView Ethernet Networks
+oneview_fc_network                        Manage OneView Fibre Channel Network resources.
+oneview_fc_network_facts                  Retrieve the facts about one or more of the OneView Fibre Channel Networks
+oneview_fcoe_network                      Manage OneView FCoE Network resources
+oneview_fcoe_network_facts                Retrieve the facts about one or more of the OneView FCoE Networks
+oneview_network_set                       Manage HPE OneView Network Set resources
+oneview_network_set_facts                 Retrieve facts about the OneView Network Sets
+os_network                                Creates/removes networks from OpenStack
+os_networks_facts                         Retrieve facts about one or more OpenStack networks.
+os_subnet                                 Add/Remove subnet to an OpenStack network
+ovirt_host_networks                       Module to manage host networks in oVirt/RHV
+ovirt_networks                            Module to manage logical networks in oVirt/RHV
+ovirt_networks_facts                      Retrieve facts about one or more oVirt/RHV networks
+ovirt_nics                                Module to manage network interfaces of Virtual Machines in oVirt/RHV
+ovirt_nics_facts                          Retrieve facts about one or more oVirt/RHV virtual machine network interfac...
+panos_interface                           configure data-port network interface for DHCP
+rax_network                               create / delete an isolated network in Rackspace Public Cloud
+rhn_register                              Manage Red Hat Network registration using the `rhnreg_ks' command
+seport                                    Manages SELinux network port type definitions
+virt_net                                  Manage libvirt network configuration
+vyos_interface                            Manage Interface on VyOS network devices
+vyos_l3_interface                         Manage L3 interfaces on VyOS network devices
+vyos_linkagg                              Manage link aggregation groups on VyOS network devices
+vyos_lldp                                 Manage LLDP configuration on VyOS network devices
+vyos_lldp_interface                       Manage LLDP interfaces configuration on VyOS network devices
+vyos_logging                              Manage logging on network devices
+vyos_static_route                         Manage static IP routes on Cisco VyOS network devices
+win_mapped_drive                          maps a network drive for a user
+[root@ip-172-30-0-186 cloud]# ansible-doc -l|grep -i window (#cmd to display list of windows modules)
+ec2_win_password                          gets the default administrator password for ec2 windows instances
+pagerduty                                 Create PagerDuty maintenance windows
+statusio_maintenance                      Create maintenance windows for your status.io dashboard
+win_command                               Executes a command on a remote Windows node
+win_copy                                  Copies files to remote locations on windows hosts
+win_disk_image                            Manage ISO/VHD/VHDX mounts on Windows hosts
+win_dns_client                            Configures DNS lookup on Windows hosts
+win_domain                                Ensures the existence of a Windows domain.
+win_domain_controller                     Manage domain controller/member server state for a Windows host
+win_domain_membership                     Manage domain/workgroup membership for a Windows host
+win_domain_user                           Manages Windows Active Directory user accounts
+win_environment                           Modifies environment variables on windows hosts.
+win_eventlog                              Manage Windows event logs
+win_eventlog_entry                        Write entries to Windows event logs
+win_feature                               Installs and uninstalls Windows Features on Windows Server
+win_firewall                              Enable or disable the Windows Firewall
+win_firewall_rule                         Windows firewall automation
+win_group_membership                      Manage Windows local group membership
+win_hotfix                                install and uninstalls Windows hotfixes
+win_msg                                   Sends a message to logged in users on Windows hosts.
+win_msi                                   Installs and uninstalls Windows MSI files
+win_path                                  Manage Windows path environment variables
+win_ping                                  A windows version of the classic ping module
+win_power_plan                            Changes the power plan of a Windows system
+win_reboot                                Reboot a windows machine
+win_reg_stat                              returns information about a Windows registry key or property of a key
+win_regmerge                              Merges the contents of a registry file into the windows registry
+win_say                                   Text to speech module for Windows to speak messages and optionally play sou...
+win_service                               Manages Windows services
+win_share                                 Manage Windows shares
+win_shortcut                              Manage shortcuts on Windows
+win_stat                                  returns information about a Windows file
+win_timezone                              Sets Windows machine timezone
+win_toast                                 Sends Toast windows notification to logged in users on Windows 10 or later ...
+win_unzip                                 Unzips compressed files and archives on the Windows node
+win_updates                               Download and install Windows updates
+win_user                                  Manages local Windows user accounts
+win_user_right                            Manage Windows User Rights
+zabbix_maintenance                        Create Zabbix maintenance windows
+[root@ip-172-30-0-186 cloud]# ls -all
+total 140
+drwxr-xr-x. 28 root root  4096 Jan  7 02:53 .
+drwxr-xr-x. 23 root root  4096 Jan  7 02:53 ..
+drwxr-xr-x.  2 root root 16384 Jan  7 02:53 amazon
+drwxr-xr-x.  2 root root   287 Jan  7 02:53 atomic
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 azure
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 centurylink
+drwxr-xr-x.  2 root root   151 Jan  7 02:53 cloudscale
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 cloudstack
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 digital_ocean
+drwxr-xr-x.  2 root root   163 Jan  7 02:53 dimensiondata
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 docker
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 google
+-rw-r--r--.  1 root root     0 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root   153 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root   153 Jan 29  2018 __init__.pyo
+drwxr-xr-x.  2 root root   118 Jan  7 02:53 linode
+drwxr-xr-x.  2 root root   139 Jan  7 02:53 lxc
+drwxr-xr-x.  2 root root   207 Jan  7 02:53 lxd
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 misc
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 openstack
+drwxr-xr-x.  2 root root   184 Jan  7 02:53 ovh
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 ovirt
+drwxr-xr-x.  2 root root   213 Jan  7 02:53 packet
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 profitbricks
+drwxr-xr-x.  2 root root   139 Jan  7 02:53 pubnub
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 rackspace
+drwxr-xr-x.  2 root root   260 Jan  7 02:53 smartos
+drwxr-xr-x.  2 root root   115 Jan  7 02:53 softlayer
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 univention
+drwxr-xr-x.  2 root root  8192 Jan  7 02:53 vmware
+drwxr-xr-x.  2 root root  4096 Jan  7 02:53 webfaction
+[root@ip-172-30-0-186 cloud]# cd amazon/ (#Go to 'Amazon' module>check to see all aws related pyton files for each function)
+[root@ip-172-30-0-186 amazon]# ls -al
+total 6144
+drwxr-xr-x.  2 root root 16384 Jan  7 02:53 .
+drwxr-xr-x. 28 root root  4096 Jan  7 02:53 ..
+-rw-r--r--.  1 root root 11662 Nov 29  2017 aws_api_gateway.py
+-rw-r--r--.  2 root root 11120 Jan 29  2018 aws_api_gateway.pyc
+-rw-r--r--.  2 root root 11120 Jan 29  2018 aws_api_gateway.pyo
+-rw-r--r--.  1 root root 11812 Nov 29  2017 aws_direct_connect_connection.py
+-rw-r--r--.  2 root root  9872 Jan 29  2018 aws_direct_connect_connection.pyc
+-rw-r--r--.  2 root root  9872 Jan 29  2018 aws_direct_connect_connection.pyo
+-rw-r--r--.  1 root root 18164 Nov 29  2017 aws_direct_connect_link_aggregation_group.py
+-rw-r--r--.  2 root root 15737 Jan 29  2018 aws_direct_connect_link_aggregation_group.pyc
+-rw-r--r--.  2 root root 15737 Jan 29  2018 aws_direct_connect_link_aggregation_group.pyo
+-rw-r--r--.  1 root root 11400 Nov 29  2017 aws_kms.py
+-rw-r--r--.  2 root root  9199 Jan 29  2018 aws_kms.pyc
+-rw-r--r--.  2 root root  9199 Jan 29  2018 aws_kms.pyo
+-rw-r--r--.  1 root root  3039 Nov 29  2017 aws_s3_bucket_facts.py
+-rw-r--r--.  2 root root  3190 Jan 29  2018 aws_s3_bucket_facts.pyc
+-rw-r--r--.  2 root root  3190 Jan 29  2018 aws_s3_bucket_facts.pyo
+-rw-r--r--.  1 root root 35460 Nov 29  2017 aws_s3.py
+-rw-r--r--.  2 root root 27300 Jan 29  2018 aws_s3.pyc
+-rw-r--r--.  2 root root 27300 Jan 29  2018 aws_s3.pyo
+-rw-r--r--.  1 root root  7870 Nov 29  2017 aws_waf_facts.py
+-rw-r--r--.  2 root root  8839 Jan 29  2018 aws_waf_facts.pyc
+-rw-r--r--.  2 root root  8839 Jan 29  2018 aws_waf_facts.pyo
+-rw-r--r--.  1 root root 11527 Nov 29  2017 cloudformation_facts.py
+-rw-r--r--.  2 root root 11575 Jan 29  2018 cloudformation_facts.pyc
+-rw-r--r--.  2 root root 11575 Jan 29  2018 cloudformation_facts.pyo
+-rw-r--r--.  1 root root 25438 Nov 29  2017 cloudformation.py
+-rw-r--r--.  2 root root 21099 Jan 29  2018 cloudformation.pyc
+-rw-r--r--.  2 root root 21099 Jan 29  2018 cloudformation.pyo
+-rw-r--r--.  1 root root 31930 Nov 29  2017 cloudfront_facts.py
+-rw-r--r--.  2 root root 25922 Jan 29  2018 cloudfront_facts.pyc
+-rw-r--r--.  2 root root 25922 Jan 29  2018 cloudfront_facts.pyo
+-rw-r--r--.  1 root root 23409 Nov 29  2017 cloudtrail.py
+-rw-r--r--.  2 root root 19396 Jan 29  2018 cloudtrail.pyc
+-rw-r--r--.  2 root root 19396 Jan 29  2018 cloudtrail.pyo
+-rw-r--r--.  1 root root 15678 Nov 29  2017 cloudwatchevent_rule.py
+-rw-r--r--.  2 root root 16869 Jan 29  2018 cloudwatchevent_rule.pyc
+-rw-r--r--.  2 root root 16869 Jan 29  2018 cloudwatchevent_rule.pyo
+-rw-r--r--.  1 root root 20689 Nov 29  2017 data_pipeline.py
+-rw-r--r--.  1 root root 19850 Jan 29  2018 data_pipeline.pyc
+-rw-r--r--.  1 root root 19788 Jan 29  2018 data_pipeline.pyo
+-rw-r--r--.  1 root root 17160 Nov 29  2017 dynamodb_table.py
+-rw-r--r--.  2 root root 16086 Jan 29  2018 dynamodb_table.pyc
+-rw-r--r--.  2 root root 16086 Jan 29  2018 dynamodb_table.pyo
+-rw-r--r--.  1 root root  5579 Nov 29  2017 dynamodb_ttl.py
+-rw-r--r--.  2 root root  5556 Jan 29  2018 dynamodb_ttl.pyc
+-rw-r--r--.  2 root root  5556 Jan 29  2018 dynamodb_ttl.pyo
+-rw-r--r--.  1 root root  6936 Nov 29  2017 ec2_ami_copy.py
+-rw-r--r--.  2 root root  6582 Jan 29  2018 ec2_ami_copy.pyc
+-rw-r--r--.  2 root root  6582 Jan 29  2018 ec2_ami_copy.pyo
+-rw-r--r--.  1 root root 14185 Nov 29  2017 ec2_ami_find.py
+-rw-r--r--.  2 root root 12600 Jan 29  2018 ec2_ami_find.pyc
+-rw-r--r--.  2 root root 12600 Jan 29  2018 ec2_ami_find.pyo
+-rw-r--r--.  1 root root 22149 Nov 29  2017 ec2_ami.py
+-rw-r--r--.  2 root root 18159 Jan 29  2018 ec2_ami.pyc
+-rw-r--r--.  2 root root 18159 Jan 29  2018 ec2_ami.pyo
+-rw-r--r--.  1 root root  6284 Nov 29  2017 _ec2_ami_search.py
+-rw-r--r--.  2 root root  6633 Jan 29  2018 _ec2_ami_search.pyc
+-rw-r--r--.  2 root root  6633 Jan 29  2018 _ec2_ami_search.pyo
+-rw-r--r--.  1 root root 13766 Nov 29  2017 ec2_asg_facts.py
+-rw-r--r--.  2 root root 13558 Jan 29  2018 ec2_asg_facts.pyc
+-rw-r--r--.  2 root root 13558 Jan 29  2018 ec2_asg_facts.pyo
+-rw-r--r--.  1 root root 59393 Nov 29  2017 ec2_asg.py
+-rw-r--r--.  2 root root 42837 Jan 29  2018 ec2_asg.pyc
+-rw-r--r--.  2 root root 42837 Jan 29  2018 ec2_asg.pyo
+-rw-r--r--.  1 root root  9257 Nov 29  2017 ec2_customer_gateway.py
+-rw-r--r--.  2 root root  8102 Jan 29  2018 ec2_customer_gateway.pyc
+-rw-r--r--.  2 root root  8102 Jan 29  2018 ec2_customer_gateway.pyo
+-rw-r--r--.  1 root root 15832 Nov 29  2017 ec2_eip.py
+-rw-r--r--.  2 root root 12644 Jan 29  2018 ec2_eip.pyc
+-rw-r--r--.  2 root root 12644 Jan 29  2018 ec2_eip.pyo
+-rw-r--r--.  1 root root  8667 Nov 29  2017 ec2_elb_facts.py
+-rw-r--r--.  2 root root  8220 Jan 29  2018 ec2_elb_facts.pyc
+-rw-r--r--.  2 root root  8220 Jan 29  2018 ec2_elb_facts.pyo
+-rw-r--r--.  1 root root 54006 Nov 29  2017 ec2_elb_lb.py
+-rw-r--r--.  2 root root 42844 Jan 29  2018 ec2_elb_lb.pyc
+-rw-r--r--.  2 root root 42844 Jan 29  2018 ec2_elb_lb.pyo
+-rw-r--r--.  1 root root 13785 Nov 29  2017 ec2_elb.py
+-rw-r--r--.  2 root root 12339 Jan 29  2018 ec2_elb.pyc
+-rw-r--r--.  2 root root 12339 Jan 29  2018 ec2_elb.pyo
+-rw-r--r--.  1 root root  6579 Nov 29  2017 ec2_eni_facts.py
+-rw-r--r--.  2 root root  5601 Jan 29  2018 ec2_eni_facts.pyc
+-rw-r--r--.  2 root root  5601 Jan 29  2018 ec2_eni_facts.pyo
+-rw-r--r--.  1 root root 22960 Nov 29  2017 ec2_eni.py
+-rw-r--r--.  2 root root 17339 Jan 29  2018 ec2_eni.pyc
+-rw-r--r--.  2 root root 17339 Jan 29  2018 ec2_eni.pyo
+lrwxrwxrwx.  1 root root    21 Jan  7 02:53 _ec2_facts.py -> ec2_metadata_facts.py
+-rw-r--r--.  2 root root 25940 Jan 29  2018 _ec2_facts.pyc
+-rw-r--r--.  2 root root 25940 Jan 29  2018 _ec2_facts.pyo
+-rw-r--r--.  1 root root  5018 Nov 29  2017 ec2_group_facts.py
+-rw-r--r--.  2 root root  4830 Jan 29  2018 ec2_group_facts.pyc
+-rw-r--r--.  2 root root  4830 Jan 29  2018 ec2_group_facts.pyo
+-rw-r--r--.  1 root root 37294 Nov 29  2017 ec2_group.py
+-rw-r--r--.  2 root root 25828 Jan 29  2018 ec2_group.pyc
+-rw-r--r--.  2 root root 25828 Jan 29  2018 ec2_group.pyo
+-rw-r--r--.  1 root root 21600 Nov 29  2017 ec2_instance_facts.py
+-rw-r--r--.  2 root root 21572 Jan 29  2018 ec2_instance_facts.pyc
+-rw-r--r--.  2 root root 21572 Jan 29  2018 ec2_instance_facts.pyo
+-rw-r--r--.  1 root root  8606 Nov 29  2017 ec2_key.py
+-rw-r--r--.  2 root root  5646 Jan 29  2018 ec2_key.pyc
+-rw-r--r--.  2 root root  5646 Jan 29  2018 ec2_key.pyo
+-rw-r--r--.  1 root root  7264 Nov 29  2017 ec2_lc_facts.py
+-rw-r--r--.  2 root root  7386 Jan 29  2018 ec2_lc_facts.pyc
+-rw-r--r--.  2 root root  7386 Jan 29  2018 ec2_lc_facts.pyo
+-rw-r--r--.  1 root root  6826 Nov 29  2017 ec2_lc_find.py
+-rw-r--r--.  2 root root  7305 Jan 29  2018 ec2_lc_find.pyc
+-rw-r--r--.  2 root root  7305 Jan 29  2018 ec2_lc_find.pyo
+-rw-r--r--.  1 root root 16705 Nov 29  2017 ec2_lc.py
+-rw-r--r--.  2 root root 14115 Jan 29  2018 ec2_lc.pyc
+-rw-r--r--.  2 root root 14115 Jan 29  2018 ec2_lc.pyo
+-rw-r--r--.  1 root root 25735 Nov 29  2017 ec2_metadata_facts.py
+-rw-r--r--.  2 root root 26012 Jan 29  2018 ec2_metadata_facts.pyc
+-rw-r--r--.  2 root root 26012 Jan 29  2018 ec2_metadata_facts.pyo
+-rw-r--r--.  1 root root 11598 Nov 29  2017 ec2_metric_alarm.py
+-rw-r--r--.  2 root root  9698 Jan 29  2018 ec2_metric_alarm.pyc
+-rw-r--r--.  2 root root  9698 Jan 29  2018 ec2_metric_alarm.pyo
+-rw-r--r--.  1 root root 65159 Nov 29  2017 ec2.py
+-rw-r--r--.  2 root root 46716 Jan 29  2018 ec2.pyc
+-rw-r--r--.  2 root root 46716 Jan 29  2018 ec2.pyo
+-rw-r--r--.  1 root root  6300 Nov 29  2017 _ec2_remote_facts.py
+-rw-r--r--.  2 root root  5609 Jan 29  2018 _ec2_remote_facts.pyc
+-rw-r--r--.  2 root root  5609 Jan 29  2018 _ec2_remote_facts.pyo
+-rw-r--r--.  1 root root  7108 Nov 29  2017 ec2_scaling_policy.py
+-rw-r--r--.  2 root root  5454 Jan 29  2018 ec2_scaling_policy.pyc
+-rw-r--r--.  2 root root  5454 Jan 29  2018 ec2_scaling_policy.pyo
+-rw-r--r--.  1 root root  5679 Nov 29  2017 ec2_snapshot_copy.py
+-rw-r--r--.  2 root root  6076 Jan 29  2018 ec2_snapshot_copy.pyc
+-rw-r--r--.  2 root root  6076 Jan 29  2018 ec2_snapshot_copy.pyo
+-rw-r--r--.  1 root root  7817 Nov 29  2017 ec2_snapshot_facts.py
+-rw-r--r--.  2 root root  7786 Jan 29  2018 ec2_snapshot_facts.pyc
+-rw-r--r--.  2 root root  7786 Jan 29  2018 ec2_snapshot_facts.pyo
+-rw-r--r--.  1 root root 10118 Nov 29  2017 ec2_snapshot.py
+-rw-r--r--.  2 root root  8485 Jan 29  2018 ec2_snapshot.pyc
+-rw-r--r--.  2 root root  8485 Jan 29  2018 ec2_snapshot.pyo
+-rw-r--r--.  1 root root  5559 Nov 29  2017 ec2_tag.py
+-rw-r--r--.  2 root root  5286 Jan 29  2018 ec2_tag.pyc
+-rw-r--r--.  2 root root  5286 Jan 29  2018 ec2_tag.pyo
+-rw-r--r--.  1 root root  3807 Nov 29  2017 ec2_vol_facts.py
+-rw-r--r--.  2 root root  4168 Jan 29  2018 ec2_vol_facts.pyc
+-rw-r--r--.  2 root root  4168 Jan 29  2018 ec2_vol_facts.pyo
+-rw-r--r--.  1 root root 20848 Nov 29  2017 ec2_vol.py
+-rw-r--r--.  2 root root 17097 Jan 29  2018 ec2_vol.pyc
+-rw-r--r--.  2 root root 17097 Jan 29  2018 ec2_vol.pyo
+-rw-r--r--.  1 root root  4702 Nov 29  2017 ec2_vpc_dhcp_option_facts.py
+-rw-r--r--.  2 root root  5046 Jan 29  2018 ec2_vpc_dhcp_option_facts.pyc
+-rw-r--r--.  2 root root  5046 Jan 29  2018 ec2_vpc_dhcp_option_facts.pyo
+-rw-r--r--.  1 root root 14953 Nov 29  2017 ec2_vpc_dhcp_option.py
+-rw-r--r--.  2 root root 13156 Jan 29  2018 ec2_vpc_dhcp_option.pyc
+-rw-r--r--.  2 root root 13156 Jan 29  2018 ec2_vpc_dhcp_option.pyo
+lrwxrwxrwx.  1 root root    28 Jan  7 02:53 _ec2_vpc_dhcp_options_facts.py -> ec2_vpc_dhcp_option_facts.py
+-rw-r--r--.  2 root root  5054 Jan 29  2018 _ec2_vpc_dhcp_options_facts.pyc
+-rw-r--r--.  2 root root  5054 Jan 29  2018 _ec2_vpc_dhcp_options_facts.pyo
+lrwxrwxrwx.  1 root root    22 Jan  7 02:53 _ec2_vpc_dhcp_options.py -> ec2_vpc_dhcp_option.py
+-rw-r--r--.  2 root root 13178 Jan 29  2018 _ec2_vpc_dhcp_options.pyc
+-rw-r--r--.  2 root root 13178 Jan 29  2018 _ec2_vpc_dhcp_options.pyo
+-rw-r--r--.  1 root root  6014 Nov 29  2017 ec2_vpc_endpoint_facts.py
+-rw-r--r--.  2 root root  6467 Jan 29  2018 ec2_vpc_endpoint_facts.pyc
+-rw-r--r--.  2 root root  6467 Jan 29  2018 ec2_vpc_endpoint_facts.pyo
+-rw-r--r--.  1 root root 13842 Nov 29  2017 ec2_vpc_endpoint.py
+-rw-r--r--.  2 root root 12751 Jan 29  2018 ec2_vpc_endpoint.pyc
+-rw-r--r--.  2 root root 12751 Jan 29  2018 ec2_vpc_endpoint.pyo
+-rw-r--r--.  1 root root  4808 Nov 29  2017 ec2_vpc_igw_facts.py
+-rw-r--r--.  2 root root  5093 Jan 29  2018 ec2_vpc_igw_facts.pyc
+-rw-r--r--.  2 root root  5093 Jan 29  2018 ec2_vpc_igw_facts.pyo
+-rw-r--r--.  1 root root  7820 Nov 29  2017 ec2_vpc_igw.py
+-rw-r--r--.  2 root root  8710 Jan 29  2018 ec2_vpc_igw.pyc
+-rw-r--r--.  2 root root  8710 Jan 29  2018 ec2_vpc_igw.pyo
+-rw-r--r--.  1 root root  6352 Nov 29  2017 ec2_vpc_nacl_facts.py
+-rw-r--r--.  2 root root  6144 Jan 29  2018 ec2_vpc_nacl_facts.pyc
+-rw-r--r--.  2 root root  6144 Jan 29  2018 ec2_vpc_nacl_facts.pyo
+-rw-r--r--.  1 root root 19862 Nov 29  2017 ec2_vpc_nacl.py
+-rw-r--r--.  2 root root 19802 Jan 29  2018 ec2_vpc_nacl.pyc
+-rw-r--r--.  2 root root 19802 Jan 29  2018 ec2_vpc_nacl.pyo
+-rw-r--r--.  1 root root  4218 Nov 29  2017 ec2_vpc_nat_gateway_facts.py
+-rw-r--r--.  2 root root  4768 Jan 29  2018 ec2_vpc_nat_gateway_facts.pyc
+-rw-r--r--.  2 root root  4768 Jan 29  2018 ec2_vpc_nat_gateway_facts.pyo
+-rw-r--r--.  1 root root 32654 Nov 29  2017 ec2_vpc_nat_gateway.py
+-rw-r--r--.  2 root root 27126 Jan 29  2018 ec2_vpc_nat_gateway.pyc
+-rw-r--r--.  2 root root 27126 Jan 29  2018 ec2_vpc_nat_gateway.pyo
+-rw-r--r--.  1 root root  3802 Nov 29  2017 ec2_vpc_net_facts.py
+-rw-r--r--.  2 root root  3727 Jan 29  2018 ec2_vpc_net_facts.pyc
+-rw-r--r--.  2 root root  3727 Jan 29  2018 ec2_vpc_net_facts.pyo
+-rw-r--r--.  1 root root 11089 Nov 29  2017 ec2_vpc_net.py
+-rw-r--r--.  2 root root  9426 Jan 29  2018 ec2_vpc_net.pyc
+-rw-r--r--.  2 root root  9426 Jan 29  2018 ec2_vpc_net.pyo
+-rw-r--r--.  1 root root  4314 Nov 29  2017 ec2_vpc_peering_facts.py
+-rw-r--r--.  2 root root  4652 Jan 29  2018 ec2_vpc_peering_facts.pyc
+-rw-r--r--.  2 root root  4652 Jan 29  2018 ec2_vpc_peering_facts.pyo
+-rw-r--r--.  1 root root 12633 Nov 29  2017 ec2_vpc_peer.py
+-rw-r--r--.  2 root root 12825 Jan 29  2018 ec2_vpc_peer.pyc
+-rw-r--r--.  2 root root 12825 Jan 29  2018 ec2_vpc_peer.pyo
+-rw-r--r--.  1 root root 29766 Nov 29  2017 _ec2_vpc.py
+-rw-r--r--.  2 root root 22066 Jan 29  2018 _ec2_vpc.pyc
+-rw-r--r--.  2 root root 22066 Jan 29  2018 _ec2_vpc.pyo
+-rw-r--r--.  1 root root  3741 Nov 29  2017 ec2_vpc_route_table_facts.py
+-rw-r--r--.  2 root root  4097 Jan 29  2018 ec2_vpc_route_table_facts.pyc
+-rw-r--r--.  2 root root  4097 Jan 29  2018 ec2_vpc_route_table_facts.pyo
+-rw-r--r--.  1 root root 25201 Nov 29  2017 ec2_vpc_route_table.py
+-rw-r--r--.  2 root root 21610 Jan 29  2018 ec2_vpc_route_table.pyc
+-rw-r--r--.  2 root root 21610 Jan 29  2018 ec2_vpc_route_table.pyo
+-rw-r--r--.  1 root root  4458 Nov 29  2017 ec2_vpc_subnet_facts.py
+-rw-r--r--.  2 root root  4323 Jan 29  2018 ec2_vpc_subnet_facts.pyc
+-rw-r--r--.  2 root root  4323 Jan 29  2018 ec2_vpc_subnet_facts.pyo
+-rw-r--r--.  1 root root  9357 Nov 29  2017 ec2_vpc_subnet.py
+-rw-r--r--.  2 root root  9181 Jan 29  2018 ec2_vpc_subnet.pyc
+-rw-r--r--.  2 root root  9181 Jan 29  2018 ec2_vpc_subnet.pyo
+-rw-r--r--.  1 root root  5024 Nov 29  2017 ec2_vpc_vgw_facts.py
+-rw-r--r--.  2 root root  5282 Jan 29  2018 ec2_vpc_vgw_facts.pyc
+-rw-r--r--.  2 root root  5282 Jan 29  2018 ec2_vpc_vgw_facts.pyo
+-rw-r--r--.  1 root root 20182 Nov 29  2017 ec2_vpc_vgw.py
+-rw-r--r--.  2 root root 15126 Jan 29  2018 ec2_vpc_vgw.pyc
+-rw-r--r--.  2 root root 15126 Jan 29  2018 ec2_vpc_vgw.pyo
+-rw-r--r--.  1 root root 29533 Nov 29  2017 ec2_vpc_vpn.py
+-rw-r--r--.  2 root root 22654 Jan 29  2018 ec2_vpc_vpn.pyc
+-rw-r--r--.  2 root root 22654 Jan 29  2018 ec2_vpc_vpn.pyo
+-rw-r--r--.  1 root root  5714 Nov 29  2017 ec2_win_password.py
+-rw-r--r--.  2 root root  5678 Jan 29  2018 ec2_win_password.pyc
+-rw-r--r--.  2 root root  5678 Jan 29  2018 ec2_win_password.pyo
+-rw-r--r--.  1 root root 10418 Nov 29  2017 ecs_attribute.py
+-rw-r--r--.  2 root root 11914 Jan 29  2018 ecs_attribute.pyc
+-rw-r--r--.  2 root root 11914 Jan 29  2018 ecs_attribute.pyo
+-rw-r--r--.  1 root root  7793 Nov 29  2017 ecs_cluster.py
+-rw-r--r--.  2 root root  7645 Jan 29  2018 ecs_cluster.pyc
+-rw-r--r--.  2 root root  7645 Jan 29  2018 ecs_cluster.pyo
+-rw-r--r--.  1 root root 11534 Nov 29  2017 ecs_ecr.py
+-rw-r--r--.  2 root root  9805 Jan 29  2018 ecs_ecr.pyc
+-rw-r--r--.  2 root root  9805 Jan 29  2018 ecs_ecr.pyo
+-rw-r--r--.  1 root root  8700 Nov 29  2017 ecs_service_facts.py
+-rw-r--r--.  2 root root  8372 Jan 29  2018 ecs_service_facts.pyc
+-rw-r--r--.  2 root root  8372 Jan 29  2018 ecs_service_facts.pyo
+-rw-r--r--.  1 root root 20325 Nov 29  2017 ecs_service.py
+-rw-r--r--.  2 root root 17147 Jan 29  2018 ecs_service.pyc
+-rw-r--r--.  2 root root 17147 Jan 29  2018 ecs_service.pyo
+-rw-r--r--.  1 root root 15963 Nov 29  2017 ecs_taskdefinition.py
+-rw-r--r--.  2 root root 11736 Jan 29  2018 ecs_taskdefinition.pyc
+-rw-r--r--.  2 root root 11736 Jan 29  2018 ecs_taskdefinition.pyo
+-rw-r--r--.  1 root root 11472 Nov 29  2017 ecs_task.py
+-rw-r--r--.  2 root root 10226 Jan 29  2018 ecs_task.pyc
+-rw-r--r--.  2 root root 10226 Jan 29  2018 ecs_task.pyo
+-rw-r--r--.  1 root root 11179 Nov 29  2017 efs_facts.py
+-rw-r--r--.  2 root root 12548 Jan 29  2018 efs_facts.pyc
+-rw-r--r--.  2 root root 12548 Jan 29  2018 efs_facts.pyo
+-rw-r--r--.  1 root root 21379 Nov 29  2017 efs.py
+-rw-r--r--.  2 root root 20631 Jan 29  2018 efs.pyc
+-rw-r--r--.  2 root root 20631 Jan 29  2018 efs.pyo
+-rw-r--r--.  1 root root 14513 Nov 29  2017 elasticache_parameter_group.py
+-rw-r--r--.  2 root root 11757 Jan 29  2018 elasticache_parameter_group.pyc
+-rw-r--r--.  2 root root 11757 Jan 29  2018 elasticache_parameter_group.pyo
+-rw-r--r--.  1 root root 20767 Nov 29  2017 elasticache.py
+-rw-r--r--.  2 root root 17822 Jan 29  2018 elasticache.pyc
+-rw-r--r--.  2 root root 17822 Jan 29  2018 elasticache.pyo
+-rw-r--r--.  1 root root  7624 Nov 29  2017 elasticache_snapshot.py
+-rw-r--r--.  2 root root  7535 Jan 29  2018 elasticache_snapshot.pyc
+-rw-r--r--.  2 root root  7535 Jan 29  2018 elasticache_snapshot.pyo
+-rw-r--r--.  1 root root  4836 Nov 29  2017 elasticache_subnet_group.py
+-rw-r--r--.  2 root root  4461 Jan 29  2018 elasticache_subnet_group.pyc
+-rw-r--r--.  2 root root  4461 Jan 29  2018 elasticache_subnet_group.pyo
+-rw-r--r--.  1 root root 10370 Nov 29  2017 elb_application_lb_facts.py
+-rw-r--r--.  2 root root 10174 Jan 29  2018 elb_application_lb_facts.pyc
+-rw-r--r--.  2 root root 10174 Jan 29  2018 elb_application_lb_facts.pyo
+-rw-r--r--.  1 root root 41811 Nov 29  2017 elb_application_lb.py
+-rw-r--r--.  2 root root 32135 Jan 29  2018 elb_application_lb.pyc
+-rw-r--r--.  2 root root 32135 Jan 29  2018 elb_application_lb.pyo
+-rw-r--r--.  1 root root  8581 Nov 29  2017 elb_classic_lb_facts.py
+-rw-r--r--.  2 root root  8211 Jan 29  2018 elb_classic_lb_facts.pyc
+-rw-r--r--.  2 root root  8211 Jan 29  2018 elb_classic_lb_facts.pyo
+-rw-r--r--.  1 root root 54005 Nov 29  2017 elb_classic_lb.py
+-rw-r--r--.  2 root root 43081 Jan 29  2018 elb_classic_lb.pyc
+-rw-r--r--.  2 root root 43081 Jan 29  2018 elb_classic_lb.pyo
+-rw-r--r--.  1 root root 13792 Nov 29  2017 elb_instance.py
+-rw-r--r--.  2 root root 12421 Jan 29  2018 elb_instance.pyc
+-rw-r--r--.  2 root root 12421 Jan 29  2018 elb_instance.pyo
+-rw-r--r--.  1 root root  9764 Nov 29  2017 elb_target_group_facts.py
+-rw-r--r--.  2 root root  9655 Jan 29  2018 elb_target_group_facts.pyc
+-rw-r--r--.  2 root root  9655 Jan 29  2018 elb_target_group_facts.pyo
+-rw-r--r--.  1 root root 28685 Nov 29  2017 elb_target_group.py
+-rw-r--r--.  2 root root 20945 Jan 29  2018 elb_target_group.pyc
+-rw-r--r--.  2 root root 20945 Jan 29  2018 elb_target_group.pyo
+-rw-r--r--.  1 root root 10649 Nov 29  2017 execute_lambda.py
+-rw-r--r--.  2 root root  8492 Jan 29  2018 execute_lambda.pyc
+-rw-r--r--.  2 root root  8492 Jan 29  2018 execute_lambda.pyo
+lrwxrwxrwx.  1 root root    31 Jan  7 02:53 _iam_cert_facts.py -> iam_server_certificate_facts.py
+-rw-r--r--.  2 root root  5582 Jan 29  2018 _iam_cert_facts.pyc
+-rw-r--r--.  2 root root  5582 Jan 29  2018 _iam_cert_facts.pyo
+-rw-r--r--.  1 root root 11852 Nov 29  2017 iam_cert.py
+-rw-r--r--.  2 root root  9277 Jan 29  2018 iam_cert.pyc
+-rw-r--r--.  2 root root  9277 Jan 29  2018 iam_cert.pyo
+-rw-r--r--.  1 root root 14808 Nov 29  2017 iam_group.py
+-rw-r--r--.  2 root root 11398 Jan 29  2018 iam_group.pyc
+-rw-r--r--.  2 root root 11398 Jan 29  2018 iam_group.pyo
+-rw-r--r--.  1 root root 15764 Nov 29  2017 iam_managed_policy.py
+-rw-r--r--.  2 root root 12824 Jan 29  2018 iam_managed_policy.pyc
+-rw-r--r--.  2 root root 12824 Jan 29  2018 iam_managed_policy.pyo
+-rw-r--r--.  1 root root  3381 Nov 29  2017 iam_mfa_device_facts.py
+-rw-r--r--.  2 root root  3788 Jan 29  2018 iam_mfa_device_facts.pyc
+-rw-r--r--.  2 root root  3788 Jan 29  2018 iam_mfa_device_facts.pyo
+-rw-r--r--.  1 root root 14055 Nov 29  2017 iam_policy.py
+-rw-r--r--.  2 root root  9909 Jan 29  2018 iam_policy.pyc
+-rw-r--r--.  2 root root  9909 Jan 29  2018 iam_policy.pyo
+-rw-r--r--.  1 root root 35906 Nov 29  2017 iam.py
+-rw-r--r--.  2 root root 26144 Jan 29  2018 iam.pyc
+-rw-r--r--.  2 root root 26144 Jan 29  2018 iam.pyo
+-rw-r--r--.  1 root root 14546 Nov 29  2017 iam_role.py
+-rw-r--r--.  2 root root 11570 Jan 29  2018 iam_role.pyc
+-rw-r--r--.  2 root root 11570 Jan 29  2018 iam_role.pyo
+-rw-r--r--.  1 root root  5371 Nov 29  2017 iam_server_certificate_facts.py
+-rw-r--r--.  2 root root  5621 Jan 29  2018 iam_server_certificate_facts.pyc
+-rw-r--r--.  2 root root  5621 Jan 29  2018 iam_server_certificate_facts.pyo
+-rw-r--r--.  1 root root     0 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root   160 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root   160 Jan 29  2018 __init__.pyo
+-rw-r--r--.  1 root root 38188 Nov 29  2017 kinesis_stream.py
+-rw-r--r--.  2 root root 28955 Jan 29  2018 kinesis_stream.pyc
+-rw-r--r--.  2 root root 28955 Jan 29  2018 kinesis_stream.pyo
+-rw-r--r--.  1 root root 11985 Nov 29  2017 lambda_alias.py
+-rw-r--r--.  2 root root 11546 Jan 29  2018 lambda_alias.pyc
+-rw-r--r--.  2 root root 11546 Jan 29  2018 lambda_alias.pyo
+-rw-r--r--.  1 root root 14552 Nov 29  2017 lambda_event.py
+-rw-r--r--.  2 root root 12728 Jan 29  2018 lambda_event.pyc
+-rw-r--r--.  2 root root 12728 Jan 29  2018 lambda_event.pyo
+-rw-r--r--.  1 root root 13167 Nov 29  2017 lambda_facts.py
+-rw-r--r--.  2 root root 11127 Jan 29  2018 lambda_facts.pyc
+-rw-r--r--.  2 root root 11127 Jan 29  2018 lambda_facts.pyo
+-rw-r--r--.  1 root root 13776 Nov 29  2017 lambda_policy.py
+-rw-r--r--.  2 root root 13621 Jan 29  2018 lambda_policy.pyc
+-rw-r--r--.  2 root root 13621 Jan 29  2018 lambda_policy.pyo
+-rw-r--r--.  1 root root 20201 Nov 29  2017 lambda.py
+-rw-r--r--.  2 root root 14192 Jan 29  2018 lambda.pyc
+-rw-r--r--.  2 root root 14192 Jan 29  2018 lambda.pyo
+-rw-r--r--.  1 root root 15824 Nov 29  2017 lightsail.py
+-rw-r--r--.  2 root root 13995 Jan 29  2018 lightsail.pyc
+-rw-r--r--.  2 root root 13995 Jan 29  2018 lightsail.pyo
+-rw-r--r--.  1 root root 15609 Nov 29  2017 rds_param_group.py
+-rw-r--r--.  2 root root 13156 Jan 29  2018 rds_param_group.pyc
+-rw-r--r--.  2 root root 13156 Jan 29  2018 rds_param_group.pyo
+-rw-r--r--.  1 root root 56122 Nov 29  2017 rds.py
+-rw-r--r--.  2 root root 49843 Jan 29  2018 rds.pyc
+-rw-r--r--.  2 root root 49843 Jan 29  2018 rds.pyo
+-rw-r--r--.  1 root root  5017 Nov 29  2017 rds_subnet_group.py
+-rw-r--r--.  2 root root  4438 Jan 29  2018 rds_subnet_group.pyc
+-rw-r--r--.  2 root root  4438 Jan 29  2018 rds_subnet_group.pyo
+-rw-r--r--.  1 root root 10927 Nov 29  2017 redshift_facts.py
+-rw-r--r--.  2 root root 11258 Jan 29  2018 redshift_facts.pyc
+-rw-r--r--.  2 root root 11258 Jan 29  2018 redshift_facts.pyo
+-rw-r--r--.  1 root root 18300 Nov 29  2017 redshift.py
+-rw-r--r--.  2 root root 15457 Jan 29  2018 redshift.pyc
+-rw-r--r--.  2 root root 15457 Jan 29  2018 redshift.pyo
+-rw-r--r--.  1 root root  5940 Nov 29  2017 redshift_subnet_group.py
+-rw-r--r--.  2 root root  5199 Jan 29  2018 redshift_subnet_group.pyc
+-rw-r--r--.  2 root root  5199 Jan 29  2018 redshift_subnet_group.pyo
+-rw-r--r--.  1 root root 12880 Nov 29  2017 route53_facts.py
+-rw-r--r--.  2 root root 12979 Jan 29  2018 route53_facts.pyc
+-rw-r--r--.  2 root root 12979 Jan 29  2018 route53_facts.pyo
+-rw-r--r--.  1 root root 13434 Nov 29  2017 route53_health_check.py
+-rw-r--r--.  2 root root 12194 Jan 29  2018 route53_health_check.pyc
+-rw-r--r--.  2 root root 12194 Jan 29  2018 route53_health_check.pyo
+-rw-r--r--.  1 root root 22112 Nov 29  2017 route53.py
+-rw-r--r--.  2 root root 18116 Jan 29  2018 route53.pyc
+-rw-r--r--.  2 root root 18116 Jan 29  2018 route53.pyo
+-rw-r--r--.  1 root root 11727 Nov 29  2017 route53_zone.py
+-rw-r--r--.  2 root root 10182 Jan 29  2018 route53_zone.pyc
+-rw-r--r--.  2 root root 10182 Jan 29  2018 route53_zone.pyo
+-rw-r--r--.  1 root root 17860 Nov 29  2017 s3_bucket.py
+-rw-r--r--.  2 root root 15136 Jan 29  2018 s3_bucket.pyc
+-rw-r--r--.  2 root root 15136 Jan 29  2018 s3_bucket.pyo
+-rw-r--r--.  1 root root 15298 Nov 29  2017 s3_lifecycle.py
+-rw-r--r--.  2 root root 11652 Jan 29  2018 s3_lifecycle.pyc
+-rw-r--r--.  2 root root 11652 Jan 29  2018 s3_lifecycle.pyo
+-rw-r--r--.  1 root root  5406 Nov 29  2017 s3_logging.py
+-rw-r--r--.  2 root root  5136 Jan 29  2018 s3_logging.pyc
+-rw-r--r--.  2 root root  5136 Jan 29  2018 s3_logging.pyo
+lrwxrwxrwx.  1 root root     9 Jan  7 02:53 _s3.py -> aws_s3.py
+-rw-r--r--.  2 root root 27240 Jan 29  2018 _s3.pyc
+-rw-r--r--.  2 root root 27240 Jan 29  2018 _s3.pyo
+-rw-r--r--.  1 root root 19410 Nov 29  2017 s3_sync.py
+-rw-r--r--.  2 root root 16161 Jan 29  2018 s3_sync.pyc
+-rw-r--r--.  2 root root 16161 Jan 29  2018 s3_sync.pyo
+-rw-r--r--.  1 root root 10810 Nov 29  2017 s3_website.py
+-rw-r--r--.  2 root root  9454 Jan 29  2018 s3_website.pyc
+-rw-r--r--.  2 root root  9454 Jan 29  2018 s3_website.pyo
+-rw-r--r--.  1 root root  7482 Nov 29  2017 sns.py
+-rw-r--r--.  2 root root  6869 Jan 29  2018 sns.pyc
+-rw-r--r--.  2 root root  6869 Jan 29  2018 sns.pyo
+-rw-r--r--.  1 root root 13690 Nov 29  2017 sns_topic.py
+-rw-r--r--.  2 root root 12306 Jan 29  2018 sns_topic.pyc
+-rw-r--r--.  2 root root 12306 Jan 29  2018 sns_topic.pyo
+-rw-r--r--.  1 root root 10118 Nov 29  2017 sqs_queue.py
+-rw-r--r--.  2 root root  8500 Jan 29  2018 sqs_queue.pyc
+-rw-r--r--.  2 root root  8500 Jan 29  2018 sqs_queue.pyo
+-rw-r--r--.  1 root root  5190 Nov 29  2017 sts_assume_role.py
+-rw-r--r--.  2 root root  5293 Jan 29  2018 sts_assume_role.pyc
+-rw-r--r--.  2 root root  5293 Jan 29  2018 sts_assume_role.pyo
+-rw-r--r--.  1 root root  5051 Nov 29  2017 sts_session_token.py
+-rw-r--r--.  2 root root  5354 Jan 29  2018 sts_session_token.pyc
+-rw-r--r--.  2 root root  5354 Jan 29  2018 sts_session_token.pyo
+[root@ip-172-30-0-186 amazon]# ansible-doc -l|grep -i ec2 (#cmd to display ec2 related modules)
+ec2                                       create, terminate, start or stop an instance in ec2
+ec2_ami                                   create or destroy an image in ec2
+ec2_ami_copy                              copies AMI between AWS regions, return new image id
+ec2_ami_find                              Searches for AMIs to obtain the AMI ID and other information
+ec2_ami_search                            Retrieve AWS AMI information for a given operating system.
+ec2_asg                                   Create or delete AWS Autoscaling Groups
+ec2_asg_facts                             Gather facts about ec2 Auto Scaling Groups (ASGs) in AWS
+ec2_customer_gateway                      Manage an AWS customer gateway
+ec2_eip                                   manages EC2 elastic IP (EIP) addresses.
+ec2_elb                                   De-registers or registers instances from EC2 ELBs
+ec2_elb_facts                             Gather facts about EC2 Elastic Load Balancers in AWS
+ec2_elb_lb                                Creates or destroys Amazon ELB.
+ec2_eni                                   Create and optionally attach an Elastic Network Interface (ENI) to an insta...
+ec2_eni_facts                             Gather facts about ec2 ENI interfaces in AWS
+ec2_group                                 maintain an ec2 VPC security group.
+ec2_group_facts                           Gather facts about ec2 security groups in AWS.
+ec2_instance_facts                        Gather facts about ec2 instances in AWS
+ec2_key                                   maintain an ec2 key pair.
+ec2_lc                                    Create or delete AWS Autoscaling Launch Configurations
+ec2_lc_facts                              Gather facts about AWS Autoscaling Launch Configurations
+ec2_lc_find                               Find AWS Autoscaling Launch Configurations
+ec2_metadata_facts                        Gathers facts (instance metadata) about remote hosts within ec2
+ec2_metric_alarm                          Create/update or delete AWS Cloudwatch 'metric alarms'
+ec2_remote_facts                          Gather facts about ec2 instances in AWS
+ec2_scaling_policy                        Create or delete AWS scaling policies for Autoscaling groups
+ec2_snapshot                              creates a snapshot from an existing volume
+ec2_snapshot_copy                         copies an EC2 snapshot and returns the new Snapshot ID.
+ec2_snapshot_facts                        Gather facts about ec2 volume snapshots in AWS
+ec2_tag                                   create and remove tag(s) to ec2 resources.
+ec2_vol                                   create and attach a volume, return volume id and device map
+ec2_vol_facts                             Gather facts about ec2 volumes in AWS
+ec2_vpc                                   configure AWS virtual private clouds
+ec2_vpc_dhcp_option                       Manages DHCP Options, and can ensure the DHCP options for the given VPC mat...
+ec2_vpc_dhcp_option_facts                 Gather facts about dhcp options sets in AWS
+ec2_vpc_endpoint                          Create and delete AWS VPC Endpoints.
+ec2_vpc_endpoint_facts                    Retrieves AWS VPC endpoints details using AWS methods.
+ec2_vpc_igw                               Manage an AWS VPC Internet gateway
+ec2_vpc_igw_facts                         Gather facts about internet gateways in AWS
+ec2_vpc_nacl                              create and delete Network ACLs.
+ec2_vpc_nacl_facts                        Gather facts about Network ACLs in an AWS VPC
+ec2_vpc_nat_gateway                       Manage AWS VPC NAT Gateways.
+ec2_vpc_nat_gateway_facts                 Retrieves AWS VPC Managed Nat Gateway details using AWS methods.
+ec2_vpc_net                               Configure AWS virtual private clouds
+ec2_vpc_net_facts                         Gather facts about ec2 VPCs in AWS
+ec2_vpc_peer                              create, delete, accept, and reject VPC peering connections between two VPCs...
+ec2_vpc_peering_facts                     Retrieves AWS VPC Peering details using AWS methods.
+ec2_vpc_route_table                       Manage route tables for AWS virtual private clouds
+ec2_vpc_route_table_facts                 Gather facts about ec2 VPC route tables in AWS
+ec2_vpc_subnet                            Manage subnets in AWS virtual private clouds
+ec2_vpc_subnet_facts                      Gather facts about ec2 VPC subnets in AWS
+ec2_vpc_vgw                               Create and delete AWS VPN Virtual Gateways.
+ec2_vpc_vgw_facts                         Gather facts about virtual gateways in AWS
+ec2_vpc_vpn                               Create, modify, and delete EC2 VPN connections.
+ec2_win_password                          gets the default administrator password for ec2 windows instances
+elb_classic_lb_facts                      Gather facts about EC2 Elastic Load Balancers in AWS
+elb_instance                              De-registers or registers instances from EC2 ELBs
+[root@ip-172-30-0-186 amazon]# ls -al
+total 6144
+drwxr-xr-x.  2 root root 16384 Jan  7 02:53 .
+drwxr-xr-x. 28 root root  4096 Jan  7 02:53 ..
+-rw-r--r--.  1 root root 11662 Nov 29  2017 aws_api_gateway.py
+-rw-r--r--.  2 root root 11120 Jan 29  2018 aws_api_gateway.pyc
+-rw-r--r--.  2 root root 11120 Jan 29  2018 aws_api_gateway.pyo
+-rw-r--r--.  1 root root 11812 Nov 29  2017 aws_direct_connect_connection.py
+-rw-r--r--.  2 root root  9872 Jan 29  2018 aws_direct_connect_connection.pyc
+-rw-r--r--.  2 root root  9872 Jan 29  2018 aws_direct_connect_connection.pyo
+-rw-r--r--.  1 root root 18164 Nov 29  2017 aws_direct_connect_link_aggregation_group.py
+-rw-r--r--.  2 root root 15737 Jan 29  2018 aws_direct_connect_link_aggregation_group.pyc
+-rw-r--r--.  2 root root 15737 Jan 29  2018 aws_direct_connect_link_aggregation_group.pyo
+-rw-r--r--.  1 root root 11400 Nov 29  2017 aws_kms.py
+-rw-r--r--.  2 root root  9199 Jan 29  2018 aws_kms.pyc
+-rw-r--r--.  2 root root  9199 Jan 29  2018 aws_kms.pyo
+-rw-r--r--.  1 root root  3039 Nov 29  2017 aws_s3_bucket_facts.py
+-rw-r--r--.  2 root root  3190 Jan 29  2018 aws_s3_bucket_facts.pyc
+-rw-r--r--.  2 root root  3190 Jan 29  2018 aws_s3_bucket_facts.pyo
+-rw-r--r--.  1 root root 35460 Nov 29  2017 aws_s3.py
+-rw-r--r--.  2 root root 27300 Jan 29  2018 aws_s3.pyc
+-rw-r--r--.  2 root root 27300 Jan 29  2018 aws_s3.pyo
+-rw-r--r--.  1 root root  7870 Nov 29  2017 aws_waf_facts.py
+-rw-r--r--.  2 root root  8839 Jan 29  2018 aws_waf_facts.pyc
+-rw-r--r--.  2 root root  8839 Jan 29  2018 aws_waf_facts.pyo
+-rw-r--r--.  1 root root 11527 Nov 29  2017 cloudformation_facts.py
+-rw-r--r--.  2 root root 11575 Jan 29  2018 cloudformation_facts.pyc
+-rw-r--r--.  2 root root 11575 Jan 29  2018 cloudformation_facts.pyo
+-rw-r--r--.  1 root root 25438 Nov 29  2017 cloudformation.py
+-rw-r--r--.  2 root root 21099 Jan 29  2018 cloudformation.pyc
+-rw-r--r--.  2 root root 21099 Jan 29  2018 cloudformation.pyo
+-rw-r--r--.  1 root root 31930 Nov 29  2017 cloudfront_facts.py
+-rw-r--r--.  2 root root 25922 Jan 29  2018 cloudfront_facts.pyc
+-rw-r--r--.  2 root root 25922 Jan 29  2018 cloudfront_facts.pyo
+-rw-r--r--.  1 root root 23409 Nov 29  2017 cloudtrail.py
+-rw-r--r--.  2 root root 19396 Jan 29  2018 cloudtrail.pyc
+-rw-r--r--.  2 root root 19396 Jan 29  2018 cloudtrail.pyo
+-rw-r--r--.  1 root root 15678 Nov 29  2017 cloudwatchevent_rule.py
+-rw-r--r--.  2 root root 16869 Jan 29  2018 cloudwatchevent_rule.pyc
+-rw-r--r--.  2 root root 16869 Jan 29  2018 cloudwatchevent_rule.pyo
+-rw-r--r--.  1 root root 20689 Nov 29  2017 data_pipeline.py
+-rw-r--r--.  1 root root 19850 Jan 29  2018 data_pipeline.pyc
+-rw-r--r--.  1 root root 19788 Jan 29  2018 data_pipeline.pyo
+-rw-r--r--.  1 root root 17160 Nov 29  2017 dynamodb_table.py
+-rw-r--r--.  2 root root 16086 Jan 29  2018 dynamodb_table.pyc
+-rw-r--r--.  2 root root 16086 Jan 29  2018 dynamodb_table.pyo
+-rw-r--r--.  1 root root  5579 Nov 29  2017 dynamodb_ttl.py
+-rw-r--r--.  2 root root  5556 Jan 29  2018 dynamodb_ttl.pyc
+-rw-r--r--.  2 root root  5556 Jan 29  2018 dynamodb_ttl.pyo
+-rw-r--r--.  1 root root  6936 Nov 29  2017 ec2_ami_copy.py
+-rw-r--r--.  2 root root  6582 Jan 29  2018 ec2_ami_copy.pyc
+-rw-r--r--.  2 root root  6582 Jan 29  2018 ec2_ami_copy.pyo
+-rw-r--r--.  1 root root 14185 Nov 29  2017 ec2_ami_find.py
+-rw-r--r--.  2 root root 12600 Jan 29  2018 ec2_ami_find.pyc
+-rw-r--r--.  2 root root 12600 Jan 29  2018 ec2_ami_find.pyo
+-rw-r--r--.  1 root root 22149 Nov 29  2017 ec2_ami.py
+-rw-r--r--.  2 root root 18159 Jan 29  2018 ec2_ami.pyc
+-rw-r--r--.  2 root root 18159 Jan 29  2018 ec2_ami.pyo
+-rw-r--r--.  1 root root  6284 Nov 29  2017 _ec2_ami_search.py
+-rw-r--r--.  2 root root  6633 Jan 29  2018 _ec2_ami_search.pyc
+-rw-r--r--.  2 root root  6633 Jan 29  2018 _ec2_ami_search.pyo
+-rw-r--r--.  1 root root 13766 Nov 29  2017 ec2_asg_facts.py
+-rw-r--r--.  2 root root 13558 Jan 29  2018 ec2_asg_facts.pyc
+-rw-r--r--.  2 root root 13558 Jan 29  2018 ec2_asg_facts.pyo
+-rw-r--r--.  1 root root 59393 Nov 29  2017 ec2_asg.py
+-rw-r--r--.  2 root root 42837 Jan 29  2018 ec2_asg.pyc
+-rw-r--r--.  2 root root 42837 Jan 29  2018 ec2_asg.pyo
+-rw-r--r--.  1 root root  9257 Nov 29  2017 ec2_customer_gateway.py
+-rw-r--r--.  2 root root  8102 Jan 29  2018 ec2_customer_gateway.pyc
+-rw-r--r--.  2 root root  8102 Jan 29  2018 ec2_customer_gateway.pyo
+-rw-r--r--.  1 root root 15832 Nov 29  2017 ec2_eip.py
+-rw-r--r--.  2 root root 12644 Jan 29  2018 ec2_eip.pyc
+-rw-r--r--.  2 root root 12644 Jan 29  2018 ec2_eip.pyo
+-rw-r--r--.  1 root root  8667 Nov 29  2017 ec2_elb_facts.py
+-rw-r--r--.  2 root root  8220 Jan 29  2018 ec2_elb_facts.pyc
+-rw-r--r--.  2 root root  8220 Jan 29  2018 ec2_elb_facts.pyo
+-rw-r--r--.  1 root root 54006 Nov 29  2017 ec2_elb_lb.py
+-rw-r--r--.  2 root root 42844 Jan 29  2018 ec2_elb_lb.pyc
+-rw-r--r--.  2 root root 42844 Jan 29  2018 ec2_elb_lb.pyo
+-rw-r--r--.  1 root root 13785 Nov 29  2017 ec2_elb.py
+-rw-r--r--.  2 root root 12339 Jan 29  2018 ec2_elb.pyc
+-rw-r--r--.  2 root root 12339 Jan 29  2018 ec2_elb.pyo
+-rw-r--r--.  1 root root  6579 Nov 29  2017 ec2_eni_facts.py
+-rw-r--r--.  2 root root  5601 Jan 29  2018 ec2_eni_facts.pyc
+-rw-r--r--.  2 root root  5601 Jan 29  2018 ec2_eni_facts.pyo
+-rw-r--r--.  1 root root 22960 Nov 29  2017 ec2_eni.py
+-rw-r--r--.  2 root root 17339 Jan 29  2018 ec2_eni.pyc
+-rw-r--r--.  2 root root 17339 Jan 29  2018 ec2_eni.pyo
+lrwxrwxrwx.  1 root root    21 Jan  7 02:53 _ec2_facts.py -> ec2_metadata_facts.py
+-rw-r--r--.  2 root root 25940 Jan 29  2018 _ec2_facts.pyc
+-rw-r--r--.  2 root root 25940 Jan 29  2018 _ec2_facts.pyo
+-rw-r--r--.  1 root root  5018 Nov 29  2017 ec2_group_facts.py
+-rw-r--r--.  2 root root  4830 Jan 29  2018 ec2_group_facts.pyc
+-rw-r--r--.  2 root root  4830 Jan 29  2018 ec2_group_facts.pyo
+-rw-r--r--.  1 root root 37294 Nov 29  2017 ec2_group.py
+-rw-r--r--.  2 root root 25828 Jan 29  2018 ec2_group.pyc
+-rw-r--r--.  2 root root 25828 Jan 29  2018 ec2_group.pyo
+-rw-r--r--.  1 root root 21600 Nov 29  2017 ec2_instance_facts.py
+-rw-r--r--.  2 root root 21572 Jan 29  2018 ec2_instance_facts.pyc
+-rw-r--r--.  2 root root 21572 Jan 29  2018 ec2_instance_facts.pyo
+-rw-r--r--.  1 root root  8606 Nov 29  2017 ec2_key.py
+-rw-r--r--.  2 root root  5646 Jan 29  2018 ec2_key.pyc
+-rw-r--r--.  2 root root  5646 Jan 29  2018 ec2_key.pyo
+-rw-r--r--.  1 root root  7264 Nov 29  2017 ec2_lc_facts.py
+-rw-r--r--.  2 root root  7386 Jan 29  2018 ec2_lc_facts.pyc
+-rw-r--r--.  2 root root  7386 Jan 29  2018 ec2_lc_facts.pyo
+-rw-r--r--.  1 root root  6826 Nov 29  2017 ec2_lc_find.py
+-rw-r--r--.  2 root root  7305 Jan 29  2018 ec2_lc_find.pyc
+-rw-r--r--.  2 root root  7305 Jan 29  2018 ec2_lc_find.pyo
+-rw-r--r--.  1 root root 16705 Nov 29  2017 ec2_lc.py
+-rw-r--r--.  2 root root 14115 Jan 29  2018 ec2_lc.pyc
+-rw-r--r--.  2 root root 14115 Jan 29  2018 ec2_lc.pyo
+-rw-r--r--.  1 root root 25735 Nov 29  2017 ec2_metadata_facts.py
+-rw-r--r--.  2 root root 26012 Jan 29  2018 ec2_metadata_facts.pyc
+-rw-r--r--.  2 root root 26012 Jan 29  2018 ec2_metadata_facts.pyo
+-rw-r--r--.  1 root root 11598 Nov 29  2017 ec2_metric_alarm.py
+-rw-r--r--.  2 root root  9698 Jan 29  2018 ec2_metric_alarm.pyc
+-rw-r--r--.  2 root root  9698 Jan 29  2018 ec2_metric_alarm.pyo
+-rw-r--r--.  1 root root 65159 Nov 29  2017 ec2.py
+-rw-r--r--.  2 root root 46716 Jan 29  2018 ec2.pyc
+-rw-r--r--.  2 root root 46716 Jan 29  2018 ec2.pyo
+-rw-r--r--.  1 root root  6300 Nov 29  2017 _ec2_remote_facts.py
+-rw-r--r--.  2 root root  5609 Jan 29  2018 _ec2_remote_facts.pyc
+-rw-r--r--.  2 root root  5609 Jan 29  2018 _ec2_remote_facts.pyo
+-rw-r--r--.  1 root root  7108 Nov 29  2017 ec2_scaling_policy.py
+-rw-r--r--.  2 root root  5454 Jan 29  2018 ec2_scaling_policy.pyc
+-rw-r--r--.  2 root root  5454 Jan 29  2018 ec2_scaling_policy.pyo
+-rw-r--r--.  1 root root  5679 Nov 29  2017 ec2_snapshot_copy.py
+-rw-r--r--.  2 root root  6076 Jan 29  2018 ec2_snapshot_copy.pyc
+-rw-r--r--.  2 root root  6076 Jan 29  2018 ec2_snapshot_copy.pyo
+-rw-r--r--.  1 root root  7817 Nov 29  2017 ec2_snapshot_facts.py
+-rw-r--r--.  2 root root  7786 Jan 29  2018 ec2_snapshot_facts.pyc
+-rw-r--r--.  2 root root  7786 Jan 29  2018 ec2_snapshot_facts.pyo
+-rw-r--r--.  1 root root 10118 Nov 29  2017 ec2_snapshot.py
+-rw-r--r--.  2 root root  8485 Jan 29  2018 ec2_snapshot.pyc
+-rw-r--r--.  2 root root  8485 Jan 29  2018 ec2_snapshot.pyo
+-rw-r--r--.  1 root root  5559 Nov 29  2017 ec2_tag.py
+-rw-r--r--.  2 root root  5286 Jan 29  2018 ec2_tag.pyc
+-rw-r--r--.  2 root root  5286 Jan 29  2018 ec2_tag.pyo
+-rw-r--r--.  1 root root  3807 Nov 29  2017 ec2_vol_facts.py
+-rw-r--r--.  2 root root  4168 Jan 29  2018 ec2_vol_facts.pyc
+-rw-r--r--.  2 root root  4168 Jan 29  2018 ec2_vol_facts.pyo
+-rw-r--r--.  1 root root 20848 Nov 29  2017 ec2_vol.py
+-rw-r--r--.  2 root root 17097 Jan 29  2018 ec2_vol.pyc
+-rw-r--r--.  2 root root 17097 Jan 29  2018 ec2_vol.pyo
+-rw-r--r--.  1 root root  4702 Nov 29  2017 ec2_vpc_dhcp_option_facts.py
+-rw-r--r--.  2 root root  5046 Jan 29  2018 ec2_vpc_dhcp_option_facts.pyc
+-rw-r--r--.  2 root root  5046 Jan 29  2018 ec2_vpc_dhcp_option_facts.pyo
+-rw-r--r--.  1 root root 14953 Nov 29  2017 ec2_vpc_dhcp_option.py
+-rw-r--r--.  2 root root 13156 Jan 29  2018 ec2_vpc_dhcp_option.pyc
+-rw-r--r--.  2 root root 13156 Jan 29  2018 ec2_vpc_dhcp_option.pyo
+lrwxrwxrwx.  1 root root    28 Jan  7 02:53 _ec2_vpc_dhcp_options_facts.py -> ec2_vpc_dhcp_option_facts.py
+-rw-r--r--.  2 root root  5054 Jan 29  2018 _ec2_vpc_dhcp_options_facts.pyc
+-rw-r--r--.  2 root root  5054 Jan 29  2018 _ec2_vpc_dhcp_options_facts.pyo
+lrwxrwxrwx.  1 root root    22 Jan  7 02:53 _ec2_vpc_dhcp_options.py -> ec2_vpc_dhcp_option.py
+-rw-r--r--.  2 root root 13178 Jan 29  2018 _ec2_vpc_dhcp_options.pyc
+-rw-r--r--.  2 root root 13178 Jan 29  2018 _ec2_vpc_dhcp_options.pyo
+-rw-r--r--.  1 root root  6014 Nov 29  2017 ec2_vpc_endpoint_facts.py
+-rw-r--r--.  2 root root  6467 Jan 29  2018 ec2_vpc_endpoint_facts.pyc
+-rw-r--r--.  2 root root  6467 Jan 29  2018 ec2_vpc_endpoint_facts.pyo
+-rw-r--r--.  1 root root 13842 Nov 29  2017 ec2_vpc_endpoint.py
+-rw-r--r--.  2 root root 12751 Jan 29  2018 ec2_vpc_endpoint.pyc
+-rw-r--r--.  2 root root 12751 Jan 29  2018 ec2_vpc_endpoint.pyo
+-rw-r--r--.  1 root root  4808 Nov 29  2017 ec2_vpc_igw_facts.py
+-rw-r--r--.  2 root root  5093 Jan 29  2018 ec2_vpc_igw_facts.pyc
+-rw-r--r--.  2 root root  5093 Jan 29  2018 ec2_vpc_igw_facts.pyo
+-rw-r--r--.  1 root root  7820 Nov 29  2017 ec2_vpc_igw.py
+-rw-r--r--.  2 root root  8710 Jan 29  2018 ec2_vpc_igw.pyc
+-rw-r--r--.  2 root root  8710 Jan 29  2018 ec2_vpc_igw.pyo
+-rw-r--r--.  1 root root  6352 Nov 29  2017 ec2_vpc_nacl_facts.py
+-rw-r--r--.  2 root root  6144 Jan 29  2018 ec2_vpc_nacl_facts.pyc
+-rw-r--r--.  2 root root  6144 Jan 29  2018 ec2_vpc_nacl_facts.pyo
+-rw-r--r--.  1 root root 19862 Nov 29  2017 ec2_vpc_nacl.py
+-rw-r--r--.  2 root root 19802 Jan 29  2018 ec2_vpc_nacl.pyc
+-rw-r--r--.  2 root root 19802 Jan 29  2018 ec2_vpc_nacl.pyo
+-rw-r--r--.  1 root root  4218 Nov 29  2017 ec2_vpc_nat_gateway_facts.py
+-rw-r--r--.  2 root root  4768 Jan 29  2018 ec2_vpc_nat_gateway_facts.pyc
+-rw-r--r--.  2 root root  4768 Jan 29  2018 ec2_vpc_nat_gateway_facts.pyo
+-rw-r--r--.  1 root root 32654 Nov 29  2017 ec2_vpc_nat_gateway.py
+-rw-r--r--.  2 root root 27126 Jan 29  2018 ec2_vpc_nat_gateway.pyc
+-rw-r--r--.  2 root root 27126 Jan 29  2018 ec2_vpc_nat_gateway.pyo
+-rw-r--r--.  1 root root  3802 Nov 29  2017 ec2_vpc_net_facts.py
+-rw-r--r--.  2 root root  3727 Jan 29  2018 ec2_vpc_net_facts.pyc
+-rw-r--r--.  2 root root  3727 Jan 29  2018 ec2_vpc_net_facts.pyo
+-rw-r--r--.  1 root root 11089 Nov 29  2017 ec2_vpc_net.py
+-rw-r--r--.  2 root root  9426 Jan 29  2018 ec2_vpc_net.pyc
+-rw-r--r--.  2 root root  9426 Jan 29  2018 ec2_vpc_net.pyo
+-rw-r--r--.  1 root root  4314 Nov 29  2017 ec2_vpc_peering_facts.py
+-rw-r--r--.  2 root root  4652 Jan 29  2018 ec2_vpc_peering_facts.pyc
+-rw-r--r--.  2 root root  4652 Jan 29  2018 ec2_vpc_peering_facts.pyo
+-rw-r--r--.  1 root root 12633 Nov 29  2017 ec2_vpc_peer.py
+-rw-r--r--.  2 root root 12825 Jan 29  2018 ec2_vpc_peer.pyc
+-rw-r--r--.  2 root root 12825 Jan 29  2018 ec2_vpc_peer.pyo
+-rw-r--r--.  1 root root 29766 Nov 29  2017 _ec2_vpc.py
+-rw-r--r--.  2 root root 22066 Jan 29  2018 _ec2_vpc.pyc
+-rw-r--r--.  2 root root 22066 Jan 29  2018 _ec2_vpc.pyo
+-rw-r--r--.  1 root root  3741 Nov 29  2017 ec2_vpc_route_table_facts.py
+-rw-r--r--.  2 root root  4097 Jan 29  2018 ec2_vpc_route_table_facts.pyc
+-rw-r--r--.  2 root root  4097 Jan 29  2018 ec2_vpc_route_table_facts.pyo
+-rw-r--r--.  1 root root 25201 Nov 29  2017 ec2_vpc_route_table.py
+-rw-r--r--.  2 root root 21610 Jan 29  2018 ec2_vpc_route_table.pyc
+-rw-r--r--.  2 root root 21610 Jan 29  2018 ec2_vpc_route_table.pyo
+-rw-r--r--.  1 root root  4458 Nov 29  2017 ec2_vpc_subnet_facts.py
+-rw-r--r--.  2 root root  4323 Jan 29  2018 ec2_vpc_subnet_facts.pyc
+-rw-r--r--.  2 root root  4323 Jan 29  2018 ec2_vpc_subnet_facts.pyo
+-rw-r--r--.  1 root root  9357 Nov 29  2017 ec2_vpc_subnet.py
+-rw-r--r--.  2 root root  9181 Jan 29  2018 ec2_vpc_subnet.pyc
+-rw-r--r--.  2 root root  9181 Jan 29  2018 ec2_vpc_subnet.pyo
+-rw-r--r--.  1 root root  5024 Nov 29  2017 ec2_vpc_vgw_facts.py
+-rw-r--r--.  2 root root  5282 Jan 29  2018 ec2_vpc_vgw_facts.pyc
+-rw-r--r--.  2 root root  5282 Jan 29  2018 ec2_vpc_vgw_facts.pyo
+-rw-r--r--.  1 root root 20182 Nov 29  2017 ec2_vpc_vgw.py
+-rw-r--r--.  2 root root 15126 Jan 29  2018 ec2_vpc_vgw.pyc
+-rw-r--r--.  2 root root 15126 Jan 29  2018 ec2_vpc_vgw.pyo
+-rw-r--r--.  1 root root 29533 Nov 29  2017 ec2_vpc_vpn.py
+-rw-r--r--.  2 root root 22654 Jan 29  2018 ec2_vpc_vpn.pyc
+-rw-r--r--.  2 root root 22654 Jan 29  2018 ec2_vpc_vpn.pyo
+-rw-r--r--.  1 root root  5714 Nov 29  2017 ec2_win_password.py
+-rw-r--r--.  2 root root  5678 Jan 29  2018 ec2_win_password.pyc
+-rw-r--r--.  2 root root  5678 Jan 29  2018 ec2_win_password.pyo
+-rw-r--r--.  1 root root 10418 Nov 29  2017 ecs_attribute.py
+-rw-r--r--.  2 root root 11914 Jan 29  2018 ecs_attribute.pyc
+-rw-r--r--.  2 root root 11914 Jan 29  2018 ecs_attribute.pyo
+-rw-r--r--.  1 root root  7793 Nov 29  2017 ecs_cluster.py
+-rw-r--r--.  2 root root  7645 Jan 29  2018 ecs_cluster.pyc
+-rw-r--r--.  2 root root  7645 Jan 29  2018 ecs_cluster.pyo
+-rw-r--r--.  1 root root 11534 Nov 29  2017 ecs_ecr.py
+-rw-r--r--.  2 root root  9805 Jan 29  2018 ecs_ecr.pyc
+-rw-r--r--.  2 root root  9805 Jan 29  2018 ecs_ecr.pyo
+-rw-r--r--.  1 root root  8700 Nov 29  2017 ecs_service_facts.py
+-rw-r--r--.  2 root root  8372 Jan 29  2018 ecs_service_facts.pyc
+-rw-r--r--.  2 root root  8372 Jan 29  2018 ecs_service_facts.pyo
+-rw-r--r--.  1 root root 20325 Nov 29  2017 ecs_service.py
+-rw-r--r--.  2 root root 17147 Jan 29  2018 ecs_service.pyc
+-rw-r--r--.  2 root root 17147 Jan 29  2018 ecs_service.pyo
+-rw-r--r--.  1 root root 15963 Nov 29  2017 ecs_taskdefinition.py
+-rw-r--r--.  2 root root 11736 Jan 29  2018 ecs_taskdefinition.pyc
+-rw-r--r--.  2 root root 11736 Jan 29  2018 ecs_taskdefinition.pyo
+-rw-r--r--.  1 root root 11472 Nov 29  2017 ecs_task.py
+-rw-r--r--.  2 root root 10226 Jan 29  2018 ecs_task.pyc
+-rw-r--r--.  2 root root 10226 Jan 29  2018 ecs_task.pyo
+-rw-r--r--.  1 root root 11179 Nov 29  2017 efs_facts.py
+-rw-r--r--.  2 root root 12548 Jan 29  2018 efs_facts.pyc
+-rw-r--r--.  2 root root 12548 Jan 29  2018 efs_facts.pyo
+-rw-r--r--.  1 root root 21379 Nov 29  2017 efs.py
+-rw-r--r--.  2 root root 20631 Jan 29  2018 efs.pyc
+-rw-r--r--.  2 root root 20631 Jan 29  2018 efs.pyo
+-rw-r--r--.  1 root root 14513 Nov 29  2017 elasticache_parameter_group.py
+-rw-r--r--.  2 root root 11757 Jan 29  2018 elasticache_parameter_group.pyc
+-rw-r--r--.  2 root root 11757 Jan 29  2018 elasticache_parameter_group.pyo
+-rw-r--r--.  1 root root 20767 Nov 29  2017 elasticache.py
+-rw-r--r--.  2 root root 17822 Jan 29  2018 elasticache.pyc
+-rw-r--r--.  2 root root 17822 Jan 29  2018 elasticache.pyo
+-rw-r--r--.  1 root root  7624 Nov 29  2017 elasticache_snapshot.py
+-rw-r--r--.  2 root root  7535 Jan 29  2018 elasticache_snapshot.pyc
+-rw-r--r--.  2 root root  7535 Jan 29  2018 elasticache_snapshot.pyo
+-rw-r--r--.  1 root root  4836 Nov 29  2017 elasticache_subnet_group.py
+-rw-r--r--.  2 root root  4461 Jan 29  2018 elasticache_subnet_group.pyc
+-rw-r--r--.  2 root root  4461 Jan 29  2018 elasticache_subnet_group.pyo
+-rw-r--r--.  1 root root 10370 Nov 29  2017 elb_application_lb_facts.py
+-rw-r--r--.  2 root root 10174 Jan 29  2018 elb_application_lb_facts.pyc
+-rw-r--r--.  2 root root 10174 Jan 29  2018 elb_application_lb_facts.pyo
+-rw-r--r--.  1 root root 41811 Nov 29  2017 elb_application_lb.py
+-rw-r--r--.  2 root root 32135 Jan 29  2018 elb_application_lb.pyc
+-rw-r--r--.  2 root root 32135 Jan 29  2018 elb_application_lb.pyo
+-rw-r--r--.  1 root root  8581 Nov 29  2017 elb_classic_lb_facts.py
+-rw-r--r--.  2 root root  8211 Jan 29  2018 elb_classic_lb_facts.pyc
+-rw-r--r--.  2 root root  8211 Jan 29  2018 elb_classic_lb_facts.pyo
+-rw-r--r--.  1 root root 54005 Nov 29  2017 elb_classic_lb.py
+-rw-r--r--.  2 root root 43081 Jan 29  2018 elb_classic_lb.pyc
+-rw-r--r--.  2 root root 43081 Jan 29  2018 elb_classic_lb.pyo
+-rw-r--r--.  1 root root 13792 Nov 29  2017 elb_instance.py
+-rw-r--r--.  2 root root 12421 Jan 29  2018 elb_instance.pyc
+-rw-r--r--.  2 root root 12421 Jan 29  2018 elb_instance.pyo
+-rw-r--r--.  1 root root  9764 Nov 29  2017 elb_target_group_facts.py
+-rw-r--r--.  2 root root  9655 Jan 29  2018 elb_target_group_facts.pyc
+-rw-r--r--.  2 root root  9655 Jan 29  2018 elb_target_group_facts.pyo
+-rw-r--r--.  1 root root 28685 Nov 29  2017 elb_target_group.py
+-rw-r--r--.  2 root root 20945 Jan 29  2018 elb_target_group.pyc
+-rw-r--r--.  2 root root 20945 Jan 29  2018 elb_target_group.pyo
+-rw-r--r--.  1 root root 10649 Nov 29  2017 execute_lambda.py
+-rw-r--r--.  2 root root  8492 Jan 29  2018 execute_lambda.pyc
+-rw-r--r--.  2 root root  8492 Jan 29  2018 execute_lambda.pyo
+lrwxrwxrwx.  1 root root    31 Jan  7 02:53 _iam_cert_facts.py -> iam_server_certificate_facts.py
+-rw-r--r--.  2 root root  5582 Jan 29  2018 _iam_cert_facts.pyc
+-rw-r--r--.  2 root root  5582 Jan 29  2018 _iam_cert_facts.pyo
+-rw-r--r--.  1 root root 11852 Nov 29  2017 iam_cert.py
+-rw-r--r--.  2 root root  9277 Jan 29  2018 iam_cert.pyc
+-rw-r--r--.  2 root root  9277 Jan 29  2018 iam_cert.pyo
+-rw-r--r--.  1 root root 14808 Nov 29  2017 iam_group.py
+-rw-r--r--.  2 root root 11398 Jan 29  2018 iam_group.pyc
+-rw-r--r--.  2 root root 11398 Jan 29  2018 iam_group.pyo
+-rw-r--r--.  1 root root 15764 Nov 29  2017 iam_managed_policy.py
+-rw-r--r--.  2 root root 12824 Jan 29  2018 iam_managed_policy.pyc
+-rw-r--r--.  2 root root 12824 Jan 29  2018 iam_managed_policy.pyo
+-rw-r--r--.  1 root root  3381 Nov 29  2017 iam_mfa_device_facts.py
+-rw-r--r--.  2 root root  3788 Jan 29  2018 iam_mfa_device_facts.pyc
+-rw-r--r--.  2 root root  3788 Jan 29  2018 iam_mfa_device_facts.pyo
+-rw-r--r--.  1 root root 14055 Nov 29  2017 iam_policy.py
+-rw-r--r--.  2 root root  9909 Jan 29  2018 iam_policy.pyc
+-rw-r--r--.  2 root root  9909 Jan 29  2018 iam_policy.pyo
+-rw-r--r--.  1 root root 35906 Nov 29  2017 iam.py
+-rw-r--r--.  2 root root 26144 Jan 29  2018 iam.pyc
+-rw-r--r--.  2 root root 26144 Jan 29  2018 iam.pyo
+-rw-r--r--.  1 root root 14546 Nov 29  2017 iam_role.py
+-rw-r--r--.  2 root root 11570 Jan 29  2018 iam_role.pyc
+-rw-r--r--.  2 root root 11570 Jan 29  2018 iam_role.pyo
+-rw-r--r--.  1 root root  5371 Nov 29  2017 iam_server_certificate_facts.py
+-rw-r--r--.  2 root root  5621 Jan 29  2018 iam_server_certificate_facts.pyc
+-rw-r--r--.  2 root root  5621 Jan 29  2018 iam_server_certificate_facts.pyo
+-rw-r--r--.  1 root root     0 Nov 29  2017 __init__.py
+-rw-r--r--.  2 root root   160 Jan 29  2018 __init__.pyc
+-rw-r--r--.  2 root root   160 Jan 29  2018 __init__.pyo
+-rw-r--r--.  1 root root 38188 Nov 29  2017 kinesis_stream.py
+-rw-r--r--.  2 root root 28955 Jan 29  2018 kinesis_stream.pyc
+-rw-r--r--.  2 root root 28955 Jan 29  2018 kinesis_stream.pyo
+-rw-r--r--.  1 root root 11985 Nov 29  2017 lambda_alias.py
+-rw-r--r--.  2 root root 11546 Jan 29  2018 lambda_alias.pyc
+-rw-r--r--.  2 root root 11546 Jan 29  2018 lambda_alias.pyo
+-rw-r--r--.  1 root root 14552 Nov 29  2017 lambda_event.py
+-rw-r--r--.  2 root root 12728 Jan 29  2018 lambda_event.pyc
+-rw-r--r--.  2 root root 12728 Jan 29  2018 lambda_event.pyo
+-rw-r--r--.  1 root root 13167 Nov 29  2017 lambda_facts.py
+-rw-r--r--.  2 root root 11127 Jan 29  2018 lambda_facts.pyc
+-rw-r--r--.  2 root root 11127 Jan 29  2018 lambda_facts.pyo
+-rw-r--r--.  1 root root 13776 Nov 29  2017 lambda_policy.py
+-rw-r--r--.  2 root root 13621 Jan 29  2018 lambda_policy.pyc
+-rw-r--r--.  2 root root 13621 Jan 29  2018 lambda_policy.pyo
+-rw-r--r--.  1 root root 20201 Nov 29  2017 lambda.py
+-rw-r--r--.  2 root root 14192 Jan 29  2018 lambda.pyc
+-rw-r--r--.  2 root root 14192 Jan 29  2018 lambda.pyo
+-rw-r--r--.  1 root root 15824 Nov 29  2017 lightsail.py
+-rw-r--r--.  2 root root 13995 Jan 29  2018 lightsail.pyc
+-rw-r--r--.  2 root root 13995 Jan 29  2018 lightsail.pyo
+-rw-r--r--.  1 root root 15609 Nov 29  2017 rds_param_group.py
+-rw-r--r--.  2 root root 13156 Jan 29  2018 rds_param_group.pyc
+-rw-r--r--.  2 root root 13156 Jan 29  2018 rds_param_group.pyo
+-rw-r--r--.  1 root root 56122 Nov 29  2017 rds.py
+-rw-r--r--.  2 root root 49843 Jan 29  2018 rds.pyc
+-rw-r--r--.  2 root root 49843 Jan 29  2018 rds.pyo
+-rw-r--r--.  1 root root  5017 Nov 29  2017 rds_subnet_group.py
+-rw-r--r--.  2 root root  4438 Jan 29  2018 rds_subnet_group.pyc
+-rw-r--r--.  2 root root  4438 Jan 29  2018 rds_subnet_group.pyo
+-rw-r--r--.  1 root root 10927 Nov 29  2017 redshift_facts.py
+-rw-r--r--.  2 root root 11258 Jan 29  2018 redshift_facts.pyc
+-rw-r--r--.  2 root root 11258 Jan 29  2018 redshift_facts.pyo
+-rw-r--r--.  1 root root 18300 Nov 29  2017 redshift.py
+-rw-r--r--.  2 root root 15457 Jan 29  2018 redshift.pyc
+-rw-r--r--.  2 root root 15457 Jan 29  2018 redshift.pyo
+-rw-r--r--.  1 root root  5940 Nov 29  2017 redshift_subnet_group.py
+-rw-r--r--.  2 root root  5199 Jan 29  2018 redshift_subnet_group.pyc
+-rw-r--r--.  2 root root  5199 Jan 29  2018 redshift_subnet_group.pyo
+-rw-r--r--.  1 root root 12880 Nov 29  2017 route53_facts.py
+-rw-r--r--.  2 root root 12979 Jan 29  2018 route53_facts.pyc
+-rw-r--r--.  2 root root 12979 Jan 29  2018 route53_facts.pyo
+-rw-r--r--.  1 root root 13434 Nov 29  2017 route53_health_check.py
+-rw-r--r--.  2 root root 12194 Jan 29  2018 route53_health_check.pyc
+-rw-r--r--.  2 root root 12194 Jan 29  2018 route53_health_check.pyo
+-rw-r--r--.  1 root root 22112 Nov 29  2017 route53.py
+-rw-r--r--.  2 root root 18116 Jan 29  2018 route53.pyc
+-rw-r--r--.  2 root root 18116 Jan 29  2018 route53.pyo
+-rw-r--r--.  1 root root 11727 Nov 29  2017 route53_zone.py
+-rw-r--r--.  2 root root 10182 Jan 29  2018 route53_zone.pyc
+-rw-r--r--.  2 root root 10182 Jan 29  2018 route53_zone.pyo
+-rw-r--r--.  1 root root 17860 Nov 29  2017 s3_bucket.py
+-rw-r--r--.  2 root root 15136 Jan 29  2018 s3_bucket.pyc
+-rw-r--r--.  2 root root 15136 Jan 29  2018 s3_bucket.pyo
+-rw-r--r--.  1 root root 15298 Nov 29  2017 s3_lifecycle.py
+-rw-r--r--.  2 root root 11652 Jan 29  2018 s3_lifecycle.pyc
+-rw-r--r--.  2 root root 11652 Jan 29  2018 s3_lifecycle.pyo
+-rw-r--r--.  1 root root  5406 Nov 29  2017 s3_logging.py
+-rw-r--r--.  2 root root  5136 Jan 29  2018 s3_logging.pyc
+-rw-r--r--.  2 root root  5136 Jan 29  2018 s3_logging.pyo
+lrwxrwxrwx.  1 root root     9 Jan  7 02:53 _s3.py -> aws_s3.py
+-rw-r--r--.  2 root root 27240 Jan 29  2018 _s3.pyc
+-rw-r--r--.  2 root root 27240 Jan 29  2018 _s3.pyo
+-rw-r--r--.  1 root root 19410 Nov 29  2017 s3_sync.py
+-rw-r--r--.  2 root root 16161 Jan 29  2018 s3_sync.pyc
+-rw-r--r--.  2 root root 16161 Jan 29  2018 s3_sync.pyo
+-rw-r--r--.  1 root root 10810 Nov 29  2017 s3_website.py
+-rw-r--r--.  2 root root  9454 Jan 29  2018 s3_website.pyc
+-rw-r--r--.  2 root root  9454 Jan 29  2018 s3_website.pyo
+-rw-r--r--.  1 root root  7482 Nov 29  2017 sns.py
+-rw-r--r--.  2 root root  6869 Jan 29  2018 sns.pyc
+-rw-r--r--.  2 root root  6869 Jan 29  2018 sns.pyo
+-rw-r--r--.  1 root root 13690 Nov 29  2017 sns_topic.py
+-rw-r--r--.  2 root root 12306 Jan 29  2018 sns_topic.pyc
+-rw-r--r--.  2 root root 12306 Jan 29  2018 sns_topic.pyo
+-rw-r--r--.  1 root root 10118 Nov 29  2017 sqs_queue.py
+-rw-r--r--.  2 root root  8500 Jan 29  2018 sqs_queue.pyc
+-rw-r--r--.  2 root root  8500 Jan 29  2018 sqs_queue.pyo
+-rw-r--r--.  1 root root  5190 Nov 29  2017 sts_assume_role.py
+-rw-r--r--.  2 root root  5293 Jan 29  2018 sts_assume_role.pyc
+-rw-r--r--.  2 root root  5293 Jan 29  2018 sts_assume_role.pyo
+-rw-r--r--.  1 root root  5051 Nov 29  2017 sts_session_token.py
+-rw-r--r--.  2 root root  5354 Jan 29  2018 sts_session_token.pyc
+-rw-r--r--.  2 root root  5354 Jan 29  2018 sts_session_token.pyo
+[root@ip-172-30-0-186 amazon]# cat s3_sync.py (#cmd to display python file; how the code was written in python)
+#!/usr/bin/python
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
+ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
+
+
+DOCUMENTATION = '''
+---
+module: s3_sync
+short_description: Efficiently upload multiple files to S3
+description:
+     - The S3 module is great, but it is very slow for a large volume of files- even a dozen will be noticeable. In addition to speed, it handles globbing,
+       inclusions/exclusions, mime types, expiration mapping, recursion, cache control and smart directory mapping.
+version_added: "2.3"
+options:
+  mode:
+    description:
+    - sync direction.
+    required: true
+    default: 'push'
+    choices: [ push ]
+  file_change_strategy:
+    description:
+    - Difference determination method to allow changes-only syncing. Unlike rsync, files are not patched- they are fully skipped or fully uploaded.
+    - date_size will upload if file sizes don't match or if local file modified date is newer than s3's version
+    - checksum will compare etag values based on s3's implementation of chunked md5s.
+    - force will always upload all files.
+    required: false
+    default: 'date_size'
+    choices: [ force, checksum, date_size ]
+  bucket:
+    description:
+    - Bucket name.
+    required: true
+  key_prefix:
+    description:
+    - In addition to file path, prepend s3 path with this prefix. Module will add slash at end of prefix if necessary.
+    required: false
+  file_root:
+    description:
+    - File/directory path for synchronization. This is a local path.
+    - This root path is scrubbed from the key name, so subdirectories will remain as keys.
+    required: true
+  permission:
+    description:
+    - Canned ACL to apply to synced files.
+    - Changing this ACL only changes newly synced files, it does not trigger a full reupload.
+    required: false
+    choices: [ '', private, public-read, public-read-write, authenticated-read, aws-exec-read, bucket-owner-read, bucket-owner-full-control ]
+  mime_map:
+    description:
+    - >
+      Dict entry from extension to MIME type. This will override any default/sniffed MIME type.
+      For example C({".txt": "application/text", ".yml": "appication/text"})
+    required: false
+  include:
+    description:
+    - Shell pattern-style file matching.
+    - Used before exclude to determine eligible files (for instance, only "*.gif")
+    - For multiple patterns, comma-separate them.
+    required: false
+    default: "*"
+  exclude:
+    description:
+    - Shell pattern-style file matching.
+    - Used after include to remove files (for instance, skip "*.txt")
+    - For multiple patterns, comma-separate them.
+    required: false
+    default: ".*"
+  cache_control:
+    description:
+    - This is a string.
+    - Cache-Control header set on uploaded objects.
+    - Directives are separated by commmas.
+    required: false
+    version_added: "2.4"
+  delete:
+    description:
+    - Remove remote files that exist in bucket but are not present in the file root.
+    required: false
+    default: no
+    version_added: "2.4"
+
+requirements:
+  - boto3 >= 1.4.4
+  - botocore
+
+author: tedder
+extends_documentation_fragment:
+- aws
+- ec2
+'''
+
+EXAMPLES = '''
+- name: basic upload
+  s3_sync:
+    bucket: tedder
+    file_root: roles/s3/files/
+
+- name: all the options
+  s3_sync:
+    bucket: tedder
+    file_root: roles/s3/files
+    mime_map:
+      .yml: application/text
+      .json: application/text
+    key_prefix: config_files/web
+    file_change_strategy: force
+    permission: public-read
+    cache_control: "public, max-age=31536000"
+    include: "*"
+    exclude: "*.txt,.*"
+'''
+
+RETURN = '''
+filelist_initial:
+  description: file listing (dicts) from inital globbing
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "modified_epoch": 1477416706
+           }]
+filelist_local_etag:
+  description: file listing (dicts) including calculated local etag
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "mime_type": "application/json",
+                "modified_epoch": 1477416706,
+                "s3_path": "s3sync/policy.json"
+           }]
+filelist_s3:
+  description: file listing (dicts) including information about previously-uploaded versions
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "mime_type": "application/json",
+                "modified_epoch": 1477416706,
+                "s3_path": "s3sync/policy.json"
+           }]
+filelist_typed:
+  description: file listing (dicts) with calculated or overridden mime types
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "mime_type": "application/json",
+                "modified_epoch": 1477416706
+           }]
+filelist_actionable:
+  description: file listing (dicts) of files that will be uploaded after the strategy decision
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "mime_type": "application/json",
+                "modified_epoch": 1477931256,
+                "s3_path": "s3sync/policy.json",
+                "whysize": "151 / 151",
+                "whytime": "1477931256 / 1477929260"
+           }]
+uploaded:
+  description: file listing (dicts) of files that were actually uploaded
+  returned: always
+  type: list
+  sample: [{
+                "bytes": 151,
+                "chopped_path": "policy.json",
+                "fullpath": "roles/cf/files/policy.json",
+                "s3_path": "s3sync/policy.json",
+                "whysize": "151 / 151",
+                "whytime": "1477931637 / 1477931489"
+           }]
+
+'''
+
+import datetime
+import fnmatch
+import hashlib
+import mimetypes
+import os
+import stat as osstat  # os.stat constants
+import traceback
+from dateutil import tz
+
+# import module snippets
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.ec2 import camel_dict_to_snake_dict, ec2_argument_spec, boto3_conn, get_aws_connection_info, HAS_BOTO3, boto_exception
+from ansible.module_utils._text import to_text
+
+try:
+    import botocore
+except ImportError:
+    # Handled by imported HAS_BOTO3
+    pass
+
+
+# the following function, calculate_multipart_etag, is from tlastowka
+# on github and is used under its (compatible) GPL license. So this
+# license applies to the following function.
+# source: https://github.com/tlastowka/calculate_multipart_etag/blob/master/calculate_multipart_etag.py
+#
+# calculate_multipart_etag  Copyright (C) 2015
+#      Tony Lastowka <tlastowka at gmail dot com>
+#      https://github.com/tlastowka
+#
+#
+# calculate_multipart_etag is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# calculate_multipart_etag is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with calculate_multipart_etag.  If not, see <http://www.gnu.org/licenses/>.
+
+DEFAULT_CHUNK_SIZE = 5 * 1024 * 1024
+
+
+def calculate_multipart_etag(source_path, chunk_size=DEFAULT_CHUNK_SIZE):
+
+   
+    calculates a multipart upload etag for amazon s3
+
+    Arguments:
+
+    source_path -- The file to calculate the etag for
+    chunk_size -- The chunk size to calculate for.
+    """
+
+    md5s = []
+
+    with open(source_path, 'rb') as fp:
+        while True:
+
+            data = fp.read(chunk_size)
+
+            if not data:
+                break
+            md5s.append(hashlib.md5(data))
+
+    if len(md5s) == 1:
+        new_etag = '"{0}"'.format(md5s[0].hexdigest())
+    else:  # > 1
+        digests = b"".join(m.digest() for m in md5s)
+
+        new_md5 = hashlib.md5(digests)
+        new_etag = '"{0}-{1}"'.format(new_md5.hexdigest(), len(md5s))
+
+    return new_etag
+
+
+def gather_files(fileroot, include=None, exclude=None):
+    ret = []
+    for (dirpath, dirnames, filenames) in os.walk(fileroot):
+        for fn in filenames:
+            fullpath = os.path.join(dirpath, fn)
+            # include/exclude
+            if include:
+                found = False
+                for x in include.split(','):
+                    if fnmatch.fnmatch(fn, x):
+                        found = True
+                if not found:
+                    # not on the include list, so we don't want it.
+                    continue
+
+            if exclude:
+                found = False
+                for x in exclude.split(','):
+                    if fnmatch.fnmatch(fn, x):
+                        found = True
+                if found:
+                    # skip it, even if previously included.
+                    continue
+
+            chopped_path = os.path.relpath(fullpath, start=fileroot)
+            fstat = os.stat(fullpath)
+            f_size = fstat[osstat.ST_SIZE]
+            f_modified_epoch = fstat[osstat.ST_MTIME]
+            ret.append({
+                'fullpath': fullpath,
+                'chopped_path': chopped_path,
+                'modified_epoch': f_modified_epoch,
+                'bytes': f_size,
+            })
+        # dirpath = path *to* the directory
+        # dirnames = subdirs *in* our directory
+        # filenames
+    return ret
+
+
+def calculate_s3_path(filelist, key_prefix=''):
+    ret = []
+    for fileentry in filelist:
+        # don't modify the input dict
+        retentry = fileentry.copy()
+        retentry['s3_path'] = os.path.join(key_prefix, fileentry['chopped_path'])
+        ret.append(retentry)
+    return ret
+
+
+def calculate_local_etag(filelist, key_prefix=''):
+    '''Really, "calculate md5", but since AWS uses their own format, we'll just call
+       it a "local etag". TODO optimization: only calculate if remote key exists.'''
+    ret = []
+    for fileentry in filelist:
+        # don't modify the input dict
+        retentry = fileentry.copy()
+        retentry['local_etag'] = calculate_multipart_etag(fileentry['fullpath'])
+        ret.append(retentry)
+    return ret
+
+
+def determine_mimetypes(filelist, override_map):
+    ret = []
+    for fileentry in filelist:
+        retentry = fileentry.copy()
+        localfile = fileentry['fullpath']
+
+        # reminder: file extension is '.txt', not 'txt'.
+        _, file_extension = os.path.splitext(localfile)
+        if override_map and override_map.get(file_extension):
+            # override? use it.
+            retentry['mime_type'] = override_map[file_extension]
+        else:
+            # else sniff it
+            retentry['mime_type'], retentry['encoding'] = mimetypes.guess_type(localfile, strict=False)
+
+        # might be None or '' from one of the above. Not a great type but better than nothing.
+        if not retentry['mime_type']:
+            retentry['mime_type'] = 'application/octet-stream'
+
+        ret.append(retentry)
+
+    return ret
+
+
+def head_s3(s3, bucket, s3keys):
+    retkeys = []
+    for entry in s3keys:
+        retentry = entry.copy()
+        # don't modify the input dict
+        try:
+            retentry['s3_head'] = s3.head_object(Bucket=bucket, Key=entry['s3_path'])
+        except botocore.exceptions.ClientError as err:
+            if (hasattr(err, 'response') and
+                    'ResponseMetadata' in err.response and
+                    'HTTPStatusCode' in err.response['ResponseMetadata'] and
+                    str(err.response['ResponseMetadata']['HTTPStatusCode']) == '404'):
+                pass
+            else:
+                raise Exception(err)
+            # error_msg = boto_exception(err)
+            # return {'error': error_msg}
+        retkeys.append(retentry)
+    return retkeys
+
+
+def filter_list(s3, bucket, s3filelist, strategy):
+    keeplist = list(s3filelist)
+
+    for e in keeplist:
+        e['_strategy'] = strategy
+
+    # init/fetch info from S3 if we're going to use it for comparisons
+    if not strategy == 'force':
+        keeplist = head_s3(s3, bucket, s3filelist)
+
+    # now actually run the strategies
+    if strategy == 'checksum':
+        for entry in keeplist:
+            if entry.get('s3_head'):
+                # since we have a remote s3 object, compare the values.
+                if entry['s3_head']['ETag'] == entry['local_etag']:
+                    # files match, so remove the entry
+                    entry['skip_flag'] = True
+                else:
+                    # file etags don't match, keep the entry.
+                    pass
+            else:  # we don't have an etag, so we'll keep it.
+                pass
+    elif strategy == 'date_size':
+        for entry in keeplist:
+            if entry.get('s3_head'):
+                # fstat = entry['stat']
+                local_modified_epoch = entry['modified_epoch']
+                local_size = entry['bytes']
+
+                # py2's datetime doesn't have a timestamp() field, so we have to revert to something more awkward.
+                # remote_modified_epoch = entry['s3_head']['LastModified'].timestamp()
+                remote_modified_datetime = entry['s3_head']['LastModified']
+                delta = (remote_modified_datetime - datetime.datetime(1970, 1, 1, tzinfo=tz.tzutc()))
+                remote_modified_epoch = delta.seconds + (delta.days * 86400)
+
+                remote_size = entry['s3_head']['ContentLength']
+
+                entry['whytime'] = '{0} / {1}'.format(local_modified_epoch, remote_modified_epoch)
+                entry['whysize'] = '{0} / {1}'.format(local_size, remote_size)
+
+                if local_modified_epoch <= remote_modified_epoch or local_size == remote_size:
+                    entry['skip_flag'] = True
+            else:
+                entry['why'] = "no s3_head"
+    # else: probably 'force'. Basically we don't skip with any with other strategies.
+    else:
+        pass
+
+    # prune 'please skip' entries, if any.
+    return [x for x in keeplist if not x.get('skip_flag')]
+
+
+def upload_files(s3, bucket, filelist, params):
+    ret = []
+    for entry in filelist:
+        args = {
+            'ContentType': entry['mime_type']
+        }
+        if params.get('permission'):
+            args['ACL'] = params['permission']
+        if params.get('cache_control'):
+            args['CacheControl'] = params['cache_control']
+        # if this fails exception is caught in main()
+        s3.upload_file(entry['fullpath'], bucket, entry['s3_path'], ExtraArgs=args, Callback=None, Config=None)
+        ret.append(entry)
+    return ret
+
+
+def remove_files(s3, sourcelist, params):
+    bucket = params.get('bucket')
+    key_prefix = params.get('key_prefix')
+    paginator = s3.get_paginator('list_objects_v2')
+    current_keys = set(x['Key'] for x in paginator.paginate(Bucket=bucket, Prefix=key_prefix).build_full_result().get('Contents', []))
+    keep_keys = set(to_text(source_file['s3_path']) for source_file in sourcelist)
+    delete_keys = list(current_keys - keep_keys)
+
+    # can delete 1000 objects at a time
+    groups_of_keys = [delete_keys[i:i + 1000] for i in range(0, len(delete_keys), 1000)]
+    for keys in groups_of_keys:
+        s3.delete_objects(Bucket=bucket, Delete={'Objects': [{'Key': key} for key in keys]})
+
+    return delete_keys
+
+
+def main():
+    argument_spec = ec2_argument_spec()
+    argument_spec.update(dict(
+        mode=dict(choices=['push'], default='push'),
+        file_change_strategy=dict(choices=['force', 'date_size', 'checksum'], default='date_size'),
+        bucket=dict(required=True),
+        key_prefix=dict(required=False, default=''),
+        file_root=dict(required=True, type='path'),
+        permission=dict(required=False, choices=['private', 'public-read', 'public-read-write', 'authenticated-read',
+                                                 'aws-exec-read', 'bucket-owner-read', 'bucket-owner-full-control']),
+        retries=dict(required=False),
+        mime_map=dict(required=False, type='dict'),
+        exclude=dict(required=False, default=".*"),
+        include=dict(required=False, default="*"),
+        cache_control=dict(required=False, default=''),
+        delete=dict(required=False, type='bool', default=False),
+        # future options: encoding, metadata, storage_class, retries
+    )
+    )
+
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+    )
+    if not HAS_BOTO3:
+        module.fail_json(msg='boto3 required for this module')
+
+    result = {}
+    mode = module.params['mode']
+
+    region, ec2_url, aws_connect_kwargs = get_aws_connection_info(module, boto3=True)
+    if not region:
+        module.fail_json(msg="Region must be specified")
+    s3 = boto3_conn(module, conn_type='client', resource='s3', region=region, endpoint=ec2_url, **aws_connect_kwargs)
+
+    if mode == 'push':
+        try:
+            result['filelist_initial'] = gather_files(module.params['file_root'], exclude=module.params['exclude'], include=module.params['include'])
+            result['filelist_typed'] = determine_mimetypes(result['filelist_initial'], module.params.get('mime_map'))
+            result['filelist_s3'] = calculate_s3_path(result['filelist_typed'], module.params['key_prefix'])
+            result['filelist_local_etag'] = calculate_local_etag(result['filelist_s3'])
+            result['filelist_actionable'] = filter_list(s3, module.params['bucket'], result['filelist_local_etag'], module.params['file_change_strategy'])
+            result['uploads'] = upload_files(s3, module.params['bucket'], result['filelist_actionable'], module.params)
+
+            if module.params['delete']:
+                result['removed'] = remove_files(s3, result['filelist_local_etag'], module.params)
+
+            # mark changed if we actually upload something.
+            if result.get('uploads') or result.get('removed'):
+                result['changed'] = True
+            # result.update(filelist=actionable_filelist)
+        except botocore.exceptions.ClientError as err:
+            error_msg = boto_exception(err)
+            module.fail_json(msg=error_msg, exception=traceback.format_exc(), **camel_dict_to_snake_dict(err.response))
+
+    module.exit_json(**result)
+
+
+if __name__ == '__main__':
+    main()
+[root@ip-172-30-0-186 amazon]# ansible -h (#cmd to display 'Manpage' for host-pattern')
+Usage: ansible <host-pattern> [options]
+
+Define and run a single task 'playbook' against a set of hosts
+
+Options:
+  -a MODULE_ARGS, --args=MODULE_ARGS
+                        module arguments
+  --ask-vault-pass      ask for vault password
+  -B SECONDS, --background=SECONDS
+                        run asynchronously, failing after X seconds
+                        (default=N/A)
+  -C, --check           don't make any changes; instead, try to predict some
+                        of the changes that may occur
+  -D, --diff            when changing (small) files and templates, show the
+                        differences in those files; works great with --check
+  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+                        set additional variables as key=value or YAML/JSON, if
+                        filename prepend with @
+  -f FORKS, --forks=FORKS
+                        specify number of parallel processes to use
+                        (default=5)
+  -h, --help            show this help message and exit
+  -i INVENTORY, --inventory=INVENTORY, --inventory-file=INVENTORY
+                        specify inventory host path or comma separated host
+                        list. --inventory-file is deprecated
+  -l SUBSET, --limit=SUBSET
+                        further limit selected hosts to an additional pattern
+  --list-hosts          outputs a list of matching hosts; does not execute
+                        anything else
+  -m MODULE_NAME, --module-name=MODULE_NAME
+                        module name to execute (default=command)
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        prepend colon-separated path(s) to module library
+                        (default=[u'/root/.ansible/plugins/modules',
+                        u'/usr/share/ansible/plugins/modules'])
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  -o, --one-line        condense output
+  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+                        set the poll interval if using -B (default=15)
+  --syntax-check        perform a syntax check on the playbook, but do not
+                        execute it
+  -t TREE, --tree=TREE  log output to this directory
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+  Connection Options:
+    control as whom and how to connect to hosts
+
+    -k, --ask-pass      ask for connection password
+    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+                        use this file to authenticate the connection
+    -u REMOTE_USER, --user=REMOTE_USER
+                        connect as this user (default=None)
+    -c CONNECTION, --connection=CONNECTION
+                        connection type to use (default=smart)
+    -T TIMEOUT, --timeout=TIMEOUT
+                        override the connection timeout in seconds
+                        (default=10)
+    --ssh-common-args=SSH_COMMON_ARGS
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        ProxyCommand)
+    --sftp-extra-args=SFTP_EXTRA_ARGS
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        -l)
+    --scp-extra-args=SCP_EXTRA_ARGS
+                        specify extra arguments to pass to scp only (e.g. -l)
+    --ssh-extra-args=SSH_EXTRA_ARGS
+                        specify extra arguments to pass to ssh only (e.g. -R)
+
+  Privilege Escalation Options:
+    control how and which user you become as on target hosts
+
+    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use
+                        become)
+    -U SUDO_USER, --sudo-user=SUDO_USER
+                        desired sudo user (default=root) (deprecated, use
+                        become)
+    -S, --su            run operations with su (deprecated, use become)
+    -R SU_USER, --su-user=SU_USER
+                        run operations with su as this user (default=None)
+                        (deprecated, use become)
+    -b, --become        run operations with become (does not imply password
+                        prompting)
+    --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | doas |
+                        dzdo | ksu | runas | pmrun ]
+    --become-user=BECOME_USER
+                        run operations as this user (default=root)
+    --ask-sudo-pass     ask for sudo password (deprecated, use become)
+    --ask-su-pass       ask for su password (deprecated, use become)
+    -K, --ask-become-pass
+                        ask for privilege escalation password
+
+Some modules do not make sense in Ad-Hoc (include, meta, etc)
+[root@ip-172-30-0-186 amazon]# ansible -m setup
+Usage: ansible <host-pattern> [options]
+
+Define and run a single task 'playbook' against a set of hosts
+
+Options:
+  -a MODULE_ARGS, --args=MODULE_ARGS
+                        module arguments
+  --ask-vault-pass      ask for vault password
+  -B SECONDS, --background=SECONDS
+                        run asynchronously, failing after X seconds
+                        (default=N/A)
+  -C, --check           don't make any changes; instead, try to predict some
+                        of the changes that may occur
+  -D, --diff            when changing (small) files and templates, show the
+                        differences in those files; works great with --check
+  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+                        set additional variables as key=value or YAML/JSON, if
+                        filename prepend with @
+  -f FORKS, --forks=FORKS
+                        specify number of parallel processes to use
+                        (default=5)
+  -h, --help            show this help message and exit
+  -i INVENTORY, --inventory=INVENTORY, --inventory-file=INVENTORY
+                        specify inventory host path or comma separated host
+                        list. --inventory-file is deprecated
+  -l SUBSET, --limit=SUBSET
+                        further limit selected hosts to an additional pattern
+  --list-hosts          outputs a list of matching hosts; does not execute
+                        anything else
+  -m MODULE_NAME, --module-name=MODULE_NAME
+                        module name to execute (default=command)
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        prepend colon-separated path(s) to module library
+                        (default=[u'/root/.ansible/plugins/modules',
+                        u'/usr/share/ansible/plugins/modules'])
+  --new-vault-id=NEW_VAULT_ID
+                        the new vault identity to use for rekey
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILES
+                        new vault password file for rekey
+  -o, --one-line        condense output
+  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+                        set the poll interval if using -B (default=15)
+  --syntax-check        perform a syntax check on the playbook, but do not
+                        execute it
+  -t TREE, --tree=TREE  log output to this directory
+  --vault-id=VAULT_IDS  the vault identity to use
+  --vault-password-file=VAULT_PASSWORD_FILES
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+  Connection Options:
+    control as whom and how to connect to hosts
+
+    -k, --ask-pass      ask for connection password
+    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+                        use this file to authenticate the connection
+    -u REMOTE_USER, --user=REMOTE_USER
+                        connect as this user (default=None)
+    -c CONNECTION, --connection=CONNECTION
+                        connection type to use (default=smart)
+    -T TIMEOUT, --timeout=TIMEOUT
+                        override the connection timeout in seconds
+                        (default=10)
+    --ssh-common-args=SSH_COMMON_ARGS
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        ProxyCommand)
+    --sftp-extra-args=SFTP_EXTRA_ARGS
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        -l)
+    --scp-extra-args=SCP_EXTRA_ARGS
+                        specify extra arguments to pass to scp only (e.g. -l)
+    --ssh-extra-args=SSH_EXTRA_ARGS
+                        specify extra arguments to pass to ssh only (e.g. -R)
+
+  Privilege Escalation Options:
+    control how and which user you become as on target hosts
+
+    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use
+                        become)
+    -U SUDO_USER, --sudo-user=SUDO_USER
+                        desired sudo user (default=root) (deprecated, use
+                        become)
+    -S, --su            run operations with su (deprecated, use become)
+    -R SU_USER, --su-user=SU_USER
+                        run operations with su as this user (default=None)
+                        (deprecated, use become)
+    -b, --become        run operations with become (does not imply password
+                        prompting)
+    --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | doas |
+                        dzdo | ksu | runas | pmrun ]
+    --become-user=BECOME_USER
+                        run operations as this user (default=root)
+    --ask-sudo-pass     ask for sudo password (deprecated, use become)
+    --ask-su-pass       ask for su password (deprecated, use become)
+    -K, --ask-become-pass
+                        ask for privilege escalation password
+
+Some modules do not make sense in Ad-Hoc (include, meta, etc)
+ERROR! Missing target hosts
+[root@ip-172-30-0-186 amazon]# ansible localhost -m setup (#cmd to setup anisible in local host)
+ [WARNING]: Could not match supplied host pattern, ignoring: all
+
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "172.30.0.186"
+        ],
+        "ansible_all_ipv6_addresses": [
+            "fe80::19:dff:feb5:3a44"
+        ],
+        "ansible_apparmor": {
+            "status": "disabled"
+        },
+        "ansible_architecture": "x86_64",
+        "ansible_bios_date": "08/24/2006",
+        "ansible_bios_version": "4.2.amazon",
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-3.10.0-862.3.2.el7.x86_64",
+            "LANG": "en_US.UTF-8",
+            "console": "ttyS0,115200",
+            "crashkernel": "auto",
+            "ro": true,
+            "root": "UUID=8c1540fa-e2b4-407d-bcd1-59848a73e463"
+        },
+        "ansible_date_time": {
+            "date": "2019-01-07",
+            "day": "07",
+            "epoch": "1546831362",
+            "hour": "03",
+            "iso8601": "2019-01-07T03:22:42Z",
+            "iso8601_basic                     ecs_taskdefinition.py
+--More--                                                ^C
+[root@ip-172-30-0-186 amazon]# ansible localhost -m yum -a "name=httpd state=present" 
+(#single line commmand for setup httpd package and output displays with YELLOW colour once package has been installed)
+ [WARNING]: Could not match supplied host pattern, ignoring: all
+
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+localhost | SUCCESS => {
+    "changed": true,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "Loaded plugins: fastestmirror\nLoading mirror speeds from cached hostfile\n * base: centos.mirror.net.in\n * extras: centos.mirror.net.in\n * updates: centos.mirror.net.in\nResolving Dependencies\n--> Running transaction check\n---> Package httpd.x86_64 0:2.4.6-88.el7.centos will be installed\n--> Processing Dependency: httpd-tools = 2.4.6-88.el7.centos for package: httpd-2.4.6-88.el7.centos.x86_64\n--> Processing Dependency: system-logos >= 7.92.1-1 for package: httpd-2.4.6-88.el7.centos.x86_64\n--> Processing Dependency: /etc/mime.types for package: httpd-2.4.6-88.el7.centos.x86_64\n--> Processing Dependency: libaprutil-1.so.0()(64bit) for package: httpd-2.4.6-88.el7.centos.x86_64\n--> Processing Dependency: libapr-1.so.0()(64bit) for package: httpd-2.4.6-88.el7.centos.x86_64\n--> Running transaction check\n---> Package apr.x86_64 0:1.4.8-3.el7_4.1 will be installed\n---> Package apr-util.x86_64 0:1.5.2-6.el7 will be installed\n---> Package centos-logos.noarch 0:70.0.6-3.el7.centos will be installed\n---> Package httpd-tools.x86_64 0:2.4.6-88.el7.centos will be installed\n---> Package mailcap.noarch 0:2.1.41-2.el7 will be installed\n--> Finished Dependency Resolution\n\nDependencies Resolved\n\n================================================================================\n Package             Arch          Version                    Repository   Size\n================================================================================\nInstalling:\n httpd               x86_64        2.4.6-88.el7.centos        base        2.7 M\nInstalling for dependencies:\n apr                 x86_64        1.4.8-3.el7_4.1            base        103 k\n apr-util            x86_64        1.5.2-6.el7                base         92 k\n centos-logos        noarch        70.0.6-3.el7.centos        base         21 M\n httpd-tools         x86_64        2.4.6-88.el7.centos        base         90 k\n mailcap             noarch        2.1.41-2.el7               base         31 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package (+5 Dependent packages)\n\nTotal download size: 24 M\nInstalled size: 31 M\nDownloading packages:\n--------------------------------------------------------------------------------\nTotal                                               19 MB/s |  24 MB  00:01     \nRunning transaction check\nRunning transaction test\nTransaction test succeeded\nRunning transaction\n  Installing : apr-1.4.8-3.el7_4.1.x86_64                                   1/6 \n  Installing : apr-util-1.5.2-6.el7.x86_64                                  2/6 \n  Installing : httpd-tools-2.4.6-88.el7.centos.x86_64                       3/6 \n  Installing : centos-logos-70.0.6-3.el7.centos.noarch                      4/6 \n  Installing : mailcap-2.1.41-2.el7.noarch                                  5/6 \n  Installing : httpd-2.4.6-88.el7.centos.x86_64                             6/6 \n  Verifying  : mailcap-2.1.41-2.el7.noarch                                  1/6 \n  Verifying  : apr-util-1.5.2-6.el7.x86_64                                  2/6 \n  Verifying  : httpd-tools-2.4.6-88.el7.centos.x86_64                       3/6 \n  Verifying  : httpd-2.4.6-88.el7.centos.x86_64                             4/6 \n  Verifying  : apr-1.4.8-3.el7_4.1.x86_64                                   5/6 \n  Verifying  : centos-logos-70.0.6-3.el7.centos.noarch                      6/6 \n\nInstalled:\n  httpd.x86_64 0:2.4.6-88.el7.centos                                            \n\nDependency Installed:\n  apr.x86_64 0:1.4.8-3.el7_4.1                                                  \n  apr-util.x86_64 0:1.5.2-6.el7                                                 \n  centos-logos.noarch 0:70.0.6-3.el7.centos                                     \n  httpd-tools.x86_64 0:2.4.6-88.el7.centos                                      \n  mailcap.noarch 0:2.1.41-2.el7                                                 \n\nComplete!\n"
+    ]
+}
+[root@ip-172-30-0-186 amazon]# ansible localhost -m yum -a "name=httpd state=present"
+(#If you run the same command 2nd time, output display with green colour, package has been installed already (No changes))
+ [WARNING]: Could not match supplied host pattern, ignoring: all
+
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+localhost | SUCCESS => {
+    "changed": false,
+    "msg": "",
+    "rc": 0,
+    "results": [
+        "httpd-2.4.6-88.el7.centos.x86_64 providing httpd is already installed"
+    ]
+}
+[root@ip-172-30-0-186 amazon]# ansible- (#Cmd to display list of ansible executable commands)
+ansible-2             ansible-console-2     ansible-galaxy        ansible-playbook-2    ansible-vault
+ansible-2.7           ansible-console-2.7   ansible-galaxy-2      ansible-playbook-2.7  ansible-vault-2
+ansible-config        ansible-doc           ansible-galaxy-2.7    ansible-pull          ansible-vault-2.7
+ansible-connection    ansible-doc-2         ansible-inventory     ansible-pull-2
+ansible-console       ansible-doc-2.7       ansible-playbook      ansible-pull-2.7
+[root@ip-172-30-0-186 amazon]# ansible-doc (#cmd to display 'Man Page for modules)
+Usage: ansible-doc [-l|-s] [options] [-t <plugin type] [plugin]
+
+plugin documentation tool
+
+Options:
+  -a, --all             **For internal testing only** Show documentation for
+                        all plugins.
+  -h, --help            show this help message and exit
+  -l, --list            List available plugins
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        prepend colon-separated path(s) to module library
+                        (default=[u'/root/.ansible/plugins/modules',
+                        u'/usr/share/ansible/plugins/modules'])
+  -s, --snippet         Show playbook snippet for specified plugin(s)
+  -t TYPE, --type=TYPE  Choose which plugin type (defaults to "module")
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+See man pages for Ansible CLI options or website for tutorials
+https://docs.ansible.com
+ERROR! Incorrect options passed
+[root@ip-172-30-0-186 amazon]# ansible-playbook (#cmd to work with 'Play Book')
+[root@ip-172-30-0-186 amazon]# ansible-galaxy (#cmd to work with 'Roles')
+[root@ip-172-30-0-186 amazon]# ansible-vault (#cmd  used for 'Encript/Decript files')
+[root@ip-172-30-0-186 amazon]# ansible (Ad-Hoc command)
+----------------------------------------------End--------------------------------------------------------------------
+
+
+
+
