@@ -1,0 +1,111 @@
+                                      Install TOMCAT SERVER									Date:21st Deec, 2018
+
+https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-centos-7-via-yum
+Foloow all instructions from the above linnk
+
+Step1:
+
+Install packages manually
+1) yum install tomcat
+2) vi  /usr/share/tomcat/conf/tomcat.conf
+
+Add the following JAVA_OPTS line to the file. Feel free to change the Xmx and MaxPermSize values—these settings affect how much memory Tomcat will use:
+
+After open the file, at line 30 add below line to file.
+
+JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC"
+:wq!
+
+3) yum install tomcat-webapps tomcat-admin-webapps
+
+4) yum install tomcat-docs-webapp tomcat-javadoc
+
+
+5) vi /usr/share/tomcat/conf/tomcat-users.xml
+open fine and below code at line 40
+
+<user username="admin" password="password" roles="manager-gui,admin-gui"/>
+
+6) systemctl start tomcat
+
+7) systemctl enable tomcat
+ 
+Now you have installed tomcat server manually.
+
+Check output:
+Open the browswer, type public ip of your instance as show below.
+
+Let's take a look at the Manager App, accessible via the link or http://server_IP_address:8080/manager/html:
+
+http://13.127.214.159:8080/manager/html
+
+Apache Tomcat7 webpage will appear.
+
+
+Step2:
+
+Now copy those 2 updated(changes) files tomcat.conf, tomcat-users.xml into /var/tmp/ directory to run code in puppet.
+[root@ip-172-30-0-232 Puppet]# cp -p /usr/share/tomcat/conf/tomcat.conf /var/tmp/
+[root@ip-172-30-0-232 Puppet]# cp -p /usr/share/tomcat/conf/tomcat-users.xml /var/tmp/
+
+
+To install automatically, you should reinstall all above configuration and write code.
+
+ Remove all package what you have installed manually.
+
+#yum remove tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp tomcat-javadoc
+
+[root@ip-172-30-0-232 Puppet]# rm /usr/share/tomcat/conf/tomcat.conf
+rm: cannot remove ‘/usr/share/tomcat/conf/tomcat.conf’: No such file or directory
+
+[root@ip-172-30-0-232 Puppet]# rm /usr/share/tomcat/conf/tomcat-users.xml
+rm: cannot remove ‘/usr/share/tomcat/conf/tomcat-users.xml’: No such file or directory
+
+[root@ip-172-30-0-232 Puppet]# yum remove tomcat-webapps tomcat-admin-webapps tomcat-docs-webapp tomcat-javadoc
+
+
+Step3:
+Writing code to install tomcatserver automatically.
+
+class tomcatinstallation { code
+  $pkg = [ 'tomcat', 'tomcat-webapps', 'tomcat-admin-webapps', 'tomcat-docs-webapp', 'tomcat-javadoc' ]
+
+  package { $pkg:
+    ensure => present,
+    }
+  file {'/usr/share/tomcat/conf/tomcat.conf':
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///var/tmp/tomcat.conf',
+     }
+ file {'/usr/share/tomcat/conf/tomcat-users.xml':
+     ensure => present,
+     owner => tomcat,
+     group => tomcat,
+     source => 'puppet:///var/tmp/tomcat-users.xml',
+     }
+}
+include tomcatinstallation
+
+:wq!
+
+[root@ip-172-30-0-232 Puppet]# puppet parser validate tomcatinstall.pp
+
+[root@ip-172-30-0-232 Puppet]# puppet apply tomcatinstall.pp --noop
+
+[root@ip-172-30-0-232 Puppet]#puppet apply tomcatinstall.pp
+
+
+
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~

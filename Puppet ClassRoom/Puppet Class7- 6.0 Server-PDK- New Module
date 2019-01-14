@@ -1,0 +1,553 @@
+﻿                    Puppet Server 6.0 Installtion with PDK new module      Date: 05th Jan, 2018.
+                    --------------------------------------------------------------------------
+Step-1
+login as: centos
+Authenticating with public key "imported-openssh-key"
+[centos@ip-172-30-0-186 ~]$ sudo su -
+
+Search on google- Puppet server 6 installtion.
+https://puppet.com/docs/puppet/6.1/puppet_platform.html- open link and search below
+
+For example, to enable the Enterprise Linux 7 repository:
+sudo rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+
+[root@ip-172-30-0-186 ~]#  sudo rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+Retrieving https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+warning: /var/tmp/rpm-tmp.I4gctn: Header V4 RSA/SHA256 Signature, key ID ef8d349                                          f: NOKEY
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:puppet6-release-6.0.0-1.el7      ################################# [100%]
+[root@ip-172-30-0-186 ~]# sudo rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+Retrieving https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+warning: /var/tmp/rpm-tmp.QyFEn2: Header V4 RSA/SHA256 Signature, key ID ef8d349f: NOKEY
+Preparing...                          ################################# [100%]
+        package puppet6-release-6.0.0-1.el7.noarch is already installed
+[root@ip-172-30-0-186 ~]# yum repolist   (Command to disply repositories)
+Loaded plugins: fastestmirror
+Determining fastest mirrors
+ * base: centos.mirror.net.in
+ * extras: centos.mirror.net.in
+ * updates: centos.mirror.net.in
+base                                                                                               | 3.6 kB  00:00:00
+extras                                                                                             | 3.4 kB  00:00:00
+puppet6                                                                                            | 2.5 kB  00:00:00
+updates                                                                                            | 3.4 kB  00:00:00
+(1/5): base/7/x86_64/group_gz                                                                      | 166 kB  00:00:00
+(2/5): puppet6/x86_64/primary_db                                                                   |  54 kB  00:00:00
+(3/5): updates/7/x86_64/primary_db                                                                 | 1.3 MB  00:00:00
+(4/5): extras/7/x86_64/primary_db                                                                  | 156 kB  00:00:00
+(5/5): base/7/x86_64/primary_db                                                                    | 6.0 MB  00:00:00
+repo id                                          repo name                                                          status
+base/7/x86_64                                    CentOS-7 - Base                                                    10,019
+extras/7/x86_64                                  CentOS-7 - Extras                                                     321
+puppet6/x86_64                                   Puppet 6 Repository el 7 - x86_64                                      33
+updates/7/x86_64                                 CentOS-7 - Updates                                                    624
+repolist: 10,997
+
+[root@ip-172-30-0-186 ~]# yum list|grep -i puppet
+puppet6-release.noarch                      6.0.0-1.el7                installed
+pdk.x86_64                                  1.8.0.0-1.el7              puppet6
+puppet-agent.x86_64                         6.1.0-1.el7                puppet6
+puppet-bolt.x86_64                          1.8.1-1.el7                puppet6
+puppet-release.noarch                       1.0.0-3.el7                puppet6
+puppetdb.noarch                             6.1.0-1.el7                puppet6
+puppetdb-termini.noarch                     6.1.0-1.el7                puppet6
+puppetserver.noarch                         6.1.0-1.el7                puppet6
+
+[root@ip-172-30-0-186 ~]# yum install puppetserver  (Install puppet Server 6.0)
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirror.net.in
+ * extras: centos.mirror.net.in
+ * updates: centos.mirror.net.in
+Resolving Dependencies
+--> Running transaction check
+---> Package puppetserver.noarch 0:6.1.0-1.el7 will be installed
+--> Processing Dependency: puppet-agent >= 5.5.0 for package: puppetserver-6.1.0-1.el7.noarch
+--> Processing Dependency: java-1.8.0-openjdk-headless for package: puppetserver-6.1.0-1.el7.noarch
+--> Running transaction check
+---> Package java-1.8.0-openjdk-headless.x86_64 1:1.8.0.191.b12-1.el7_6 will be installed
+--> Processing Dependency: tzdata-java >= 2015d for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+--> Processing Dependency: copy-jdk-configs >= 2.2 for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+--> Processing Dependency: lksctp-tools(x86-64) for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+--> Processing Dependency: libjpeg.so.62(LIBJPEG_6.2)(64bit) for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+--> Processing Dependency: jpackage-utils for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+--> Processing Dependency: libjpeg.so.62()(64bit) for package: 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64
+---> Package puppet-agent.x86_64 0:6.1.0-1.el7 will be installed
+--> Running transaction check
+---> Package copy-jdk-configs.noarch 0:3.3-10.el7_5 will be installed
+---> Package javapackages-tools.noarch 0:3.4.1-11.el7 will be installed
+--> Processing Dependency: python-javapackages = 3.4.1-11.el7 for package: javapackages-tools-3.4.1-11.el7.noarch
+--> Processing Dependency: libxslt for package: javapackages-tools-3.4.1-11.el7.noarch
+---> Package libjpeg-turbo.x86_64 0:1.2.90-6.el7 will be installed
+---> Package lksctp-tools.x86_64 0:1.0.17-2.el7 will be installed
+---> Package tzdata-java.noarch 0:2018g-1.el7 will be installed
+--> Running transaction check
+---> Package libxslt.x86_64 0:1.1.28-5.el7 will be installed
+---> Package python-javapackages.noarch 0:3.4.1-11.el7 will be installed
+--> Processing Dependency: python-lxml for package: python-javapackages-3.4.1-11.el7.noarch
+--> Running transaction check
+---> Package python-lxml.x86_64 0:3.2.1-4.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                                 Arch               Version                             Repository           Size
+==========================================================================================================================
+Installing:
+ puppetserver                            noarch             6.1.0-1.el7                         puppet6              74 M
+Installing for dependencies:
+ copy-jdk-configs                        noarch             3.3-10.el7_5                        base                 21 k
+ java-1.8.0-openjdk-headless             x86_64             1:1.8.0.191.b12-1.el7_6             updates              32 M
+ javapackages-tools                      noarch             3.4.1-11.el7                        base                 73 k
+ libjpeg-turbo                           x86_64             1.2.90-6.el7                        base                134 k
+ libxslt                                 x86_64             1.1.28-5.el7                        base                242 k
+ lksctp-tools                            x86_64             1.0.17-2.el7                        base                 88 k
+ puppet-agent                            x86_64             6.1.0-1.el7                         puppet6              21 M
+ python-javapackages                     noarch             3.4.1-11.el7                        base                 31 k
+ python-lxml                             x86_64             3.2.1-4.el7                         base                758 k
+ tzdata-java                             noarch             2018g-1.el7                         updates             185 k
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package (+10 Dependent packages)
+
+Total download size: 128 M
+Installed size: 202 M
+Is this ok [y/d/N]: y
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/base/packages/copy-jdk-configs-3.3-10.el7_5.noarch.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key for copy-jdk-configs-3.3-10.el7_5.noarch.rpm is not installed
+(1/11): copy-jdk-configs-3.3-10.el7_5.noarch.rpm                                                   |  21 kB  00:00:00
+(2/11): libjpeg-turbo-1.2.90-6.el7.x86_64.rpm                                                      | 134 kB  00:00:00
+(3/11): lksctp-tools-1.0.17-2.el7.x86_64.rpm                                                       |  88 kB  00:00:00
+(4/11): javapackages-tools-3.4.1-11.el7.noarch.rpm                                                 |  73 kB  00:00:00
+(5/11): python-javapackages-3.4.1-11.el7.noarch.rpm                                                |  31 kB  00:00:00
+(6/11): python-lxml-3.2.1-4.el7.x86_64.rpm                                                         | 758 kB  00:00:00
+(7/11): libxslt-1.1.28-5.el7.x86_64.rpm                                                            | 242 kB  00:00:00
+Public key for tzdata-java-2018g-1.el7.noarch.rpm is not installed                      ]  0.0 B/s | 3.1 MB  --:--:-- ETA
+(8/11): tzdata-java-2018g-1.el7.noarch.rpm                                                         | 185 kB  00:00:00
+(9/11): java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64.rpm                               |  32 MB  00:00:02
+warning: /var/cache/yum/x86_64/7/puppet6/packages/puppet-agent-6.1.0-1.el7.x86_64.rpm: Header V4 RSA/SHA256 Signature, key ID ef8d349f: NOKEY
+Public key for puppet-agent-6.1.0-1.el7.x86_64.rpm is not installed
+(10/11): puppet-agent-6.1.0-1.el7.x86_64.rpm                                                       |  21 MB  00:00:04
+(11/11): puppetserver-6.1.0-1.el7.noarch.rpm                                                       |  74 MB  00:00:09
+--------------------------------------------------------------------------------------------------------------------------
+Total                                                                                      13 MB/s | 128 MB  00:00:09
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Importing GPG key 0xF4A80EB5:
+ Userid     : "CentOS-7 Key (CentOS 7 Official Signing Key) <security@centos.org>"
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-5.1804.el7.centos.2.x86_64 (installed)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Is this ok [y/N]: y
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
+Importing GPG key 0xEF8D349F:
+ Userid     : "Puppet, Inc. Release Key (Puppet, Inc. Release Key) <release@puppet.com>"
+ Fingerprint: 6f6b 1550 9cf8 e59e 6e46 9f32 7f43 8280 ef8d 349f
+ Package    : puppet6-release-6.0.0-1.el7.noarch (installed)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-puppet6-release
+Is this ok [y/N]: y
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libxslt-1.1.28-5.el7.x86_64                                                                           1/11
+  Installing : python-lxml-3.2.1-4.el7.x86_64                                                                        2/11
+  Installing : python-javapackages-3.4.1-11.el7.noarch                                                               3/11
+  Installing : javapackages-tools-3.4.1-11.el7.noarch                                                                4/11
+  Installing : libjpeg-turbo-1.2.90-6.el7.x86_64                                                                     5/11
+  Installing : lksctp-tools-1.0.17-2.el7.x86_64                                                                      6/11
+  Installing : puppet-agent-6.1.0-1.el7.x86_64                                                                       7/11
+  Installing : copy-jdk-configs-3.3-10.el7_5.noarch                                                                  8/11
+  Installing : tzdata-java-2018g-1.el7.noarch                                                                        9/11
+  Installing : 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64                                           10/11
+  Installing : puppetserver-6.1.0-1.el7.noarch                                                                      11/11
+usermod: no changes
+  Verifying  : tzdata-java-2018g-1.el7.noarch                                                                        1/11
+  Verifying  : python-lxml-3.2.1-4.el7.x86_64                                                                        2/11
+  Verifying  : copy-jdk-configs-3.3-10.el7_5.noarch                                                                  3/11
+  Verifying  : python-javapackages-3.4.1-11.el7.noarch                                                               4/11
+  Verifying  : libxslt-1.1.28-5.el7.x86_64                                                                           5/11
+  Verifying  : puppet-agent-6.1.0-1.el7.x86_64                                                                       6/11
+  Verifying  : puppetserver-6.1.0-1.el7.noarch                                                                       7/11
+  Verifying  : javapackages-tools-3.4.1-11.el7.noarch                                                                8/11
+  Verifying  : lksctp-tools-1.0.17-2.el7.x86_64                                                                      9/11
+  Verifying  : 1:java-1.8.0-openjdk-headless-1.8.0.191.b12-1.el7_6.x86_64                                           10/11
+  Verifying  : libjpeg-turbo-1.2.90-6.el7.x86_64                                                                    11/11
+
+Installed:
+  puppetserver.noarch 0:6.1.0-1.el7
+
+Dependency Installed:
+  copy-jdk-configs.noarch 0:3.3-10.el7_5             java-1.8.0-openjdk-headless.x86_64 1:1.8.0.191.b12-1.el7_6
+  javapackages-tools.noarch 0:3.4.1-11.el7           libjpeg-turbo.x86_64 0:1.2.90-6.el7
+  libxslt.x86_64 0:1.1.28-5.el7                      lksctp-tools.x86_64 0:1.0.17-2.el7
+  puppet-agent.x86_64 0:6.1.0-1.el7                  python-javapackages.noarch 0:3.4.1-11.el7
+  python-lxml.x86_64 0:3.2.1-4.el7                   tzdata-java.noarch 0:2018g-1.el7
+
+Complete!
+
+[root@ip-172-30-0-186 ~]# yum install pdk    (Install PDK (Puppet Development Kit) tool)
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirror.net.in
+ * extras: centos.mirror.net.in
+ * updates: centos.mirror.net.in
+Resolving Dependencies
+--> Running transaction check
+---> Package pdk.x86_64 0:1.8.0.0-1.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+==========================================================================================================================
+ Package                 Arch                       Version                             Repository                   Size
+==========================================================================================================================
+Installing:
+ pdk                     x86_64                     1.8.0.0-1.el7                       puppet6                     146 M
+
+Transaction Summary
+==========================================================================================================================
+Install  1 Package
+
+Total download size: 146 M
+Installed size: 146 M
+Is this ok [y/d/N]: y
+Downloading packages:
+pdk-1.8.0.0-1.el7.x86_64.rpm                                                                       | 146 MB  00:00:15
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : pdk-1.8.0.0-1.el7.x86_64                                                                               1/1
+  Verifying  : pdk-1.8.0.0-1.el7.x86_64                                                                               1/1
+
+Installed:
+  pdk.x86_64 0:1.8.0.0-1.el7
+
+Complete!
+
+[root@ip-172-30-0-186 ~]# history
+    1   sudo rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+    2  sudo rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+    3  yum repolist
+    4  yum list|grep -i puppet
+    5  yum install puppetserver
+    6  yum install pdk
+    7  history
+
+
+
+
+STEP-2
+
+[root@ip-172-30-0-186 ~]# cd /etc/sysconfig/
+
+[root@ip-172-30-0-186 sysconfig]# ls -al
+total 132
+drwxr-xr-x.  6 root root 4096 Jan  5 03:03 .
+drwxr-xr-x. 82 root root 8192 Jan  5 03:03 ..
+-rw-r--r--.  1 root root  145 Jun  5  2018 anaconda
+-rw-r--r--.  1 root root  483 Jun  5  2018 authconfig
+drwxr-xr-x.  2 root root   43 Jun  5  2018 cbq
+-rw-r--r--.  1 root root   46 Apr 12  2018 chronyd
+drwxr-xr-x.  2 root root    6 Apr 11  2018 console
+-rw-r--r--.  1 root root  150 May 22  2018 cpupower
+-rw-------.  1 root root  110 Apr 11  2018 crond
+-rw-r--r--.  1 root root   17 Jun  5  2018 firstboot
+lrwxrwxrwx.  1 root root   17 Jun  5  2018 grub -> /etc/default/grub
+-rw-r--r--.  1 root root  798 Apr 11  2018 init
+-rw-------.  1 root root 2393 May 16  2018 ip6tables-config
+-rw-------.  1 root root 2374 May 16  2018 iptables-config
+-rw-r--r--.  1 root root  903 Apr 10  2018 irqbalance
+-rw-r--r--.  1 root root 1728 Apr 12  2018 kdump
+-rw-r--r--.  1 root root  180 Jun  5  2018 kernel
+-rw-r--r--.  1 root root  200 Mar 17  2014 man-db
+drwxr-xr-x.  2 root root    6 Apr 11  2018 modules
+-rw-r--r--.  1 root root  634 Apr 11  2018 netconsole
+-rw-r--r--.  1 root root   30 Jun  5  2018 network
+drwxr-xr-x.  2 root root 4096 Jun  5  2018 network-scripts
+-rw-r--r--.  1 root root 1439 Apr 12  2018 nfs
+-rw-r--r--.  1 root root   92 Dec 17 18:14 puppet
+-rw-r--r--.  1 root root 1460 Dec 17 17:50 puppetserver
+-rw-r--r--.  1 root root   87 Dec 17 18:14 pxp-agent
+-rw-r--r--.  1 root root  911 May 19  2017 qemu-ga
+-rw-r--r--.  1 root root   15 Aug  4  2017 rdisc
+-rw-r--r--.  1 root root  755 Apr 11  2018 readonly-root
+-rw-r--r--.  1 root root   73 Apr 11  2018 rpcbind
+-rw-r--r--.  1 root root  395 Apr 10  2018 rpc-rquotad
+-rw-r--r--.  1 root root   12 Apr 11  2018 rsyncd
+-rw-r--r--.  1 root root  196 May 14  2018 rsyslog
+-rw-r--r--.  1 root root    0 Jun  9  2014 run-parts
+lrwxrwxrwx.  1 root root   17 Jun  5  2018 selinux -> ../selinux/config
+-rw-r-----.  1 root root  506 Apr 11  2018 sshd
+-rw-r--r--.  1 root root  610 Apr 11  2018 wpa_supplicant
+
+[root@ip-172-30-0-186 sysconfig]# vi puppetserver (Changing Memory Allocation)
+
+###########################################
+# Init settings for puppetserver
+###########################################
+
+# Location of your Java binary (version 7 or higher)
+JAVA_BIN="/usr/bin/java"
+
+# Modify this if you'd like to change the memory allocation, enable JMX, etc
+JAVA_ARGS="-Xms512m -Xmx512m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
+
+NOTE:(Change memory allocation to 512m from 2gb)---------------------------------------------------------------
+
+# Modify this if you'd like TrapperKeeper specific arguments
+TK_ARGS=""
+
+# These normally shouldn't need to be edited if using OS packages
+USER="puppet"
+GROUP="puppet"
+INSTALL_DIR="/opt/puppetlabs/server/apps/puppetserver"
+CONFIG="/etc/puppetlabs/puppetserver/conf.d"
+
+# Bootstrap path
+BOOTSTRAP_CONFIG="/etc/puppetlabs/puppetserver/services.d/,/opt/puppetlabs/server/apps/puppetserver/config/services.d/"
+
+# SERVICE_STOP_RETRIES can be set here to alter the default stop timeout in
+# seconds.  For systemd, the shorter of this setting or 'TimeoutStopSec' in
+# the systemd.service definition will effectively be the timeout which is used.
+SERVICE_STOP_RETRIES=60
+
+# START_TIMEOUT can be set here to alter the default startup timeout in
+# seconds.  For systemd, the shorter of this setting or 'TimeoutStartSec'
+# in the service's systemd.service configuration file will effectively be the
+# timeout which is used.
+
+
+
+[root@ip-172-30-0-186 sysconfig]# reboot
+PolicyKit daemon disconnected from the bus.
+We are no longer a registered authentication agent.
+Wait for some time until Login as: displays
+
+
+login as: centos
+Authenticating with public key "imported-openssh-key"
+Last login: Sat Jan  5 02:57:12 2019 from 106.51.19.213
+
+[centos@ip-172-30-0-186 ~]$ sudo su -
+Last login: Sat Jan  5 02:57:14 UTC 2019 on pts/0
+
+
+
+STEP-3
+
+[root@ip-172-30-0-186 ~]# cd /etc/puppetlabs/
+[root@ip-172-30-0-186 puppetlabs]# ls -al
+total 12
+drwxr-xr-x.  6 root   root     69 Jan  5 03:03 .
+drwxr-xr-x. 82 root   root   8192 Jan  5 03:03 ..
+drwxr-xr-x.  4 root   root     41 Jan  5 03:03 code
+drwxr-xr-x.  3 root   root     71 Jan  5 03:03 puppet
+drwxr-x---.  4 puppet puppet   84 Jan  5 03:03 puppetserver
+drwxr-xr-x.  3 root   root     21 Jan  5 03:03 pxp-agent
+[root@ip-172-30-0-186 puppetlabs]# cd puppet
+[root@ip-172-30-0-186 puppet]# ls -al
+total 16
+drwxr-xr-x. 3 root   root     71 Jan  5 03:03 .
+drwxr-xr-x. 6 root   root     69 Jan  5 03:03 ..
+-rw-r--r--. 1 root   root   5487 Dec 17 18:14 auth.conf
+-rw-r--r--. 1 root   root    161 Dec 17 18:14 hiera.yaml
+-rw-r--r--. 1 root   root    641 Jan  5 03:03 puppet.conf
+drwxrwx--x. 8 puppet puppet  126 Jan  5 03:09 ssl
+
+[root@ip-172-30-0-186 puppet]# hostname
+ip-172-30-0-186.ap-south-1.compute.internal
+
+[root@ip-172-30-0-186 puppet]# vi puppet.conf   (Add dns_alt_names=hostname)
+
+# This file can be used to override the default puppet settings.
+# See the following links for more details on what settings are available:
+# - https://puppet.com/docs/puppet/latest/config_important_settings.html
+# - https://puppet.com/docs/puppet/latest/config_about_settings.html
+# - https://puppet.com/docs/puppet/latest/config_file_main.html
+# - https://puppet.com/docs/puppet/latest/configuration.html
+[master]
+vardir = /opt/puppetlabs/server/data/puppetserver
+logdir = /var/log/puppetlabs/puppetserver
+rundir = /var/run/puppetlabs/puppetserver
+pidfile = /var/run/puppetlabs/puppetserver/puppetserver.pid
+codedir = /etc/puppetlabs/code
+dns_alt_names=ip-172-30-0-186.ap-south-1.compute.internal  (# add dns_alt_names at last line)
+(note: Working machine ip =ip-172-30-0-186.ap-south-1.compute.internal)
+
+[root@ip-172-30-0-186 puppet]# hostname
+ip-172-30-0-186.ap-south-1.compute.internal
+
+[root@ip-172-30-0-186 puppet]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+[root@ip-172-30-0-186 puppet]# vi /etc/hosts   (Adding host name)
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.30.0.186 ip-172-30-0-186.ap-south-1.compute.internal  (#add local ip at last line)
+
+
+
+
+STEP-4
+Creating new module using PDK tool
+
+
+
+[root@ip-172-30-0-186 puppet]# puppet module list
+/etc/puppetlabs/code/environments/production/modules (no modules installed)
+/etc/puppetlabs/code/modules (no modules installed)
+/opt/puppetlabs/puppet/modules (no modules installed)
+[root@ip-172-30-0-186 puppet]# pdk new module ntpmod   (Creating new module (name:ntpmod))
+pdk (INFO): Creating new module: ntpmod
+
+We need to create the metadata.json file for this module, so we're going to ask you 4 questions.
+If the question is not applicable to this module, accept the default option shown after each question. You can modify any answers at any time by manually updating the metadata.json file.
+
+[Q 1/4] If you have a Puppet Forge username, add it here.
+We can use this to upload your module to the Forge when it's complete.
+--> centos
+
+[Q 2/4] Who wrote this module?
+This is used to credit the module's author.
+--> centos
+
+[Q 3/4] What license does this module code fall under?
+This should be an identifier from https://spdx.org/licenses/. Common values are "Apache-2.0", "MIT", or "proprietary".
+--> Apache-2.0
+
+[Q 4/4] What operating systems does this module support?
+Use the up and down keys to move between the choices, space to select and enter to continue.
+--> RedHat based Linux, Debian based Linux, Windows (Use arrow or number (1-7) keys, press Space to select and Enter to fi--> RedHat based Linux, Debian based Linux, Windows
+
+Metadata will be generated based on this information, continue? Yes
+pdk (INFO): Module 'ntpmod' generated at path '/etc/puppetlabs/puppet/ntpmod', from template 'file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git'.
+pdk (INFO): In your module directory, add classes with the 'pdk new class' command.
+[root@ip-172-30-0-186 puppet]# ls -al
+total 20
+drwxr-xr-x. 4 root   root     85 Jan  5 03:29 .
+drwxr-xr-x. 6 root   root     69 Jan  5 03:03 ..
+-rw-r--r--. 1 root   root   5487 Dec 17 18:14 auth.conf
+-rw-r--r--. 1 root   root    161 Dec 17 18:14 hiera.yaml
+drwxr-xr-x. 9 root   root   4096 Jan  5 03:29 ntpmod
+-rw-r--r--. 1 root   root    699 Jan  5 03:26 puppet.conf
+drwxrwx--x. 8 puppet puppet  126 Jan  5 03:25 ssl
+[root@ip-172-30-0-186 puppet]# pwd
+/etc/puppetlabs/puppet
+
+[root@ip-172-30-0-186 puppet]# puppet module list
+/etc/puppetlabs/code/environments/production/modules (no modules installed)
+/etc/puppetlabs/code/modules
+└── centos-ntpmod (v0.1.0)
+/opt/puppetlabs/puppet/modules (no modules installed)
+
+{Default new modules path is "/etc/puppetlabs/code/modules/"; 
+-move 'ntpmod' from /etc/puppetlabs/puppet TO /etc/puppetlabs/code/modules/}
+
+[root@ip-172-30-0-186 puppet]# mv ntpmod/ /etc/puppetlabs/code/modules/
+[root@ip-172-30-0-186 puppet]# puppet module list
+/etc/puppetlabs/code/environments/production/modules (no modules installed)
+/etc/puppetlabs/code/modules
+└── centos-ntpmod (v0.1.0)
+/opt/puppetlabs/puppet/modules (no modules installed)
+[root@ip-172-30-0-186 puppet]# cd /etc/puppetlabs/code/modules/
+[root@ip-172-30-0-186 modules]# ls -al
+total 4
+drwxr-xr-x. 3 root root   20 Jan  5 03:30 .
+drwxr-xr-x. 4 root root   41 Jan  5 03:03 ..
+drwxr-xr-x. 9 root root 4096 Jan  5 03:29 ntpmod
+[root@ip-172-30-0-186 modules]# cd ntpmod/
+[root@ip-172-30-0-186 ntpmod]# pdk new class ntp (Creating new class name: "ntp")
+pdk (INFO): Creating '/etc/puppetlabs/code/modules/ntpmod/manifests/ntp.pp' from template.
+pdk (INFO): Creating '/etc/puppetlabs/code/modules/ntpmod/spec/classes/ntp_spec.rb' from template.
+
+[root@ip-172-30-0-186 ntpmod]# ls -al
+total 76
+drwxr-xr-x. 9 root root 4096 Jan  5 03:29 .
+drwxr-xr-x. 3 root root   20 Jan  5 03:30 ..
+-rw-r--r--. 1 root root 1510 Jan  5 03:29 appveyor.yml
+-rw-r--r--. 1 root root  146 Jan  5 03:29 CHANGELOG.md
+drwxr-xr-x. 2 root root   25 Jan  5 03:29 data
+drwxr-xr-x. 2 root root    6 Jan  5 03:29 examples
+drwxr-xr-x. 2 root root    6 Jan  5 03:29 files
+-rw-r--r--. 1 root root  223 Jan  5 03:29 .fixtures.yml
+-rw-r--r--. 1 root root 3089 Jan  5 03:29 Gemfile
+-rw-r--r--. 1 root root 4958 Jan  5 03:29 Gemfile.lock
+-rw-r--r--. 1 root root   62 Jan  5 03:29 .gitattributes
+-rw-r--r--. 1 root root  266 Jan  5 03:29 .gitignore
+-rw-r--r--. 1 root root  947 Jan  5 03:29 .gitlab-ci.yml
+-rw-r--r--. 1 root root  268 Jan  5 03:29 hiera.yaml
+drwxr-xr-x. 2 root root   20 Jan  5 03:31 manifests
+-rw-r--r--. 1 root root 1213 Jan  5 03:29 metadata.json
+-rw-r--r--. 1 root root  266 Jan  5 03:29 .pdkignore
+-rw-r--r--. 1 root root 3252 Jan  5 03:29 Rakefile
+-rw-r--r--. 1 root root 4094 Jan  5 03:29 README.md
+-rw-r--r--. 1 root root   31 Jan  5 03:29 .rspec
+-rw-r--r--. 1 root root 3519 Jan  5 03:29 .rubocop.yml
+drwxr-xr-x. 3 root root   68 Jan  5 03:31 spec
+drwxr-xr-x. 2 root root    6 Jan  5 03:29 tasks
+drwxr-xr-x. 2 root root    6 Jan  5 03:29 templates
+-rw-r--r--. 1 root root  940 Jan  5 03:29 .travis.yml
+-rw-r--r--. 1 root root   18 Jan  5 03:29 .yardopts
+[root@ip-172-30-0-186 ntpmod]# cd manifests/
+[root@ip-172-30-0-186 manifests]# ls -al
+total 8
+drwxr-xr-x. 2 root root   20 Jan  5 03:31 .
+drwxr-xr-x. 9 root root 4096 Jan  5 03:29 ..
+-rw-r--r--. 1 root root  157 Jan  5 03:31 ntp.pp
+[root@ip-172-30-0-186 manifests]# pwd
+entpmod/manifests
+[root@ip-172-30-0-186 manifests]# cat ntp.pp
+# A description of what this class does
+#
+# @summary A short summary of the purpose of this class
+#
+# @example
+#   include ntpmod::ntp
+class ntpmod::ntp {
+}
+[root@ip-172-30-0-186 manifests]# pwd
+/etc/puppetlabs/code/modules/ntpmod/manifests
+[root@ip-172-30-0-186 manifests]# ls -al
+total 8
+drwxr-xr-x. 2 root root   20 Jan  5 03:31 .
+drwxr-xr-x. 9 root root 4096 Jan  5 03:29 ..
+-rw-r--r--. 1 root root  157 Jan  5 03:31 ntp.pp
+
+[root@ip-172-30-0-186 manifests]# ls -altotal 8
+drwxr-xr-x. 2 root root   20 Jan  5 03:31 .
+drwxr-xr-x. 9 root root 4096 Jan  5 03:29 ..
+-rw-r--r--. 1 root root  157 Jan  5 03:31 ntp.pp
+
+[root@ip-172-30-0-186 manifests]# vi ntp.pp
+
+
+# A description of what this class does
+#
+# @summary A short summary of the purpose of this class
+#
+# @example
+#   include ntpmod::ntp
+class ntpmod::ntp {
+  package { 'ntp':
+    ensure => present,
+  } ->
+
+  service { 'ntpd':
+    ensure => running,
+    enable => true,
+  }
+}
+
+[root@ip-172-30-0-186 manifests]# puppet parser validate ntp.pp
+[root@ip-172-30-0-186 manifests]# puppet apply -e "include ntpmod::ntp"   (Execute ntp module)
+Notice: Compiled catalog for ip-172-30-0-186.ap-south-1.compute.internal in environment production in 0.64 seconds
+Notice: /Stage[main]/Ntpmod::Ntp/Package[ntp]/ensure: created
+Notice: /Stage[main]/Ntpmod::Ntp/Service[ntpd]/ensure: ensure changed 'stopped' to 'running'
+Notice: Applied catalog in 1.74 seconds
+--------------------------------------------------END-----------------------------------------------------------------
