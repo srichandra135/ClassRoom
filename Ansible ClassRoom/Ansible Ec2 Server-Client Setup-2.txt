@@ -5,7 +5,7 @@ Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83f
  
  SERVER SIDE							CLIENT SIDE
 1)#yum install -y ansible					(Do not install Ansible)
-2)#useradd -md /home/ansadam ansadam				#useradd -md /home/ansadam ansadm
+2)#useradd -md /home/ansadam ansadam				#useradd -md /home/ansdam ansadm
 3)#passwd ansadm						#passwd ansadm	
 4)a) #su - ansadm						#su -ansadm				
   b) #ssh-keygen -t rsa						#mkdir .ssh
