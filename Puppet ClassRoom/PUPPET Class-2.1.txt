@@ -1,0 +1,111 @@
+Commands for Class Traing from pragathi tech.
+https://github.com/Devops-Grp/puppetsingle/blob/master/package.pp
+
+login as: centos
+Authenticating with public key "imported-openssh-key"
+Last login: Wed Dec 19 02:48:56 2018 from 106.51.21.30
+[centos@ip-172-30-0-232 ~]$ sudo su -
+Last login: Wed Dec 19 02:49:07 UTC 2018 on pts/1
+[root@ip-172-30-0-232 ~]# puppet config print
+cfacter = false
+confdir = /etc/puppet
+vardir = /var/lib/puppet
+name = config
+logdir = /var/log/puppet
+log_level = notice
+disable_warnings = []
+priority =
+trace = false
+profile = false
+autoflush = true
+syslogfacility = daemon
+statedir = /var/lib/puppet/state
+rundir = /var/run/puppet
+genconfig = false
+
+[root@ip-172-30-0-232 ~]# puppet config print | grep -i port (Command to display masterport)
+ignoreimport = false
+http_proxy_port = 3128
+masterport = 8140
+reports = store
+reportdir = /var/lib/puppet/reports
+reporturl = http://localhost:3000/reports/upload
+puppetport = 8139
+ca_port = 8140
+report_serialization_format = pson
+report_server = puppet
+report_port = 8140
+inventory_port = 8140
+report = true
+lastrunreport = /var/lib/puppet/state/last_run_report.yaml
+reportfrom = report@ip-172-30-0-232.ap-south-1.compute.internal
+smtpport = 25
+dbport =
+ldapport = 389
+[root@ip-172-30-0-232 ~]# puppet config print | grep -i module
+module_repository = https://forgeapi.puppetlabs.com
+module_working_dir = /var/lib/puppet/puppet-module
+module_skeleton_dir = /var/lib/puppet/puppet-module/skeleton
+module_groups =
+basemodulepath = /etc/puppet/modules:/usr/share/puppet/modules
+modulepath = /etc/puppet/modules:/usr/share/puppet/modules
+[root@ip-172-30-0-232 ~]# puppet config print | grep -i env
+environment = production
+environmentpath =
+environment_timeout = 0
+disable_per_environment_manifest = false
+[root@ip-172-30-0-232 ~]# cd /etc/puppet
+[root@ip-172-30-0-232 puppet]# ls -all
+total 28
+drwxr-xr-x.  5 root root  117 Dec 18 03:09 .
+drwxr-xr-x. 78 root root 8192 Dec 18 04:01 ..
+-rw-r--r--.  1 root root 4178 Apr 25  2016 auth.conf
+drwxr-xr-x.  3 root root   25 Dec 18 03:09 environments
+-rw-r--r--.  1 root root 1462 Apr 25  2016 fileserver.conf
+drwxr-xr-x.  2 root root    6 Apr 25  2016 manifests
+drwxr-xr-x.  2 root root    6 Apr 25  2016 modules
+-rw-r--r--.  1 root root  853 Apr 25  2016 puppet.conf
+
+[root@ip-172-30-0-232 puppet]# cd manifests/
+[root@ip-172-30-0-232 manifests]# ls
+[root@ip-172-30-0-232 manifests]# cd ..
+[root@ip-172-30-0-232 puppet]# cd modules/
+[root@ip-172-30-0-232 modules]# ls
+[root@ip-172-30-0-232 modules]# cd ../environments/
+[root@ip-172-30-0-232 environments]# ls
+example_env
+[root@ip-172-30-0-232 environments]# ls -al
+total 0
+drwxr-xr-x. 3 root root  25 Dec 18 03:09 .
+drwxr-xr-x. 5 root root 117 Dec 18 03:09 ..
+drwxr-xr-x. 4 root root  64 Dec 18 03:09 example_env
+[root@ip-172-30-0-232 environments]#
+[root@ip-172-30-0-232 environments]# cd ../
+
+[root@ip-172-30-0-232 puppet]# more puppet.conf (Command to display set the configuratiion for Main (master) & Agent)
+[main]
+    # The Puppet log directory.
+    # The default value is '$vardir/log'.
+    logdir = /var/log/puppet
+
+    # Where Puppet PID files are kept.
+    # The default value is '$vardir/run'.
+    rundir = /var/run/puppet
+
+    # Where SSL certificates are kept.
+    # The default value is '$confdir/ssl'.
+    ssldir = $vardir/ssl
+
+[agent]
+    # The file in which puppetd stores a list of the classes
+    # associated with the retrieved configuratiion.  Can be loaded in
+    # the separate ``puppet`` executable using the ``--loadclasses``
+    # option.
+    # The default value is '$confdir/classes.txt'.
+    classfile = $vardir/classes.txt
+
+    # Where puppetd caches the local configuration.  An
+    # extension indicating the cache format is added automatically.
+    # The default value is '$confdir/localconfig'.
+    localconfig = $vardir/localconfig
+[root@ip-172-30-0-232 puppet]#
