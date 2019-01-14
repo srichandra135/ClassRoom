@@ -1,4 +1,4 @@
-                                      Install TOMCAT SERVER									Date:21st Deec, 2018
+                                  Install TOMCAT SERVER									Date:21st Deec, 2018
 
 https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-7-on-centos-7-via-yum
 Foloow all instructions from the above linnk
@@ -22,7 +22,7 @@ JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xmx
 
 
 5) vi /usr/share/tomcat/conf/tomcat-users.xml
-open fine and below code at line 40
+open file and below code at line 40
 
 <user username="admin" password="password" roles="manager-gui,admin-gui"/>
 

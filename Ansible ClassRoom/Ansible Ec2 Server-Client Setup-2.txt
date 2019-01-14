@@ -2,6 +2,8 @@
                              SERVER - CLIENT CONGIGURATION
 -------------------------------------------------------------------------------------------------------
 Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83fac41fcc8
+or 
+https://www.tecmint.com/install-and-configure-ansible-automation-tool-in-linux/
  
  SERVER SIDE														CLIENT SIDE
  
@@ -11,11 +13,12 @@ Ref:https://medium.com/@khandelwal12nidhi/ansible-setup-on-aws-ec2-instance-d83f
 4)a) #su - ansadm												#su -ansadm				
   b) #ssh-keygen -t rsa											#mkdir .ssh
   c) #cd .ssh>> ls -all											#chmod 700 .ssh		
-																#chown ansadm	
+																#chown ansadm:ansadm .ssh/	
 																#cd .ssh
 5)#cat id_rsa.pub												#vi authorized_keys
 (copy the key contect and paste in " authorized_keys" file in client side)
 																#hostname (Copy this hostname and paste in server to connect)
+																#chown ansadm:ansadm authorised_keys
 																#chmod 600 authorised_keys
 6)ssh ansadm@client
 (client= paste client's hostname full path)																
@@ -31,7 +34,7 @@ Output is server can connect to client's machine.
 								Next step is: Go back to Server Machine
 #exit
 pwd should be at root/
-#vi /etc/ansible/hosts
+#vi /etc/ansible/hosts (Creating inventory file for remote host/client)
 At end of last line (ESC+SHIFT+G)
 Create groupname (client comes under which group)
 client ip
@@ -47,7 +50,7 @@ ip-172-30-0-32.ap-south-1.compute.internal
 
 :wq!
 
-#su -ansadm
+#su - ansadm
 #ansible grp1 -m ping
 Now server able to connect to client.
 
