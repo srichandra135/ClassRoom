@@ -1,0 +1,10 @@
+---
+ - hosts: grp1
+   become: true
+   tasks:
+    - shell: /usr/bin/uptime
+      register: result
+
+    - debug:
+        var: result
+        verbosity: 2

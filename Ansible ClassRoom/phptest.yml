@@ -1,0 +1,12 @@
+---
+ - hosts: all
+   become: true
+   tasks:
+     - name: install php
+       yum: name=php state=installed disable_gpg_check=yes
+       register: php_install
+       ignore_errors: true
+
+     - name: checking php
+       command: php -v
+       when: php_install|success

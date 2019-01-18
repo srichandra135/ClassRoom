@@ -1,0 +1,10 @@
+---
+ - hosts: grp1
+   become: true
+   vars_files:
+    - userpar.yml 
+
+   tasks:
+     - name: Creating user
+       user: name={{user_name}} password={{user_password|password_hash('AES256')}} shell=/bin/bash
+#AES256- RH7 Algorithm(MD5 format)
