@@ -1,0 +1,6 @@
+# Note: This file(tomcatinstall.yml) should locate outside of this 'tomcatrole' directory to execute this role" i.e. /home/ansadm#
+---
+ - hosts: grp1
+   become: true
+   roles:
+     - tomcatrole
